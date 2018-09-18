@@ -1809,3 +1809,11 @@
 [0917/222416.924:INFO:CONSOLE(387)] "Lynx2D [22:24:16] - New controller created.", source: file:///C:/Users/Arthur/Desktop/lynx2d/Lynx2DEngine/bin/x64/Debug/projects/test//data/lynx2d.js (387)
 [0917/222443.341:INFO:CONSOLE(25)] "Lynx2D [22:24:43] - Started game loop at 60 FPS!", source: file:///C:/Users/Arthur/Desktop/lynx2d/Lynx2DEngine/bin/x64/Debug/projects/test//data/lynx2d.js (25)
 [0917/222443.341:INFO:CONSOLE(387)] "Lynx2D [22:24:43] - New controller created.", source: file:///C:/Users/Arthur/Desktop/lynx2d/Lynx2DEngine/bin/x64/Debug/projects/test//data/lynx2d.js (387)
+[0918/145028.791:INFO:CONSOLE(25)] "Lynx2D [14:50:28] - Started game loop at 60 FPS!", source: file:///D:/lynx2d%20engine/bin/x64/Debug/projects/woah//data/lynx2d.js (25)
+[0918/145028.791:INFO:CONSOLE(387)] "Lynx2D [14:50:28] - New controller created.", source: file:///D:/lynx2d%20engine/bin/x64/Debug/projects/woah//data/lynx2d.js (387)
+[0918/145123.305:INFO:CONSOLE(25)] "Lynx2D [14:51:23] - Started game loop at 60 FPS!", source: file:///D:/lynx2d%20engine/bin/x64/Debug/projects/test//data/lynx2d.js (25)
+[0918/145123.305:INFO:CONSOLE(387)] "Lynx2D [14:51:23] - New controller created.", source: file:///D:/lynx2d%20engine/bin/x64/Debug/projects/test//data/lynx2d.js (387)
+[0918/145127.817:INFO:CONSOLE(25)] "Lynx2D [14:51:27] - Started game loop at 60 FPS!", source: file:///D:/lynx2d%20engine/bin/x64/Debug/projects/test//data/lynx2d.js (25)
+[0918/145127.818:INFO:CONSOLE(387)] "Lynx2D [14:51:27] - New controller created.", source: file:///D:/lynx2d%20engine/bin/x64/Debug/projects/test//data/lynx2d.js (387)
+[0918/145324.345:WARNING:dns_config_service_win.cc(669)] Failed to read DnsConfig.
+[0918/145521.920:WARNING:dns_config_service_win.cc(669)] Failed to read DnsConfig.

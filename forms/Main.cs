@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CefSharp;
@@ -43,6 +44,9 @@ namespace Lynx2DEngine
         {
             Project.form = this;
             Engine.form = this;
+            Feed.form = this;
+
+            Feed.CheckVersion(false);
         }
 
         private void Form1_FormClosing(object sender, CancelEventArgs e)
@@ -494,6 +498,11 @@ namespace Lynx2DEngine
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new AboutForm().Show();
+        }
+
+        private void updateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Feed.CheckVersion(true);
         }
         #endregion
 
