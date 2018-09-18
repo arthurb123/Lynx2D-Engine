@@ -7,6 +7,7 @@ function Lynx2D() {
     this.GAME = {
         RUNNING: false,
         DEBUG: false,
+        DRAW_COLLIDERS: false,
         BUFFER: [],
         EVENTS: [],
         UI: [],
@@ -128,7 +129,7 @@ function Lynx2D() {
             //Loop
             if (this.LOOPS.length > 0) 
                 this.LOOPS.forEach(function(loop) {
-                    loop(); 
+                    if (loop != undefined) loop(); 
                 });
             
             this.LOG.UPDATE();
@@ -151,13 +152,16 @@ function Lynx2D() {
             
             //Debug
             if (this.DEBUG) {
+                //FPS and UPS
+                this.LOG.DATA.COUNTER.RENDER();
+            }
+            
+            //Draw colliders
+            if (this.DRAW_COLLIDERS) {
                 //Colliders
                 this.COLLIDERS.forEach(function(obj) {
                     if (obj != undefined) lx.CONTEXT.GRAPHICS.strokeRect(lx.GAME.TRANSLATE_FROM_FOCUS(obj.POS).X, lx.GAME.TRANSLATE_FROM_FOCUS(obj.POS).Y, obj.SIZE.W, obj.SIZE.H); 
                 });
-                
-                //FPS and UPS
-                this.LOG.DATA.COUNTER.RENDER();
             }
             
             //UI
@@ -184,6 +188,8 @@ function Lynx2D() {
             }
         },
         ADD_LOOPS: function(CALLBACK) {
+            if (CALLBACK == undefined) return;
+            
             for (var i = 0; i < this.LOOPS.length+1; i++) {
                 if (this.LOOPS[i] == undefined) {
                     this.LOOPS[i] = CALLBACK;
@@ -342,7 +348,7 @@ function Lynx2D() {
         this.GAME.UI = [];
         this.GAME.COLLIDERS = [];
         this.GAME.LAYER_DRAW_EVENTS = [];
-        this.GAME.LOOPS = undefined;
+        this.GAME.LOOPS = [];
         this.GAME.FOCUS = undefined;
         
         //Create new controller
@@ -489,6 +495,12 @@ function Lynx2D() {
     
     this.Loops = function(callback) {
         this.GAME.ADD_LOOPS(callback);
+        
+        return this;
+    };
+    
+    this.ClearLoop = function(id) {
+        this.GAME.LOOPS.splice(id, 1);
         
         return this;
     };
@@ -868,6 +880,8 @@ function Lynx2D() {
         };
         
         this.ApplyCollider = function(collider) {
+            if (collider == undefined) return;
+            
             if (collider.ENABLED) {
                 collider.Disable();
             }

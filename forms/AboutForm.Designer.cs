@@ -33,6 +33,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
+            this.versionText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -48,7 +49,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(78, 41);
+            this.label2.Location = new System.Drawing.Point(75, 53);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(143, 13);
             this.label2.TabIndex = 1;
@@ -57,7 +58,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(73, 58);
+            this.linkLabel1.Location = new System.Drawing.Point(72, 68);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(159, 13);
             this.linkLabel1.TabIndex = 2;
@@ -75,11 +76,23 @@
             this.label3.Text = "This tool and the framework \r\nis free for personal and professional use";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // versionText
+            // 
+            this.versionText.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.versionText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.versionText.Location = new System.Drawing.Point(40, 29);
+            this.versionText.Name = "versionText";
+            this.versionText.Size = new System.Drawing.Size(219, 14);
+            this.versionText.TabIndex = 4;
+            this.versionText.Text = "Version";
+            this.versionText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(314, 121);
+            this.Controls.Add(this.versionText);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label2);
@@ -90,6 +103,7 @@
             this.MinimumSize = new System.Drawing.Size(330, 160);
             this.Name = "AboutForm";
             this.Text = "Lynx2D Engine - About";
+            this.Load += new System.EventHandler(this.AboutForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -101,5 +115,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label versionText;
     }
 }

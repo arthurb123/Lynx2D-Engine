@@ -29,5 +29,10 @@ namespace Lynx2DEngine.forms
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
             }
         }
+
+        private void AboutForm_Load(object sender, EventArgs e)
+        {
+            versionText.Text = "version " + Feed.Version();
+        }
     }
 }

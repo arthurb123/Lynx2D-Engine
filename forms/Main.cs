@@ -63,6 +63,7 @@ namespace Lynx2DEngine
             saveProjectToolStripMenuItem.Enabled = available;
             showProjectToolStripMenuItem.Enabled = available;
             showDevToolsToolStripMenuItem.Enabled = available;
+            buildToolStripMenuItem.Enabled = available;
         }
         #endregion
 
@@ -154,11 +155,13 @@ namespace Lynx2DEngine
                         GameObjectForm go = new GameObjectForm();
 
                         go.FormClosed += new FormClosedEventHandler(checkCameraInjection);
+                        go.FormClosed += new FormClosedEventHandler(removePointerInjection);
 
                         go.Show();
                         go.Initialize(obj.id);
 
                         Engine.ExecuteScript(obj.Variable() + ".Focus();");
+                        Pointer.Inject(obj.Variable());
 
                         break;
                     case EngineObjectType.Sprite:
@@ -449,6 +452,24 @@ namespace Lynx2DEngine
         }
         #endregion
 
+        #region "Build Toolstrip Stuff"
+        private void buildToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Project.Build(false);
+        }
+
+        private void buildRefreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Project.Build(true);
+        }
+
+        private void buildSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BuildSettingsForm temp = new BuildSettingsForm();
+            temp.Show();
+        }
+        #endregion
+
         #region "Settings Toolstrip Stuff"
         private void cameraToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -458,6 +479,11 @@ namespace Lynx2DEngine
         private void checkCameraInjection(object sender, EventArgs e)
         {
             if (cameraToolStripMenuItem.Checked) Camera.Inject();
+        }
+
+        private void imageSmoothingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Engine.ExecuteScript("lx.Smoothing(" + imageSmoothingToolStripMenuItem.Checked.ToString().ToLower() + ");");
         }
 
         private void debugToolStripMenuItem_Click(object sender, EventArgs e)
@@ -512,6 +538,7 @@ namespace Lynx2DEngine
             try
             {
                 Camera.Remove();
+                Pointer.Remove();
 
                 browser.Load(Project.WorkDirectory() + "/index.html");
             }
@@ -544,6 +571,7 @@ namespace Lynx2DEngine
 
                 debugToolStripMenuItem_Click(sender, args);
                 drawCollidersToolStripMenuItem_Click(sender, args);
+                imageSmoothingToolStripMenuItem_Click(sender, args);
             }
         }
 
@@ -556,6 +584,13 @@ namespace Lynx2DEngine
             }
             
             console.AddOutput(msg);
+        }
+        #endregion
+
+        #region "Misc Stuff"
+        private void removePointerInjection(object sender, FormClosedEventArgs e)
+        {
+            Pointer.Remove();
         }
         #endregion
     }

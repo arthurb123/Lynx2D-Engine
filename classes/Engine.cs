@@ -16,6 +16,7 @@ namespace Lynx2DEngine
         public static Main form;
 
         private static EngineObject[] objects = new EngineObject[0];
+        public static BuildSettings settings = new BuildSettings();
 
         public static int AddEngineObject(EngineObjectType type, string code, int child, int parent)
         {
@@ -72,41 +73,44 @@ namespace Lynx2DEngine
 
         private static void GenerateEngineObjectCode(int id)
         {
+            string lineBreaks = new string('\n', settings.lineBreaks);
+            string variable = lineBreaks + objects[id].Variable();
+
             form.SetStatus("Building '" + objects[id].Variable() + "'", Main.StatusType.Alert);
 
             if (objects[id].type == EngineObjectType.GameObject)
             {
-                objects[id].buildCode = "var " + objects[id].Variable() + " = new lx.GameObject(" + objects[id].sprite + ", " + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + ");";
+                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.GameObject(" + objects[id].sprite + ", " + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + ");";
 
                 if (objects[id].collider != string.Empty)
-                    objects[id].buildCode += objects[id].Variable() + ".ApplyCollider(" + objects[id].collider + ");";
+                    objects[id].buildCode += variable + ".ApplyCollider(" + objects[id].collider + ");";
                 
                 if (objects[id].visible)
-                    objects[id].buildCode += objects[id].Variable() + ".Show(" + objects[id].layer + ");";
+                    objects[id].buildCode += variable + ".Show(" + objects[id].layer + ");";
             }
             else if (objects[id].type == EngineObjectType.Sprite)
             {
-                objects[id].buildCode = "var " + objects[id].Variable() + " = new lx.Sprite('" + objects[id].source + "');";
+                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Sprite('" + objects[id].source + "');";
 
                 if (objects[id].rotation > 0 && objects[id].rotation < 360)
-                    objects[id].buildCode += objects[id].Variable() + ".Rotation(" + (objects[id].rotation * Math.PI / 180) + ");";
+                    objects[id].buildCode += variable + ".Rotation(" + (objects[id].rotation * Math.PI / 180) + ");";
 
                 if (objects[id].clipped)
-                    objects[id].buildCode += objects[id].Variable() + ".Clip(" + objects[id].cx + ", " + objects[id].cy + ", " + objects[id].cw + ", " + objects[id].ch + ");";
+                    objects[id].buildCode += variable + ".Clip(" + objects[id].cx + ", " + objects[id].cy + ", " + objects[id].cw + ", " + objects[id].ch + ");";
             }
             else if (objects[id].type == EngineObjectType.Collider)
             {
                 string callback = "";
                 if (objects[id].child != -1) callback = ", function(data) {" + objects[objects[id].child].code + "}";
 
-                objects[id].buildCode = "var " + objects[id].Variable() + " = new lx.Collider(" + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + ", " + objects[id].isStatic.ToString().ToLower() + callback + ");";
+                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Collider(" + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + ", " + objects[id].isStatic.ToString().ToLower() + callback + ");";
 
                 if (objects[id].visible)
-                    objects[id].buildCode += objects[id].Variable() + ".Enable();";
+                    objects[id].buildCode += variable + ".Enable();";
                 else
-                    objects[id].buildCode += objects[id].Variable() + ".Disable();";
+                    objects[id].buildCode += variable + ".Disable();";
             }
-            else if (objects[id].type == EngineObjectType.Script) objects[id].buildCode = objects[id].code;
+            else if (objects[id].type == EngineObjectType.Script) objects[id].buildCode = lineBreaks + objects[id].code;
         }
 
         public static EngineObject GetEngineObject(int id)
@@ -144,7 +148,7 @@ namespace Lynx2DEngine
                 Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.OpenOrCreate);
                 BinaryFormatter bf = new BinaryFormatter();
 
-                bf.Serialize(stream, new EngineState(objects));
+                bf.Serialize(stream, new EngineState(objects, settings));
                 stream.Close();
             }
             catch (Exception e)
@@ -189,6 +193,7 @@ namespace Lynx2DEngine
         public static void LoadEngineState()
         {
             objects = new EngineObject[0];
+            settings = new BuildSettings();
 
             try
             {
@@ -197,7 +202,11 @@ namespace Lynx2DEngine
                 Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.Open);
                 BinaryFormatter bf = new BinaryFormatter();
 
-                objects = ((EngineState)bf.Deserialize(stream)).objects;
+                EngineState temp = ((EngineState)bf.Deserialize(stream));
+
+                if (temp.objects != null) objects = temp.objects;
+                if (temp.settings != null) settings = temp.settings;
+
                 stream.Close();
             }
             catch (Exception e)
@@ -303,7 +312,7 @@ namespace Lynx2DEngine
 
             objects[id].code = script;
 
-            Project.Save();
+            Project.Build(true);
 
             form.refreshBrowser();
         }
@@ -346,6 +355,7 @@ namespace Lynx2DEngine
             }
 
             objects[GetEngineObjectWithVarName(collider).id].applied = true;
+            objects[GetEngineObjectWithVarName(collider).id].visible = true;
 
             objects[id].collider = collider;
         }
@@ -383,12 +393,14 @@ namespace Lynx2DEngine
     [Serializable]
     class EngineState
     {
-        public EngineState (EngineObject[] objects)
+        public EngineState (EngineObject[] objects, BuildSettings settings)
         {
             this.objects = objects;
+            this.settings = settings;
         }
 
         public EngineObject[] objects;
+        public BuildSettings settings;
     }
 
     [Serializable]
@@ -544,6 +556,16 @@ namespace Lynx2DEngine
         public bool visible = true;
         public bool isStatic = false;
         public bool applied = false;
+    }
+
+    [Serializable]
+    public class BuildSettings
+    {
+        public bool hasIcon;
+        public string iconLocation;
+
+        public int lineBreaks = 0;
+        public bool obfuscates;
     }
 
     public enum EngineObjectType

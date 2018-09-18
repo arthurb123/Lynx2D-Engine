@@ -92,9 +92,18 @@ namespace Lynx2DEngine
         {
             if (cur == string.Empty || cur == "HAS_BEEN_CLOSED") return;
 
-            Engine.BuildEngineCode();
-
             Engine.SaveEngineState();
+
+            form.SetStatus("'" + cur + "' has been saved.", Main.StatusType.Message);
+        }
+
+        public static void Build(bool refreshes)
+        {
+            if (cur == string.Empty || cur == "HAS_BEEN_CLOSED") return;
+
+            Save();
+
+            Engine.BuildEngineCode();
 
             using (FileStream fs = new FileStream("projects/" + cur + "/data/game.js", FileMode.Create))
             {
@@ -108,7 +117,9 @@ namespace Lynx2DEngine
             }
 
             gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(false); lx.Start(60);";
-            form.SetStatus("'" + cur + "' has been saved.", Main.StatusType.Message);
+            form.SetStatus("'" + cur + "' has been build.", Main.StatusType.Message);
+
+            if (refreshes) form.refreshBrowser();
         }
 
         public static string WorkDirectory()
@@ -170,6 +181,7 @@ namespace Lynx2DEngine
                 }
 
                 File.Copy(@"resources/sprite.png", "projects/" + cur + "/res/lynx2d/sprite.png");
+                File.Copy(@"resources/pointer.png", "projects/" + cur + "/res/lynx2d/pointer.png");
 
                 Load(false);
             }

@@ -109,11 +109,18 @@
   <ItemGroup>
     <Compile Include="classes\Camera.cs" />
     <Compile Include="classes\Feed.cs" />
+    <Compile Include="classes\Pointer.cs" />
     <Compile Include="forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\BuildSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\BuildSettingsForm.Designer.cs">
+      <DependentUpon>BuildSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\ColliderForm.cs">
       <SubType>Form</SubType>
@@ -172,6 +179,9 @@
     <EmbeddedResource Include="forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\BuildSettingsForm.resx">
+      <DependentUpon>BuildSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\ColliderForm.resx">
       <DependentUpon>ColliderForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -223,6 +233,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <None Include="resources\pointer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="resources\sprite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
