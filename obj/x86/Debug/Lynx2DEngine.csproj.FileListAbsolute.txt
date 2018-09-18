@@ -1,0 +1,7 @@
+C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\obj\x86\Debug\Lynx2DEngine.Form1.resources
+C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\obj\x86\Debug\Lynx2DEngine.PromptForm.resources
+C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\obj\x86\Debug\Lynx2DEngine.Properties.Resources.resources
+C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\obj\x86\Debug\Lynx2DEngine.csproj.GenerateResource.cache
+C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\obj\x86\Debug\Lynx2DEngine.csproj.CoreCompileInputs.cache
+C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\obj\x86\Debug\Lynx2DEngine.exe
+C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\obj\x86\Debug\Lynx2DEngine.pdb
