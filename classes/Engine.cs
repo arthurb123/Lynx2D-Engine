@@ -162,11 +162,13 @@ namespace Lynx2DEngine
         {
             try
             {
+                string buildSettings = "";
                 string scripts = "";
                 string colliders = "";
                 string gameobjects = "";
                 string sprites = "";
 
+                //Build engine objects
                 for (int i = 0; i < objects.Length; i++)
                 {
                     if (objects[i] == null) continue;
@@ -181,7 +183,11 @@ namespace Lynx2DEngine
                     objects[i].buildCode = "";
                 }
 
-                Project.AddGameCode(sprites + colliders + gameobjects + scripts);
+                //Load build settings
+                if (settings.hasIcon)
+                    buildSettings += "document.getElementById('icon').href='" + settings.iconLocation + "';";
+
+                Project.AddGameCode(buildSettings + sprites + colliders + gameobjects + scripts);
             }
             catch (Exception e)
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,8 @@ namespace Lynx2DEngine.forms
 
             lineBreaks.Value = Engine.settings.lineBreaks;
             obfuscates.Checked = Engine.settings.obfuscates;
+
+            ReloadIconImage();
         }
 
         private void hasIcon_CheckedChanged(object sender, EventArgs e)
@@ -41,6 +44,14 @@ namespace Lynx2DEngine.forms
         private void iconLocation_TextChanged(object sender, EventArgs e)
         {
             Engine.settings.iconLocation = iconLocation.Text;
+
+            ReloadIconImage();
+        }
+
+        private void ReloadIconImage()
+        {
+            if (File.Exists(Project.WorkDirectory() + iconLocation.Text))
+                iconImage.Image = Image.FromFile(Project.WorkDirectory() + iconLocation.Text);
         }
 
         private void lineBreaks_ValueChanged(object sender, EventArgs e)
@@ -55,6 +66,9 @@ namespace Lynx2DEngine.forms
 
         private void BuildSettingsForm_Closing(object sender, EventArgs e)
         {
+            if (!iconLocation.Text.Contains(".ico"))
+                MessageBox.Show("Not a valid icon (.ico file) specified, the specified icon will probably not display upon build.", "Lynx2D Engine - Warning");
+
             Project.Save();
         }
     }

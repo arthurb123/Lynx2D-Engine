@@ -36,7 +36,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.hasIcon = new System.Windows.Forms.CheckBox();
             this.iconLocation = new System.Windows.Forms.TextBox();
+            this.iconImage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.lineBreaks)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconImage)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -110,15 +112,24 @@
             this.iconLocation.Enabled = false;
             this.iconLocation.Location = new System.Drawing.Point(87, 32);
             this.iconLocation.Name = "iconLocation";
-            this.iconLocation.Size = new System.Drawing.Size(232, 20);
+            this.iconLocation.Size = new System.Drawing.Size(219, 20);
             this.iconLocation.TabIndex = 6;
             this.iconLocation.TextChanged += new System.EventHandler(this.iconLocation_TextChanged);
+            // 
+            // iconImage
+            // 
+            this.iconImage.Location = new System.Drawing.Point(312, 32);
+            this.iconImage.Name = "iconImage";
+            this.iconImage.Size = new System.Drawing.Size(20, 20);
+            this.iconImage.TabIndex = 7;
+            this.iconImage.TabStop = false;
             // 
             // BuildSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 151);
+            this.Controls.Add(this.iconImage);
             this.Controls.Add(this.iconLocation);
             this.Controls.Add(this.hasIcon);
             this.Controls.Add(this.label3);
@@ -135,6 +146,7 @@
             this.Text = "Lynx2D Engine - Build Settings";
             this.Load += new System.EventHandler(this.BuildSettingsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.lineBreaks)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -149,5 +161,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox hasIcon;
         private System.Windows.Forms.TextBox iconLocation;
+        private System.Windows.Forms.PictureBox iconImage;
     }
 }
