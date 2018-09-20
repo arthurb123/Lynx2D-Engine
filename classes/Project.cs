@@ -48,6 +48,8 @@ namespace Lynx2DEngine
                 form.createBrowser();
 
                 Engine.LoadEngineState();
+
+                form.LoadEngineSettings();
                 form.UpdateHierarchy();
 
                 form.Text = "Lynx2D Engine - " + cur;
@@ -65,6 +67,12 @@ namespace Lynx2DEngine
 
         public static void Create()
         {
+            if (!Feed.CheckOnline())
+            {
+                MessageBox.Show("Creating a project requires a valid internet connection. The Lynx2D framework could not be downloaded.", "Lynx2D Engine - Exception");
+                return;
+            }
+
             CheckProjectsExistence();
 
             cur = Input.Prompt("Enter the name of the new project", "Lynx2D - New Project");
@@ -182,6 +190,8 @@ namespace Lynx2DEngine
 
                 File.Copy(@"resources/sprite.png", "projects/" + cur + "/res/lynx2d/sprite.png");
                 File.Copy(@"resources/pointer.png", "projects/" + cur + "/res/lynx2d/pointer.png");
+
+                Engine.ClearEngine();
 
                 Load(false);
             }

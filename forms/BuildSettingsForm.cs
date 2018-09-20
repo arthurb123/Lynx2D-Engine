@@ -22,11 +22,11 @@ namespace Lynx2DEngine.forms
         {
             FormClosing += BuildSettingsForm_Closing;
 
-            hasIcon.Checked = Engine.settings.hasIcon;
+            hasIcon.Checked = Engine.bSettings.hasIcon;
             hasIcon_CheckedChanged(sender, e);
 
-            lineBreaks.Value = Engine.settings.lineBreaks;
-            obfuscates.Checked = Engine.settings.obfuscates;
+            lineBreaks.Value = Engine.bSettings.lineBreaks;
+            obfuscates.Checked = Engine.bSettings.obfuscates;
 
             ReloadIconImage();
         }
@@ -35,15 +35,15 @@ namespace Lynx2DEngine.forms
         {
             iconLocation.Enabled = hasIcon.Checked;
 
-            Engine.settings.hasIcon = hasIcon.Checked;
+            Engine.bSettings.hasIcon = hasIcon.Checked;
 
             if (!hasIcon.Checked) iconLocation.Text = "";
-            else iconLocation.Text = Engine.settings.iconLocation;
+            else iconLocation.Text = Engine.bSettings.iconLocation;
         }
 
         private void iconLocation_TextChanged(object sender, EventArgs e)
         {
-            Engine.settings.iconLocation = iconLocation.Text;
+            Engine.bSettings.iconLocation = iconLocation.Text;
 
             ReloadIconImage();
         }
@@ -56,12 +56,12 @@ namespace Lynx2DEngine.forms
 
         private void lineBreaks_ValueChanged(object sender, EventArgs e)
         {
-            Engine.settings.lineBreaks = (int)lineBreaks.Value;
+            Engine.bSettings.lineBreaks = (int)lineBreaks.Value;
         }
 
         private void obfuscates_CheckedChanged(object sender, EventArgs e)
         {
-            Engine.settings.obfuscates = obfuscates.Checked;
+            Engine.bSettings.obfuscates = obfuscates.Checked;
         }
 
         private void BuildSettingsForm_Closing(object sender, EventArgs e)

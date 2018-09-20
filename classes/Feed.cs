@@ -19,6 +19,27 @@ namespace Lynx2DEngine
         private static readonly string version = "0.1.0";
         private static readonly string stage = "alpha";
 
+        public static bool CheckOnline()
+        {
+            try
+            {
+                WebRequest webRequest = WebRequest.Create(@"http://www.lythumn.com/");
+
+                WebResponse response = webRequest.GetResponse();
+
+                response.Close();
+                response.Dispose();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                form.SetStatus("Not connected to the internet.", Main.StatusType.Warning);
+            }
+
+            return false;
+        }
+
         public static void CheckVersion(bool setsStatus)
         {
             string onlineVersion = string.Empty;
@@ -30,11 +51,15 @@ namespace Lynx2DEngine
                 using (WebResponse response = webRequest.GetResponse())
                     using (Stream content = response.GetResponseStream())
                         using (StreamReader reader = new StreamReader(content))
+                        {
                             onlineVersion = reader.ReadToEnd();
+                            reader.Dispose();
+                            content.Dispose();
+                        }
             }
             catch (Exception e)
             {
-                if (setsStatus) form.SetStatus("Could not get online version", Main.StatusType.Warning);
+                if (setsStatus) form.SetStatus("Could not get online version.", Main.StatusType.Warning);
             }
 
             if (onlineVersion != string.Empty && onlineVersion != Version())
@@ -43,9 +68,9 @@ namespace Lynx2DEngine
                 {
                     UpdateVersion(onlineVersion);
                 }
-                else if (setsStatus) form.SetStatus("You are running version " + Version(), Main.StatusType.Message);
+                else if (setsStatus) form.SetStatus("You are running version " + Version() + ".", Main.StatusType.Message);
             }
-            else if (setsStatus) form.SetStatus("Running latest version (" + Version() + ")", Main.StatusType.Message);
+            else if (setsStatus) form.SetStatus("Running latest version (" + Version() + ").", Main.StatusType.Message);
         }
 
         public static void UpdateVersion(string version)
@@ -62,13 +87,13 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                form.SetStatus("Could not download update", Main.StatusType.Message);
+                form.SetStatus("Could not download update.", Main.StatusType.Message);
             }
         }
 
         private static void UpdateVersionProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            form.SetStatus("Downloading... (" + e.ProgressPercentage + "%)", Main.StatusType.Message);
+            form.SetStatus("Downloading.. (" + e.ProgressPercentage + "%)", Main.StatusType.Message);
         }
 
         private static void UpdateVersionCompleted(object sender, AsyncCompletedEventArgs e)

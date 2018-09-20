@@ -896,6 +896,15 @@ function Lynx2D() {
             return this;
         };
         
+        this.ClearCollider = function() {
+            if (this.COLLIDER == undefined) return;
+            
+            this.COLLIDER.Disable();
+            this.COLLIDER = undefined;
+            
+            return this;
+        };
+        
         this.CreateCollider = function(static, callback) {
             this.COLLIDER = new lx.Collider(this.Position().X, this.Position().Y, this.Size().W, this.Size().H, static, callback);
             this.COLLIDER.OFFSET = {

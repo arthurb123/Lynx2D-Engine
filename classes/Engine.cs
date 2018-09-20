@@ -1,11 +1,8 @@
 ﻿using CefSharp;
-using CefSharp.WinForms;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,7 +13,8 @@ namespace Lynx2DEngine
         public static Main form;
 
         private static EngineObject[] objects = new EngineObject[0];
-        public static BuildSettings settings = new BuildSettings();
+        public static BuildSettings bSettings = new BuildSettings();
+        public static EngineSettings eSettings = new EngineSettings();
 
         public static int AddEngineObject(EngineObjectType type, string code, int child, int parent)
         {
@@ -73,7 +71,7 @@ namespace Lynx2DEngine
 
         private static void GenerateEngineObjectCode(int id)
         {
-            string lineBreaks = new string('\n', settings.lineBreaks);
+            string lineBreaks = new string('\n', bSettings.lineBreaks);
             string variable = lineBreaks + objects[id].Variable();
 
             form.SetStatus("Building '" + objects[id].Variable() + "'", Main.StatusType.Alert);
@@ -148,7 +146,7 @@ namespace Lynx2DEngine
                 Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.OpenOrCreate);
                 BinaryFormatter bf = new BinaryFormatter();
 
-                bf.Serialize(stream, new EngineState(objects, settings));
+                bf.Serialize(stream, new EngineState(objects, bSettings, eSettings));
                 stream.Close();
             }
             catch (Exception e)
@@ -184,8 +182,8 @@ namespace Lynx2DEngine
                 }
 
                 //Load build settings
-                if (settings.hasIcon)
-                    buildSettings += "document.getElementById('icon').href='" + settings.iconLocation + "';";
+                if (bSettings.hasIcon)
+                    buildSettings += "document.getElementById('icon').href='" + bSettings.iconLocation + "';";
 
                 Project.AddGameCode(buildSettings + sprites + colliders + gameobjects + scripts);
             }
@@ -199,7 +197,8 @@ namespace Lynx2DEngine
         public static void LoadEngineState()
         {
             objects = new EngineObject[0];
-            settings = new BuildSettings();
+            bSettings = new BuildSettings();
+            eSettings = new EngineSettings();
 
             try
             {
@@ -211,7 +210,8 @@ namespace Lynx2DEngine
                 EngineState temp = ((EngineState)bf.Deserialize(stream));
 
                 if (temp.objects != null) objects = temp.objects;
-                if (temp.settings != null) settings = temp.settings;
+                if (temp.bSettings != null) bSettings = temp.bSettings;
+                if (temp.eSettings != null) eSettings = temp.eSettings;
 
                 stream.Close();
             }
@@ -220,6 +220,13 @@ namespace Lynx2DEngine
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
                 form.SetStatus("Exception occurred while loading engine state.", Main.StatusType.Warning);
             }
+        }
+
+        public static void ClearEngine()
+        {
+            objects = new EngineObject[0];
+            bSettings = new BuildSettings();
+            eSettings = new EngineSettings();
         }
 
         public static async void ExecuteScript(string script)
@@ -399,14 +406,16 @@ namespace Lynx2DEngine
     [Serializable]
     class EngineState
     {
-        public EngineState (EngineObject[] objects, BuildSettings settings)
+        public EngineState (EngineObject[] objects, BuildSettings bSettings, EngineSettings eSettings)
         {
             this.objects = objects;
-            this.settings = settings;
+            this.bSettings = bSettings;
+            this.eSettings = eSettings;
         }
 
         public EngineObject[] objects;
-        public BuildSettings settings;
+        public BuildSettings bSettings;
+        public EngineSettings eSettings;
     }
 
     [Serializable]
@@ -572,6 +581,16 @@ namespace Lynx2DEngine
 
         public int lineBreaks = 0;
         public bool obfuscates;
+    }
+
+    [Serializable]
+    public class EngineSettings
+    {
+        public bool imageSmoothing = true;
+        public bool camera = true;
+
+        public bool debug = false;
+        public bool drawColliders = false;
     }
 
     public enum EngineObjectType

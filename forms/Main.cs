@@ -20,7 +20,9 @@ namespace Lynx2DEngine
     public partial class Main : Form
     {
         public ChromiumWebBrowser browser;
+
         public ConsoleForm console;
+        private bool consoleVisible;
 
         private EngineObject copied = null;
 
@@ -473,6 +475,8 @@ namespace Lynx2DEngine
         #region "Settings Toolstrip Stuff"
         private void cameraToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Engine.eSettings.camera = cameraToolStripMenuItem.Checked;
+
             refreshBrowser();
         }
 
@@ -483,16 +487,22 @@ namespace Lynx2DEngine
 
         private void imageSmoothingToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Engine.eSettings.imageSmoothing = imageSmoothingToolStripMenuItem.Checked;
+
             Engine.ExecuteScript("lx.Smoothing(" + imageSmoothingToolStripMenuItem.Checked.ToString().ToLower() + ");");
         }
 
         private void debugToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Engine.eSettings.debug = debugToolStripMenuItem.Checked;
+
             Engine.ExecuteScript("lx.GAME.DEBUG=" + debugToolStripMenuItem.Checked.ToString().ToLower() + ";");
         }
 
         private void drawCollidersToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Engine.eSettings.drawColliders = drawCollidersToolStripMenuItem.Checked;
+
             Engine.ExecuteScript("lx.GAME.DRAW_COLLIDERS=" + drawCollidersToolStripMenuItem.Checked.ToString().ToLower() + ";");
         }
 
@@ -533,6 +543,14 @@ namespace Lynx2DEngine
         #endregion
 
         #region "Browser Stuff"
+        public void LoadEngineSettings()
+        {
+            cameraToolStripMenuItem.Checked = Engine.eSettings.camera;
+            debugToolStripMenuItem.Checked = Engine.eSettings.debug;
+            drawCollidersToolStripMenuItem.Checked = Engine.eSettings.drawColliders;
+            imageSmoothingToolStripMenuItem.Checked = Engine.eSettings.imageSmoothing;
+        }
+
         public void refreshBrowser()
         {
             try
@@ -577,13 +595,26 @@ namespace Lynx2DEngine
 
         public void AddToConsole(string msg)
         {
-            if (!console.Visible)
-            {
-                console = new ConsoleForm();
-                console.Show();
-            }
+            CheckConsoleVisibility();
             
             console.AddOutput(msg);
+        }
+
+        private void CheckConsoleVisibility()
+        {
+            if (!consoleVisible)
+            {
+                consoleVisible = true;
+
+                console = new ConsoleForm();
+                console.Show();
+
+                console.FormClosing += new FormClosingEventHandler(ConsoleFormClosing);
+            }
+        }
+        private void ConsoleFormClosing(object sender, FormClosingEventArgs e)
+        {
+            consoleVisible = false;
         }
         #endregion
 
