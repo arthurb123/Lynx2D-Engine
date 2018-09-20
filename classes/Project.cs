@@ -164,20 +164,6 @@ namespace Lynx2DEngine
                     }
                 }
 
-                using (FileStream fs = new FileStream("projects/" + cur + "/data/lynx2d.js", FileMode.Create))
-                {
-                    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
-                    {
-                        WebClient client = new WebClient();
-
-                        w.Write(client.DownloadString(new Uri("http://www.lythumn.com/lynx2d/res/lynx2d.js")));
-
-                        client.Dispose();
-                        w.Dispose();
-                        fs.Dispose();
-                    }
-                }
-
                 using (FileStream fs = new FileStream("projects/" + cur + "/data/game.js", FileMode.Create))
                 {
                     using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
@@ -187,6 +173,8 @@ namespace Lynx2DEngine
                         fs.Dispose();
                     }
                 }
+
+                DownloadFramework(false);
 
                 File.Copy(@"resources/sprite.png", "projects/" + cur + "/res/lynx2d/sprite.png");
                 File.Copy(@"resources/pointer.png", "projects/" + cur + "/res/lynx2d/pointer.png");
@@ -199,6 +187,31 @@ namespace Lynx2DEngine
             {
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
                 form.SetStatus("Exception occurred while creating project canon.", Main.StatusType.Warning);
+            }
+        }
+
+        public static void DownloadFramework(bool setsStatus)
+        {
+            if (!Feed.CheckOnline())
+            {
+                MessageBox.Show("Reloading the framework requires a valid internet connection. The Lynx2D framework could not be downloaded.", "Lynx2D Engine - Exception");
+                return;
+            }
+
+            using (FileStream fs = new FileStream("projects/" + cur + "/data/lynx2d.js", FileMode.Create))
+            {
+                using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                {
+                    WebClient client = new WebClient();
+
+                    w.Write(client.DownloadString(new Uri("http://www.lythumn.com/lynx2d/res/lynx2d.js")));
+
+                    client.Dispose();
+                    w.Dispose();
+                    fs.Dispose();
+
+                    if (setsStatus) form.SetStatus("The Lynx2D framework has been reloaded.", Main.StatusType.Message);
+                }
             }
         }
     }

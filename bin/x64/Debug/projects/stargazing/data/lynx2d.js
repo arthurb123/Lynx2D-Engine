@@ -1,4 +1,4 @@
-//Created by Arthur Baars 2018
+﻿//Created by Arthur Baars 2018
 
 function Lynx2D() {
     //1 - Main variables

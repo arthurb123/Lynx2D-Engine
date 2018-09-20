@@ -8,11 +8,6 @@ namespace Lynx2DEngine
 {
     class Grid
     {
-        public static int gridSize = 64;
-        public static int gridWidth = 16;
-        public static int gridHeight = 16;
-        public static int gridStrokeSize = 2;
-
         private static bool injected;
 
         public static void Inject()
@@ -22,16 +17,17 @@ namespace Lynx2DEngine
 
             Engine.ExecuteScript("var engineGridRenderID = lx.GAME.ENGINE_RENDER.length; lx.GAME.ENGINE_RENDER[engineGridRenderID] = function(gfx) { " +
                 "gfx.save();" +
-                "gfx.strokeWidth = " + gridStrokeSize + ";" +
+                "gfx.lineWidth = " + Engine.eSettings.gridStrokeSize + ";" +
+                "gfx.strokeStyle = '" + Engine.eSettings.gridColor + "';" +
                 "var x = 0, y = 0; " +
                 "if (lx.GAME.FOCUS != undefined) { " +
                     "var tPos = lx.GAME.TRANSLATE_FROM_FOCUS({ X: x, Y: y });" +
                     "x = tPos.X;" +
                     "y = tPos.Y;" +
                 "} " +
-                "for (var yy = 0; yy < " + gridHeight + "; yy++) {" +
-                    "for (var xx = 0; xx < " + gridWidth + "; xx++) {" +
-                        "gfx.strokeRect(x + xx*" + gridSize + ", y + yy*" + gridSize + ", " + gridSize + ", " + gridSize + ");" +
+                "for (var yy = 0; yy < " + Engine.eSettings.gridHeight + "; yy++) {" +
+                    "for (var xx = 0; xx < " + Engine.eSettings.gridWidth + "; xx++) {" +
+                        "gfx.strokeRect(x + xx*" + Engine.eSettings.gridSize + ", y + yy*" + Engine.eSettings.gridSize + ", " + Engine.eSettings.gridSize + ", " + Engine.eSettings.gridSize + ");" +
                     "}" +
                 "}" +
                 "gfx.restore();" +

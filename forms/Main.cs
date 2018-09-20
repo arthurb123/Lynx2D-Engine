@@ -66,6 +66,7 @@ namespace Lynx2DEngine
             showProjectToolStripMenuItem.Enabled = available;
             showDevToolsToolStripMenuItem.Enabled = available;
             buildToolStripMenuItem.Enabled = available;
+            reloadFrameworkToolStripMenuItem.Enabled = available;
         }
         #endregion
 
@@ -489,13 +490,20 @@ namespace Lynx2DEngine
         {
             Engine.eSettings.grid = gridToolStripMenuItem.Checked;
 
-            if (gridToolStripMenuItem.Checked) Grid.Inject();
+            checkGridInjection(sender, e);
+        }
+
+        private void checkGridInjection(object sender, EventArgs e)
+        {
+            if (Engine.eSettings.grid) Grid.Inject();
             else Grid.Remove();
         }
 
         private void settingsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            GridForm gridForm = new GridForm();
 
+            gridForm.Show();
         }
 
         private void imageSmoothingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -553,6 +561,11 @@ namespace Lynx2DEngine
         {
             Feed.CheckVersion(true);
         }
+
+        private void reloadFrameworkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Project.DownloadFramework(true);
+        }
         #endregion
 
         #region "Browser Stuff"
@@ -562,6 +575,7 @@ namespace Lynx2DEngine
             debugToolStripMenuItem.Checked = Engine.eSettings.debug;
             drawCollidersToolStripMenuItem.Checked = Engine.eSettings.drawColliders;
             imageSmoothingToolStripMenuItem.Checked = Engine.eSettings.imageSmoothing;
+            gridToolStripMenuItem.Checked = Engine.eSettings.grid;
         }
 
         public void refreshBrowser()
@@ -570,6 +584,7 @@ namespace Lynx2DEngine
             {
                 Camera.Remove();
                 Pointer.Remove();
+                Grid.Remove();
 
                 browser.Load(Project.WorkDirectory() + "/index.html");
             }
@@ -599,6 +614,7 @@ namespace Lynx2DEngine
             if (!args.IsLoading && Project.Name() != string.Empty)
             {
                 checkCameraInjection(sender, args);
+                checkGridInjection(sender, args);
 
                 debugToolStripMenuItem_Click(sender, args);
                 drawCollidersToolStripMenuItem_Click(sender, args);

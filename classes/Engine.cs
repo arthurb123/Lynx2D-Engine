@@ -588,10 +588,15 @@ namespace Lynx2DEngine
     {
         public bool imageSmoothing = true;
         public bool camera = true;
-
-        public bool grid = false;
         public bool debug = false;
         public bool drawColliders = false;
+
+        public bool grid = false;
+        public int gridSize = 64;
+        public int gridStrokeSize = 2;
+        public int gridWidth = 16;
+        public int gridHeight = 16;
+        public string gridColor = "white";
     }
 
     public enum EngineObjectType

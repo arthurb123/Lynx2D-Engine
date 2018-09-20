@@ -50,8 +50,17 @@ namespace Lynx2DEngine.forms
 
         private void ReloadIconImage()
         {
-            if (File.Exists(Project.WorkDirectory() + iconLocation.Text))
-                iconImage.Image = Image.FromFile(Project.WorkDirectory() + iconLocation.Text);
+            try
+            {
+                iconImage.ImageLocation = Project.WorkDirectory() + iconLocation.Text;
+            }
+            catch (Exception e)
+            {
+                iconMessage.Text = e.Message;
+                iconMessage.Visible = true;
+            }
+
+            iconMessage.Visible = false;
         }
 
         private void lineBreaks_ValueChanged(object sender, EventArgs e)

@@ -37,6 +37,7 @@
             this.hasIcon = new System.Windows.Forms.CheckBox();
             this.iconLocation = new System.Windows.Forms.TextBox();
             this.iconImage = new System.Windows.Forms.PictureBox();
+            this.iconMessage = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.lineBreaks)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconImage)).BeginInit();
             this.SuspendLayout();
@@ -112,23 +113,36 @@
             this.iconLocation.Enabled = false;
             this.iconLocation.Location = new System.Drawing.Point(87, 32);
             this.iconLocation.Name = "iconLocation";
-            this.iconLocation.Size = new System.Drawing.Size(219, 20);
+            this.iconLocation.Size = new System.Drawing.Size(209, 20);
             this.iconLocation.TabIndex = 6;
             this.iconLocation.TextChanged += new System.EventHandler(this.iconLocation_TextChanged);
             // 
             // iconImage
             // 
-            this.iconImage.Location = new System.Drawing.Point(312, 32);
+            this.iconImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.iconImage.Location = new System.Drawing.Point(304, 29);
             this.iconImage.Name = "iconImage";
-            this.iconImage.Size = new System.Drawing.Size(20, 20);
+            this.iconImage.Size = new System.Drawing.Size(25, 25);
+            this.iconImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.iconImage.TabIndex = 7;
             this.iconImage.TabStop = false;
+            // 
+            // iconMessage
+            // 
+            this.iconMessage.AutoSize = true;
+            this.iconMessage.Location = new System.Drawing.Point(84, 55);
+            this.iconMessage.Name = "iconMessage";
+            this.iconMessage.Size = new System.Drawing.Size(148, 13);
+            this.iconMessage.TabIndex = 8;
+            this.iconMessage.Text = "Uh oh something went wrong!";
+            this.iconMessage.Visible = false;
             // 
             // BuildSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 151);
+            this.Controls.Add(this.iconMessage);
             this.Controls.Add(this.iconImage);
             this.Controls.Add(this.iconLocation);
             this.Controls.Add(this.hasIcon);
@@ -162,5 +176,6 @@
         private System.Windows.Forms.CheckBox hasIcon;
         private System.Windows.Forms.TextBox iconLocation;
         private System.Windows.Forms.PictureBox iconImage;
+        private System.Windows.Forms.Label iconMessage;
     }
 }
