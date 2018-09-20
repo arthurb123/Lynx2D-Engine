@@ -485,6 +485,19 @@ namespace Lynx2DEngine
             if (cameraToolStripMenuItem.Checked) Camera.Inject();
         }
 
+        private void gridToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Engine.eSettings.grid = gridToolStripMenuItem.Checked;
+
+            if (gridToolStripMenuItem.Checked) Grid.Inject();
+            else Grid.Remove();
+        }
+
+        private void settingsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void imageSmoothingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Engine.eSettings.imageSmoothing = imageSmoothingToolStripMenuItem.Checked;

@@ -16,14 +16,14 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static readonly string version = "0.1.0";
+        private static readonly string version = "0.1.1";
         private static readonly string stage = "alpha";
 
         public static bool CheckOnline()
         {
             try
             {
-                WebRequest webRequest = WebRequest.Create(@"http://www.lythumn.com/");
+                WebRequest webRequest = WebRequest.Create(@"http://www.google.com/");
 
                 WebResponse response = webRequest.GetResponse();
 

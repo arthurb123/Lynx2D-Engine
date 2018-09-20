@@ -14,6 +14,7 @@ function Lynx2D() {
         COLLIDERS: [],
         LOOPS: [],
         LAYER_DRAW_EVENTS: [],
+        ENGINE_RENDER: [],
         INIT: function(FPS) {
             this.LOG.DATE = new Date().getSeconds();
             this.LOG.DATA.COUNTER = new lx.UIText('0 FPS | 0 UPS', 25, 35, 16);
@@ -140,6 +141,12 @@ function Lynx2D() {
             //Init 
             this.CLEAR();
             lx.CONTEXT.GRAPHICS.imageSmoothingEnabled = this.SETTINGS.AA;
+            
+            //Engine rendering (NOT NECESSARY WHEN ONLY USING THE FRAMEWORK)
+            if (this.ENGINE_RENDER != undefined) 
+                this.ENGINE_RENDER.forEach(function(eR) {
+                    if (eR != undefined) eR(lx.CONTEXT.GRAPHICS); 
+                });
             
             //Buffer
             for (var i = 0; i < this.BUFFER.length; i++) {

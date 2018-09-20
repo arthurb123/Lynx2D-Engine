@@ -589,6 +589,7 @@ namespace Lynx2DEngine
         public bool imageSmoothing = true;
         public bool camera = true;
 
+        public bool grid = false;
         public bool debug = false;
         public bool drawColliders = false;
     }
