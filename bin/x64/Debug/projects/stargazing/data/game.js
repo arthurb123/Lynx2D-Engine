@@ -12,7 +12,7 @@
 	};
 
 	this.Update = function() {
-		this.z-=10;
+		this.z-=8;
 
 		if (this.z < 1) {
 			this.z = lx.GetDimensions().width;

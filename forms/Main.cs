@@ -564,6 +564,8 @@ namespace Lynx2DEngine
 
         private void reloadFrameworkToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!Input.YesNo("Do you want to download and (re)install the latest version of the Lynx2D framework to your project?", "Lynx2D Engine - Question")) return;
+
             Project.DownloadFramework(true);
         }
         #endregion

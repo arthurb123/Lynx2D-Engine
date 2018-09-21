@@ -75,7 +75,7 @@ namespace Lynx2DEngine.forms
 
         private void BuildSettingsForm_Closing(object sender, EventArgs e)
         {
-            if (!iconLocation.Text.Contains(".ico"))
+            if (iconLocation.Text.Length > 0 && !iconLocation.Text.Contains(".ico"))
                 MessageBox.Show("Not a valid icon (.ico file) specified, the specified icon will probably not display upon build.", "Lynx2D Engine - Warning");
 
             Project.Save();
