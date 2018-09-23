@@ -105,7 +105,8 @@ function Lynx2D() {
                                 self: coll1,
                                 trigger: coll2,
                                 direction: collision.direction,
-                                static: coll2.STATIC
+                                static: coll2.Static(),
+                                solid: coll2.Solid()
                             });
                         }
                     }
@@ -998,6 +999,7 @@ function Lynx2D() {
             H: h
         };
         this.STATIC = static;
+        this.SOLID = true;
         
         this.Size = function(width, height) {
             if (width == undefined || height == undefined) return this.SIZE;
@@ -1005,6 +1007,20 @@ function Lynx2D() {
                 W: width,
                 H: height
             };
+            
+            return this;
+        };
+        
+        this.Static = function(boolean) {
+            if (boolean == undefined) return this.STATIC;
+            else this.STATIC = boolean;
+            
+            return this;
+        };
+        
+        this.Solid = function(boolean) {
+            if (boolean == undefined) return this.SOLID;
+            else this.SOLID = boolean;
             
             return this;
         };
@@ -1075,9 +1091,29 @@ function Lynx2D() {
                     if (lowest == undefined || obj.actual < lowest.actual) lowest = obj;
                 });
                 
+                if (this.SOLID && !collider.STATIC) {
+                    var go = lx.FindGameObjectWithCollider(collider);
+                    if (go != undefined)
+                        switch(lowest.tag) {
+                            case 'right':
+                                go.Position(go.Position().X-lowest.actual, go.Position().Y);
+                                break;
+                            case 'left':
+                                go.Position(go.Position().X+lowest.actual, go.Position().Y);
+                                break;
+                            case 'down':
+                                go.Position(go.Position().X, go.Position().Y-lowest.actual);
+                                break;
+                            case 'up':
+                                go.Position(go.Position().X, go.Position().Y+lowest.actual);
+                                break;
+                        }
+                }
+                
                 return {
                     direction: lowest.tag,
-                    static: this.STATIC
+                    static: this.STATIC,
+                    solid: this.SOLID
                 };
             } else return result;
         };

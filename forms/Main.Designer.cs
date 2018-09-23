@@ -56,6 +56,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewDocumentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDevToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadFrameworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusLabel = new System.Windows.Forms.Label();
@@ -63,7 +64,6 @@
             this.browserContainer = new System.Windows.Forms.Panel();
             this.hierarchy = new System.Windows.Forms.TreeView();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.reloadFrameworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -220,7 +220,7 @@
             this.cameraToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cameraToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.cameraToolStripMenuItem.Name = "cameraToolStripMenuItem";
-            this.cameraToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cameraToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.cameraToolStripMenuItem.Text = "Camera";
             this.cameraToolStripMenuItem.Click += new System.EventHandler(this.cameraToolStripMenuItem_Click);
             // 
@@ -231,7 +231,7 @@
             this.settingsToolStripMenuItem1});
             this.gridToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.gridToolStripMenuItem.Name = "gridToolStripMenuItem";
-            this.gridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gridToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.gridToolStripMenuItem.Text = "Grid";
             this.gridToolStripMenuItem.Click += new System.EventHandler(this.gridToolStripMenuItem_Click);
             // 
@@ -249,7 +249,7 @@
             this.imageSmoothingToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.imageSmoothingToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.imageSmoothingToolStripMenuItem.Name = "imageSmoothingToolStripMenuItem";
-            this.imageSmoothingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imageSmoothingToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.imageSmoothingToolStripMenuItem.Text = "Image Smoothing";
             this.imageSmoothingToolStripMenuItem.Click += new System.EventHandler(this.imageSmoothingToolStripMenuItem_Click);
             // 
@@ -258,7 +258,7 @@
             this.debugToolStripMenuItem.CheckOnClick = true;
             this.debugToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.debugToolStripMenuItem.Text = "Debug";
             this.debugToolStripMenuItem.Click += new System.EventHandler(this.debugToolStripMenuItem_Click);
             // 
@@ -267,14 +267,14 @@
             this.drawCollidersToolStripMenuItem.CheckOnClick = true;
             this.drawCollidersToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.drawCollidersToolStripMenuItem.Name = "drawCollidersToolStripMenuItem";
-            this.drawCollidersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.drawCollidersToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.drawCollidersToolStripMenuItem.Text = "Draw Colliders";
             this.drawCollidersToolStripMenuItem.Click += new System.EventHandler(this.drawCollidersToolStripMenuItem_Click);
             // 
             // refreshGameToolStripMenuItem
             // 
             this.refreshGameToolStripMenuItem.Name = "refreshGameToolStripMenuItem";
-            this.refreshGameToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshGameToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.refreshGameToolStripMenuItem.Text = "Refresh Game";
             this.refreshGameToolStripMenuItem.Click += new System.EventHandler(this.refreshGameToolStripMenuItem_Click);
             // 
@@ -304,6 +304,14 @@
             this.showDevToolsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.showDevToolsToolStripMenuItem.Text = "Show DevTools";
             this.showDevToolsToolStripMenuItem.Click += new System.EventHandler(this.showDevToolsToolStripMenuItem_Click);
+            // 
+            // reloadFrameworkToolStripMenuItem
+            // 
+            this.reloadFrameworkToolStripMenuItem.Enabled = false;
+            this.reloadFrameworkToolStripMenuItem.Name = "reloadFrameworkToolStripMenuItem";
+            this.reloadFrameworkToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.reloadFrameworkToolStripMenuItem.Text = "Reload Framework";
+            this.reloadFrameworkToolStripMenuItem.Click += new System.EventHandler(this.reloadFrameworkToolStripMenuItem_Click);
             // 
             // updateToolStripMenuItem
             // 
@@ -369,14 +377,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(140, 537);
             this.panel1.TabIndex = 2;
-            // 
-            // reloadFrameworkToolStripMenuItem
-            // 
-            this.reloadFrameworkToolStripMenuItem.Enabled = false;
-            this.reloadFrameworkToolStripMenuItem.Name = "reloadFrameworkToolStripMenuItem";
-            this.reloadFrameworkToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.reloadFrameworkToolStripMenuItem.Text = "Reload Framework";
-            this.reloadFrameworkToolStripMenuItem.Click += new System.EventHandler(this.reloadFrameworkToolStripMenuItem_Click);
             // 
             // Main
             // 

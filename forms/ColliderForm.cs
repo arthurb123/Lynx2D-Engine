@@ -161,5 +161,14 @@ namespace Lynx2DEngine.forms
 
             UpdateTitle();
         }
+
+        private void solid_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!canDetect) return;
+
+            Engine.SetEngineObjectSolid(engineId, solid.Checked);
+
+            Engine.ExecuteScript(obj.Variable() + ".SOLID = " + solid.Checked.ToString().ToLower() + ";");
+        }
     }
 }

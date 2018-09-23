@@ -40,10 +40,19 @@
             this.label5 = new System.Windows.Forms.Label();
             this.gridColor = new System.Windows.Forms.Panel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.gridX = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.gridY = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.gridOpacity = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.gridSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridStrokeSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridOpacity)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -51,15 +60,15 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(10, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 13);
+            this.label1.Size = new System.Drawing.Size(27, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Grid Size";
+            this.label1.Text = "Size";
             // 
             // gridSize
             // 
-            this.gridSize.Location = new System.Drawing.Point(77, 15);
+            this.gridSize.Location = new System.Drawing.Point(43, 15);
             this.gridSize.Name = "gridSize";
-            this.gridSize.Size = new System.Drawing.Size(79, 20);
+            this.gridSize.Size = new System.Drawing.Size(60, 20);
             this.gridSize.TabIndex = 1;
             this.gridSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.gridSize.Value = new decimal(new int[] {
@@ -71,9 +80,9 @@
             // 
             // gridWidth
             // 
-            this.gridWidth.Location = new System.Drawing.Point(77, 41);
+            this.gridWidth.Location = new System.Drawing.Point(156, 15);
             this.gridWidth.Name = "gridWidth";
-            this.gridWidth.Size = new System.Drawing.Size(79, 20);
+            this.gridWidth.Size = new System.Drawing.Size(60, 20);
             this.gridWidth.TabIndex = 3;
             this.gridWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.gridWidth.Value = new decimal(new int[] {
@@ -86,17 +95,17 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 43);
+            this.label2.Location = new System.Drawing.Point(117, 18);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 13);
+            this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Grid Width";
+            this.label2.Text = "Width";
             // 
             // gridHeight
             // 
-            this.gridHeight.Location = new System.Drawing.Point(243, 41);
+            this.gridHeight.Location = new System.Drawing.Point(272, 15);
             this.gridHeight.Name = "gridHeight";
-            this.gridHeight.Size = new System.Drawing.Size(79, 20);
+            this.gridHeight.Size = new System.Drawing.Size(60, 20);
             this.gridHeight.TabIndex = 5;
             this.gridHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.gridHeight.Value = new decimal(new int[] {
@@ -109,17 +118,22 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(174, 43);
+            this.label3.Location = new System.Drawing.Point(229, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 13);
+            this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Grid Height";
+            this.label3.Text = "Height";
             // 
             // gridStrokeSize
             // 
-            this.gridStrokeSize.Location = new System.Drawing.Point(99, 86);
+            this.gridStrokeSize.Location = new System.Drawing.Point(89, 50);
+            this.gridStrokeSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.gridStrokeSize.Name = "gridStrokeSize";
-            this.gridStrokeSize.Size = new System.Drawing.Size(57, 20);
+            this.gridStrokeSize.Size = new System.Drawing.Size(54, 20);
             this.gridStrokeSize.TabIndex = 7;
             this.gridStrokeSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.gridStrokeSize.Value = new decimal(new int[] {
@@ -132,24 +146,24 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 88);
+            this.label4.Location = new System.Drawing.Point(11, 53);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 13);
+            this.label4.Size = new System.Drawing.Size(61, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Grid Stroke Size";
+            this.label4.Text = "Stroke Size";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(178, 88);
+            this.label5.Location = new System.Drawing.Point(159, 55);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 13);
+            this.label5.Size = new System.Drawing.Size(65, 13);
             this.label5.TabIndex = 8;
-            this.label5.Text = "Grid Color";
+            this.label5.Text = "Stroke Color";
             // 
             // gridColor
             // 
-            this.gridColor.Location = new System.Drawing.Point(243, 86);
+            this.gridColor.Location = new System.Drawing.Point(236, 53);
             this.gridColor.Name = "gridColor";
             this.gridColor.Size = new System.Drawing.Size(29, 18);
             this.gridColor.TabIndex = 9;
@@ -160,7 +174,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel1.Location = new System.Drawing.Point(278, 88);
+            this.linkLabel1.Location = new System.Drawing.Point(272, 56);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(44, 13);
             this.linkLabel1.TabIndex = 10;
@@ -169,11 +183,76 @@
             this.linkLabel1.VisitedLinkColor = System.Drawing.Color.Blue;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // gridX
+            // 
+            this.gridX.Location = new System.Drawing.Point(85, 113);
+            this.gridX.Name = "gridX";
+            this.gridX.Size = new System.Drawing.Size(79, 20);
+            this.gridX.TabIndex = 12;
+            this.gridX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.gridX.ValueChanged += new System.EventHandler(this.gridX_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(14, 116);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "X Tile Offset";
+            // 
+            // gridY
+            // 
+            this.gridY.Location = new System.Drawing.Point(251, 114);
+            this.gridY.Name = "gridY";
+            this.gridY.Size = new System.Drawing.Size(79, 20);
+            this.gridY.TabIndex = 14;
+            this.gridY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.gridY.ValueChanged += new System.EventHandler(this.gridY_ValueChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(180, 116);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(65, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Y Tile Offset";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 78);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(43, 13);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Opacity";
+            // 
+            // gridOpacity
+            // 
+            this.gridOpacity.Location = new System.Drawing.Point(89, 76);
+            this.gridOpacity.Name = "gridOpacity";
+            this.gridOpacity.Size = new System.Drawing.Size(54, 20);
+            this.gridOpacity.TabIndex = 100;
+            this.gridOpacity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.gridOpacity.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.gridOpacity.ValueChanged += new System.EventHandler(this.gridOpacity_ValueChanged);
+            // 
             // GridForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 121);
+            this.ClientSize = new System.Drawing.Size(344, 146);
+            this.Controls.Add(this.gridOpacity);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.gridY);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.gridX);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.gridColor);
             this.Controls.Add(this.label5);
@@ -187,8 +266,8 @@
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(360, 160);
-            this.MinimumSize = new System.Drawing.Size(360, 160);
+            this.MaximumSize = new System.Drawing.Size(360, 185);
+            this.MinimumSize = new System.Drawing.Size(360, 185);
             this.Name = "GridForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Lynx2D Engine - Grid Settings";
@@ -197,6 +276,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridStrokeSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridOpacity)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -215,5 +297,11 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel gridColor;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.NumericUpDown gridX;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown gridY;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown gridOpacity;
     }
 }

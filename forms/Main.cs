@@ -36,7 +36,6 @@ namespace Lynx2DEngine
 
             //Set events
             FormClosing += Form1_FormClosing;
-
             hierarchy.NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler(hierarchy_MouseDoubleClick);
             hierarchy.KeyDown += new KeyEventHandler(hierarchy_KeyDown);
             hierarchy.AfterLabelEdit += new NodeLabelEditEventHandler(hierarchy_LabelEdit);

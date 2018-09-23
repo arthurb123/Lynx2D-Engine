@@ -102,6 +102,7 @@ namespace Lynx2DEngine
                 if (objects[id].child != -1) callback = ", function(data) {" + objects[objects[id].child].code + "}";
 
                 objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Collider(" + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + ", " + objects[id].isStatic.ToString().ToLower() + callback + ");";
+                objects[id].buildCode += variable + ".Solid(" + objects[id].isSolid.ToString().ToLower() + ");";
 
                 if (objects[id].visible)
                     objects[id].buildCode += variable + ".Enable();";
@@ -389,16 +390,21 @@ namespace Lynx2DEngine
             objects[id].isStatic = isStatic;
         }
 
+        public static void SetEngineObjectSolid(int id, bool isSolid)
+        {
+            if (objects[id] == null) return;
+
+            objects[id].isSolid = isSolid;
+        }
+
         public static void RenameEngineObject(int id, string name)
         {
             if (objects[id] == null) return;
 
             objects[id].Rename(name);
-
-            Project.Save();
-
             form.UpdateHierarchy();
-            form.refreshBrowser();
+
+            Project.Build(true);
         }
         #endregion
     }
@@ -570,6 +576,7 @@ namespace Lynx2DEngine
         public int layer = 0;
         public bool visible = true;
         public bool isStatic = false;
+        public bool isSolid = true;
         public bool applied = false;
     }
 
@@ -591,11 +598,14 @@ namespace Lynx2DEngine
         public bool debug = false;
         public bool drawColliders = false;
 
-        public bool grid = false;
+        public bool grid = true;
         public int gridSize = 64;
         public int gridStrokeSize = 2;
         public int gridWidth = 16;
         public int gridHeight = 16;
+        public int gridOpacity = 25;
+        public int gridOffX = -8;
+        public int gridOffY = -8;
         public string gridColor = "white";
     }
 

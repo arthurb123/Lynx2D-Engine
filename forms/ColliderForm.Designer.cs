@@ -41,6 +41,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.solid = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.h)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.w)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).BeginInit();
@@ -115,7 +116,7 @@
             // visible
             // 
             this.visible.AutoSize = true;
-            this.visible.Location = new System.Drawing.Point(54, 105);
+            this.visible.Location = new System.Drawing.Point(24, 108);
             this.visible.Name = "visible";
             this.visible.Size = new System.Drawing.Size(65, 17);
             this.visible.TabIndex = 41;
@@ -135,7 +136,7 @@
             // isStatic
             // 
             this.isStatic.AutoSize = true;
-            this.isStatic.Location = new System.Drawing.Point(125, 105);
+            this.isStatic.Location = new System.Drawing.Point(95, 108);
             this.isStatic.Name = "isStatic";
             this.isStatic.Size = new System.Drawing.Size(53, 17);
             this.isStatic.TabIndex = 48;
@@ -180,11 +181,23 @@
             this.linkLabel1.VisitedLinkColor = System.Drawing.Color.Red;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // solid
+            // 
+            this.solid.AutoSize = true;
+            this.solid.Location = new System.Drawing.Point(154, 108);
+            this.solid.Name = "solid";
+            this.solid.Size = new System.Drawing.Size(49, 17);
+            this.solid.TabIndex = 52;
+            this.solid.Text = "Solid";
+            this.solid.UseVisualStyleBackColor = true;
+            this.solid.CheckedChanged += new System.EventHandler(this.solid_CheckedChanged);
+            // 
             // ColliderForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(234, 196);
+            this.Controls.Add(this.solid);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.button1);
@@ -228,5 +241,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.CheckBox solid;
     }
 }

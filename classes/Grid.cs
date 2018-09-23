@@ -19,6 +19,7 @@ namespace Lynx2DEngine
                 "gfx.save();" +
                 "gfx.lineWidth = " + Engine.eSettings.gridStrokeSize + ";" +
                 "gfx.strokeStyle = '" + Engine.eSettings.gridColor + "';" +
+                "gfx.globalAlpha = " + Engine.eSettings.gridOpacity + "/100;" +
                 "var x = 0, y = 0; " +
                 "if (lx.GAME.FOCUS != undefined) { " +
                     "var tPos = lx.GAME.TRANSLATE_FROM_FOCUS({ X: x, Y: y });" +
@@ -27,7 +28,7 @@ namespace Lynx2DEngine
                 "} " +
                 "for (var yy = 0; yy < " + Engine.eSettings.gridHeight + "; yy++) {" +
                     "for (var xx = 0; xx < " + Engine.eSettings.gridWidth + "; xx++) {" +
-                        "gfx.strokeRect(x + xx*" + Engine.eSettings.gridSize + ", y + yy*" + Engine.eSettings.gridSize + ", " + Engine.eSettings.gridSize + ", " + Engine.eSettings.gridSize + ");" +
+                        "gfx.strokeRect(x + (xx+" + Engine.eSettings.gridOffX  + ")* " + Engine.eSettings.gridSize + ", y + (yy+" + Engine.eSettings.gridOffY  + ")* " + Engine.eSettings.gridSize + ", " + Engine.eSettings.gridSize + ", " + Engine.eSettings.gridSize + ");" +
                     "}" +
                 "}" +
                 "gfx.restore();" +

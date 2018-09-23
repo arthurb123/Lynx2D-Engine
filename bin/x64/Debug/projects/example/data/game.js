@@ -1,6 +1,5 @@
-﻿lx.Initialize('example'); lx.Smoothing(false); lx.Start(60);var Sprite0 = new lx.Sprite('res/player.png');Sprite0.Clip(0, 0, 64, 64);var Sprite3 = new lx.Sprite('res/player.png');Sprite3.Clip(0, 0, 64, 64);var PlayerSpriteReverse = new lx.Sprite('res/player_reverse.png');PlayerSpriteReverse.Clip(0, 0, 64, 64);var WorldTile = new lx.Sprite('res/world.png');WorldTile.Clip(24, 24, 32, 32);var WorldCollider1 = new lx.Collider(-250, -50, 64, 200, true, function(data) {if (!data.static) 
-	lx.FindGameObjectWithCollider(data.trigger).AddVelocity(2, 0);
-});WorldCollider1.Enable();var WorldCollider2 = new lx.Collider(380, -50, 64, 200, true, function(data) {if (!data.static) lx.FindGameObjectWithCollider(data.trigger).AddVelocity(-2, 0);});WorldCollider2.Enable();var Player = new lx.GameObject(Sprite0, 0, 0, 128, 128);Player.ApplyCollider();Player.Show(0);var Other = new lx.GameObject(Sprite3, -200, 0, 128, 128);Other.ApplyCollider();Other.Show(0);Player.Focus();
+﻿lx.Initialize('example'); lx.Smoothing(false); lx.Start(60);var Sprite0 = new lx.Sprite('res/player.png');Sprite0.Clip(0, 0, 64, 64);var Sprite3 = new lx.Sprite('res/player.png');Sprite3.Clip(0, 0, 64, 64);var PlayerSpriteReverse = new lx.Sprite('res/player_reverse.png');PlayerSpriteReverse.Clip(0, 0, 64, 64);var WorldTile = new lx.Sprite('res/world.png');WorldTile.Clip(24, 24, 32, 32);var WorldCollider1 = new lx.Collider(-250, -50, 64, 200, true, function(data) {
+});WorldCollider1.Solid(true);WorldCollider1.Enable();var WorldCollider2 = new lx.Collider(380, -50, 64, 200, true, function(data) {});WorldCollider2.Solid(true);WorldCollider2.Enable();var Player = new lx.GameObject(Sprite0, 0, 0, 128, 128);Player.ApplyCollider();Player.Show(0);var Other = new lx.GameObject(Sprite3, -120, 0, 128, 128);Other.ApplyCollider();Other.Show(0);Player.Focus();
 Player.SetSideWaysController(.2, 2);
 
 var frame = 0, cur = 0, moving = 0, direction = 0;
@@ -10,7 +9,8 @@ var playerEmitter = new lx.Emitter(new lx.Sprite('res/world.png', 32, 26, 8, 8),
 playerEmitter.Speed(12);
 playerEmitter.Follows(Player);
 
-Player.ApplyCollider(new lx.Collider(48, 32, 28, 64, false));
+Player.ApplyCollider(new lx.Collider(48, 32, 28, 64, false).Solid(true));
+Other.ApplyCollider(new lx.Collider(48, 32, 28, 64, false).Solid(true));
 
 lx.Loops(function() {	
 	if (Math.abs(Player.Movement().VX) > .5) {
