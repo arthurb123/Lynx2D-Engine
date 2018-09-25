@@ -14,6 +14,8 @@ namespace Lynx2DEngine.forms
     public partial class ScriptForm : Form
     {
         private EngineObject obj;
+        private bool saved = true;
+        private bool startup = true;
 
         public int id;
         public int engineId;
@@ -66,29 +68,23 @@ namespace Lynx2DEngine.forms
 
         private void ScriptForm_Close(object sender, EventArgs e)
         {
-            Engine.SetEngineObjectScript(engineId, scriptCode.Text);
+            if (!saved)
+                Engine.SetEngineObjectScript(engineId, scriptCode.Text);
         }
 
         private void updateNumberLabel(object sender, EventArgs e)
         {
-            //we get index of first visible char and 
-            //number of first visible line
             Point pos = new Point(0, 0);
             int firstIndex = scriptCode.GetCharIndexFromPosition(pos);
             int firstLine = scriptCode.GetLineFromCharIndex(firstIndex);
-
-            //now we get index of last visible char 
-            //and number of last visible line
+            
             pos.X = ClientRectangle.Width;
             pos.Y = ClientRectangle.Height;
             int lastIndex = scriptCode.GetCharIndexFromPosition(pos);
             int lastLine = scriptCode.GetLineFromCharIndex(lastIndex);
-
-            //this is point position of last visible char, we'll 
-            //use its Y value for calculating numberLabel size
+            
             pos = scriptCode.GetPositionFromCharIndex(lastIndex);
-
-            //finally, renumber label
+            
             numberLabel.Text = "";
             int largestSize = 0;
             for (int i = firstLine; i <= lastLine; i++)
@@ -104,8 +100,6 @@ namespace Lynx2DEngine.forms
 
         private void scriptCode_VScroll(object sender, EventArgs e)
         {
-            //move location of numberLabel for amount 
-            //of pixels caused by scrollbar
             int d = scriptCode.GetPositionFromCharIndex(0).Y %
                                       (scriptCode.Font.Height + 1);
             numberLabel.Location = new Point(0, d);
@@ -125,6 +119,93 @@ namespace Lynx2DEngine.forms
 
             UpdateTitle();
         }
-        
+
+        private void highlightScript()
+        {
+            MatchCollection keywordMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Keywords);
+            MatchCollection methodMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Methods);
+            MatchCollection typeMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Types);
+            MatchCollection commentMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Comments);
+            MatchCollection stringMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Strings);
+
+            int originalIndex = scriptCode.SelectionStart;
+            int originalLength = scriptCode.SelectionLength;
+            Color originalColor = Color.Black;
+
+            //This is unfortunately necessary - to avoid blinking
+            numberLabel.Focus();
+
+            scriptCode.SelectionStart = 0;
+            scriptCode.SelectionLength = scriptCode.Text.Length;
+            scriptCode.SelectionColor = originalColor;
+
+            foreach (Match m in keywordMatches)
+            {
+                scriptCode.SelectionStart = m.Index;
+                scriptCode.SelectionLength = m.Length;
+                scriptCode.SelectionColor = Color.Blue;
+            }
+
+            foreach (Match m in methodMatches)
+            {
+                scriptCode.SelectionStart = m.Index;
+                scriptCode.SelectionLength = m.Length;
+                scriptCode.SelectionColor = Color.DarkViolet;
+            }
+
+            foreach (Match m in typeMatches)
+            {
+                scriptCode.SelectionStart = m.Index;
+                scriptCode.SelectionLength = m.Length;
+                scriptCode.SelectionColor = Color.DarkCyan;
+            }
+
+            foreach (Match m in commentMatches)
+            {
+                scriptCode.SelectionStart = m.Index;
+                scriptCode.SelectionLength = m.Length;
+                scriptCode.SelectionColor = Color.Green;
+            }
+
+            foreach (Match m in stringMatches)
+            {
+                scriptCode.SelectionStart = m.Index;
+                scriptCode.SelectionLength = m.Length;
+                scriptCode.SelectionColor = Color.Brown;
+            }
+
+            scriptCode.SelectionStart = originalIndex;
+            scriptCode.SelectionLength = originalLength;
+            scriptCode.SelectionColor = originalColor;
+
+            //and here we focus the script again
+            scriptCode.Focus();
+        }
+
+        private void scriptCode_TextChanged(object sender, EventArgs e)
+        {
+            if (!startup) setSaved(false);
+            else startup = false;
+
+            highlightScript();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Engine.SetEngineObjectScript(engineId, scriptCode.Text);
+
+            setSaved(true);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void setSaved(bool saved)
+        {
+            this.saved = saved;
+            saveToolStripMenuItem.Enabled = !saved;
+        }
     }
 }

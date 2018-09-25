@@ -7,12 +7,12 @@
 		var sx = map_range(this.x / this.z, 0, 1, 0, lx.GetDimensions().width);
 		var sy = map_range(this.y / this.z, 0, 1, 0, lx.GetDimensions().height);
 		var r = map_range(this.z, 0, lx.GetDimensions().width, 16, 0);
-
+	
 		lx.DrawSprite(StarSprite, sx, sy, r, r);
 	};
 
 	this.Update = function() {
-		this.z-=8;
+		this.z-=10;
 
 		if (this.z < 1) {
 			this.z = lx.GetDimensions().width;
@@ -29,7 +29,7 @@ function map_range(value, low1, high1, low2, high2) {
 }
 
 var stars = [];
-for (var i = 0; i < 800; i++) stars[i] = new Star();
+for (var i = 0; i < 2000; i++) stars[i] = new Star();
 
 lx.OnLayerDraw(0, function(gfx) {
 	gfx.save();

@@ -111,6 +111,7 @@
     <Compile Include="classes\Feed.cs" />
     <Compile Include="classes\Grid.cs" />
     <Compile Include="classes\Pointer.cs" />
+    <Compile Include="classes\Syntax.cs" />
     <Compile Include="forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

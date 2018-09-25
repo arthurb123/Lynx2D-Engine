@@ -25,6 +25,7 @@ namespace Lynx2DEngine
                 if (objects[i] == null || i == objects.Length)
                 {
                     objects[i] = new EngineObject(i, type, code, child, parent);
+
                     return i;
                 }
             }
@@ -43,9 +44,8 @@ namespace Lynx2DEngine
 
             if (refreshes)
             {
-                Project.Save();
+                Project.Build(true);
 
-                form.refreshBrowser();
                 form.UpdateHierarchy();
             }
         }

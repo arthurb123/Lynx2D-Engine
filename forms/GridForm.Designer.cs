@@ -155,7 +155,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(159, 55);
+            this.label5.Location = new System.Drawing.Point(162, 53);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(65, 13);
             this.label5.TabIndex = 8;
@@ -163,7 +163,7 @@
             // 
             // gridColor
             // 
-            this.gridColor.Location = new System.Drawing.Point(236, 53);
+            this.gridColor.Location = new System.Drawing.Point(237, 50);
             this.gridColor.Name = "gridColor";
             this.gridColor.Size = new System.Drawing.Size(29, 18);
             this.gridColor.TabIndex = 9;
@@ -174,7 +174,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel1.Location = new System.Drawing.Point(272, 56);
+            this.linkLabel1.Location = new System.Drawing.Point(272, 53);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(44, 13);
             this.linkLabel1.TabIndex = 10;

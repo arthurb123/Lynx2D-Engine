@@ -20,7 +20,7 @@ namespace Lynx2DEngine.forms
         private void GridForm_Load(object sender, EventArgs e)
         {
             FormClosing += GridForm_Closing;
-
+            
             gridSize.Maximum = Decimal.MaxValue;
             gridWidth.Maximum = Decimal.MaxValue;
             gridHeight.Maximum = Decimal.MaxValue;
