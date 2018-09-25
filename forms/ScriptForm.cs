@@ -37,11 +37,9 @@ namespace Lynx2DEngine.forms
         {
             if (e.KeyCode == Keys.Enter)
                 updateNumberLabel(sender, e);
-            
-            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Space)
-            {
 
-            }
+            if (ModifierKeys.HasFlag(Keys.Control) && e.KeyCode == Keys.S && !saved)
+                saveToolStripMenuItem_Click(sender, e);
         }
 
         public void Initialize(int engineId)
@@ -127,6 +125,7 @@ namespace Lynx2DEngine.forms
             MatchCollection typeMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Types);
             MatchCollection commentMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Comments);
             MatchCollection stringMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Strings);
+            MatchCollection numberMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Numbers);
 
             int originalIndex = scriptCode.SelectionStart;
             int originalLength = scriptCode.SelectionLength;
@@ -172,6 +171,13 @@ namespace Lynx2DEngine.forms
                 scriptCode.SelectionStart = m.Index;
                 scriptCode.SelectionLength = m.Length;
                 scriptCode.SelectionColor = Color.Brown;
+            }
+
+            foreach (Match m in numberMatches)
+            {
+                scriptCode.SelectionStart = m.Index;
+                scriptCode.SelectionLength = m.Length;
+                scriptCode.SelectionColor = Color.DarkOliveGreen;
             }
 
             scriptCode.SelectionStart = originalIndex;
