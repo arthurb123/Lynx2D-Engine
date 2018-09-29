@@ -49,6 +49,7 @@
             this.scriptCode.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scriptCode.Location = new System.Drawing.Point(28, 24);
             this.scriptCode.Name = "scriptCode";
+            this.scriptCode.ShowSelectionMargin = true;
             this.scriptCode.Size = new System.Drawing.Size(456, 237);
             this.scriptCode.TabIndex = 0;
             this.scriptCode.Text = "Here be code";
@@ -119,6 +120,7 @@
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Visible = false;
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // ScriptForm

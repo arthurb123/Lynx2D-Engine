@@ -137,6 +137,12 @@
       <DependentUpon>ConsoleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="classes\Engine.cs" />
+    <Compile Include="forms\EmitterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\EmitterForm.Designer.cs">
+      <DependentUpon>EmitterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\GameObjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,6 +202,9 @@
     <EmbeddedResource Include="forms\ConsoleForm.resx">
       <DependentUpon>ConsoleForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\EmitterForm.resx">
+      <DependentUpon>EmitterForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\GameObjectForm.resx">
       <DependentUpon>GameObjectForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -244,6 +253,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <None Include="resources\particle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="resources\pointer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

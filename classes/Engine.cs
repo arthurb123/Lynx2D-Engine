@@ -109,6 +109,16 @@ namespace Lynx2DEngine
                 else
                     objects[id].buildCode += variable + ".Disable();";
             }
+            else if (objects[id].type == EngineObjectType.Emitter)
+            {
+                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Emitter(" + objects[id].sprite + ", " + objects[id].x + ", " + objects[id].y + ", " + objects[id].amount + ", " + objects[id].duration + ");";
+                objects[id].buildCode += variable + ".Setup(" + objects[id].minvx + ", " + objects[id].maxvx + ", " + objects[id].minvy + ", " + objects[id].maxvy + ", " + objects[id].minSize + ", " + objects[id].maxSize + "); ";
+
+                if (objects[id].visible)
+                    objects[id].buildCode += variable + ".Show(" + objects[id].layer + ");";
+                else
+                    objects[id].buildCode += variable + ".Hide();";
+            }
             else if (objects[id].type == EngineObjectType.Script) objects[id].buildCode = lineBreaks + objects[id].code;
         }
 
@@ -164,6 +174,7 @@ namespace Lynx2DEngine
                 string buildSettings = "";
                 string scripts = "";
                 string colliders = "";
+                string emitters = "";
                 string gameobjects = "";
                 string sprites = "";
 
@@ -178,6 +189,7 @@ namespace Lynx2DEngine
                     else if (objects[i].type == EngineObjectType.GameObject) gameobjects += objects[i].buildCode;
                     else if (objects[i].type == EngineObjectType.Script && objects[i].parent == -1) scripts += objects[i].buildCode;
                     else if (objects[i].type == EngineObjectType.Collider) colliders += objects[i].buildCode;
+                    else if (objects[i].type == EngineObjectType.Emitter) emitters += objects[i].buildCode;
 
                     objects[i].buildCode = "";
                 }
@@ -186,7 +198,7 @@ namespace Lynx2DEngine
                 if (bSettings.hasIcon)
                     buildSettings += "document.getElementById('icon').href='" + bSettings.iconLocation + "';";
 
-                Project.AddGameCode(buildSettings + sprites + colliders + gameobjects + scripts);
+                Project.AddGameCode(buildSettings + sprites + colliders + gameobjects + emitters + scripts);
             }
             catch (Exception e)
             {
@@ -397,6 +409,32 @@ namespace Lynx2DEngine
             objects[id].isSolid = isSolid;
         }
 
+        public static void SetEngineObjectSetup(int id, float minX, float maxX, float minY, float maxY, int minS, int maxS)
+        {
+            if (objects[id] == null) return;
+
+            objects[id].minvx = minX;
+            objects[id].maxvx = maxX;
+            objects[id].minvy = minY;
+            objects[id].maxvy = maxY;
+            objects[id].minSize = minS;
+            objects[id].maxSize = maxS;
+        }
+
+        public static void SetEngineObjectAmount(int id, int amount)
+        {
+            if (objects[id] == null) return;
+
+            objects[id].amount = amount;
+        }
+
+        public static void SetEngineObjectDuration(int id, int duration)
+        {
+            if (objects[id] == null) return;
+
+            objects[id].duration = duration;
+        }
+
         public static void RenameEngineObject(int id, string name)
         {
             if (objects[id] == null) return;
@@ -461,6 +499,12 @@ namespace Lynx2DEngine
                     Engine.ExecuteScript(Variable() + ".Disable();");
 
                     break;
+                case EngineObjectType.Emitter:
+                    name = "Emitter";
+                    sprite = "Sprite" + this.child;
+                    Engine.ExecuteScript(Variable() + ".Show(0);"); ;
+
+                    break;
             }
         }
 
@@ -493,6 +537,12 @@ namespace Lynx2DEngine
                     name = "Collider";
                     visible = false;
                     Engine.ExecuteScript(Variable() + ".Disable();");
+
+                    break;
+                case EngineObjectType.Emitter:
+                    name = "Emitter";
+                    sprite = "Sprite" + this.child;
+                    Engine.ExecuteScript(Variable() + ".Show(0);"); ;
 
                     break;
             }
@@ -562,6 +612,16 @@ namespace Lynx2DEngine
         public int w = 64;
         public int h = 64;
 
+        public float minvx = -1f;
+        public float maxvx = 1f;
+        public float minvy = -1f;
+        public float maxvy = -1;
+        public int minSize = 6;
+        public int maxSize = 12;
+        public float speed = 24;
+        public int duration = 30;
+        public int amount = 12;
+
         public int cx = 0;
         public int cy = 0;
         public int cw = 0;
@@ -614,6 +674,7 @@ namespace Lynx2DEngine
         GameObject = 0,
         Sprite,
         Script,
-        Collider
+        Collider,
+        Emitter
     }
 }

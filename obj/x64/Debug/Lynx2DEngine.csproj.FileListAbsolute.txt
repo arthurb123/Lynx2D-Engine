@@ -424,6 +424,7 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\Lynx2D-Engine\obj\x64\Debug\Lynx2DEn
 C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.application
 C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.exe
 C:\Users\Arthur\Desktop\lynx2d\Lynx2DEngine\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.pdb
+C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.GridForm.resources
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\cef.pak
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\cef_100_percent.pak
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\cef_200_percent.pak
@@ -494,18 +495,19 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\swiftshader\libEGL.dl
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\swiftshader\libGLESv2.dll
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\v8_context_snapshot.bin
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.BrowserSubprocess.Core.dll
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.BrowserSubprocess.Core.pdb
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.BrowserSubprocess.exe
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.BrowserSubprocess.pdb
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.Core.dll
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.Core.pdb
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.Core.xml
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.dll
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.pdb
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.XML
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.WinForms.dll
-C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.WinForms.XML
-C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.BrowserSubprocess.Core.pdb
-C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.BrowserSubprocess.pdb
-C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.Core.pdb
-C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.pdb
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.WinForms.pdb
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\CefSharp.WinForms.XML
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\particle.png
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\pointer.png
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\sprite.png
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.exe.config
@@ -513,7 +515,6 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.exe.mani
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.application
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.exe
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.pdb
-C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.csprojAssemblyReference.cache
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.AboutForm.resources
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.BuildSettingsForm.resources
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ColliderForm.resources
@@ -532,4 +533,5 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.exe.mani
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.application
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.exe
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.pdb
-C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.GridForm.resources
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.csprojAssemblyReference.cache
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.EmitterForm.resources

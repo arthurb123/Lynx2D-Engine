@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
@@ -66,6 +59,7 @@ namespace Lynx2DEngine
             showDevToolsToolStripMenuItem.Enabled = available;
             buildToolStripMenuItem.Enabled = available;
             reloadFrameworkToolStripMenuItem.Enabled = available;
+            reloadStandardResourcesToolStripMenuItem.Enabled = available;
         }
         #endregion
 
@@ -190,6 +184,13 @@ namespace Lynx2DEngine
                         coll.Initialize(obj.id);
 
                         break;
+                    case EngineObjectType.Emitter:
+                        EmitterForm emit = new EmitterForm();
+
+                        emit.Show();
+                        emit.Initialize(obj.id);
+
+                        break;
                 }
             }
             catch (Exception exc)
@@ -229,6 +230,11 @@ namespace Lynx2DEngine
                             break;
                         case EngineObjectType.Collider:
                             r = AddCollider();
+                            result = r[0];
+                            child = r[1];
+                            break;
+                        case EngineObjectType.Emitter:
+                            r = AddEmitter();
                             result = r[0];
                             child = r[1];
                             break;
@@ -359,6 +365,19 @@ namespace Lynx2DEngine
             }
         }
 
+        private void addEmitterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                AddEmitter();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                SetStatus("Exception occurred while adding Emitter", Main.StatusType.Warning);
+            }
+        }
+
         private List<int> AddGameObject()
         {
             int sprite = Engine.GetEngineObjects().Length;
@@ -438,6 +457,40 @@ namespace Lynx2DEngine
             List<int> result = new List<int>();
             result.Add(coll);
             result.Add(script);
+
+            return result;
+        }
+
+        private List<int> AddEmitter()
+        {
+            int sprite = Engine.GetEngineObjects().Length;
+            int em = Engine.GetEngineObjects().Length + 1;
+            int[] empty = Engine.GetEmptyEnginePositions();
+
+            if (empty.Length > 1)
+            {
+                sprite = empty[0];
+                em = empty[1];
+            }
+
+            string spriteCode = "var Sprite" + sprite + " = new lx.Sprite('res/lynx2d/particle.png');";
+            string emCode = "var Emitter" + em + " = new lx.Emitter(Sprite" + sprite + ", 0, 0, 12, 24);";
+
+            int spriteR = Engine.AddEngineObject(EngineObjectType.Sprite, spriteCode, -1, em);
+            int emR = Engine.AddEngineObject(EngineObjectType.Emitter, emCode, sprite, -1);
+
+            Engine.SetEngineObjectSource(emR, "res/lynx2d/particle.png");
+
+            if (spriteR != sprite)
+                MessageBox.Show("Invalid id used while creating a Sprite.", "Lynx2D Engine - Warning");
+            if (emR != em)
+                MessageBox.Show("Invalid id used while creating a Emitter.", "Lynx2D Engine - Warning");
+
+            UpdateHierarchy();
+
+            List<int> result = new List<int>();
+            result.Add(em);
+            result.Add(sprite);
 
             return result;
         }
@@ -566,6 +619,13 @@ namespace Lynx2DEngine
             if (!Input.YesNo("Do you want to download and (re)install the latest version of the Lynx2D framework to your project?", "Lynx2D Engine - Question")) return;
 
             Project.DownloadFramework(true);
+        }
+
+        private void reloadStandardResourcesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Input.YesNo("Do you want to reinstall the standard Lynx2D image resources into your project?", "Lynx2D Engine - Question")) return;
+
+            Project.InstallResources(true);
         }
         #endregion
 

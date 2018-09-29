@@ -175,9 +175,7 @@ namespace Lynx2DEngine
                 }
 
                 DownloadFramework(false);
-
-                File.Copy(@"resources/sprite.png", "projects/" + cur + "/res/lynx2d/sprite.png");
-                File.Copy(@"resources/pointer.png", "projects/" + cur + "/res/lynx2d/pointer.png");
+                InstallResources(false);
 
                 Engine.ClearEngine();
 
@@ -198,20 +196,59 @@ namespace Lynx2DEngine
                 return;
             }
 
-            using (FileStream fs = new FileStream("projects/" + cur + "/data/lynx2d.js", FileMode.Create))
+            try
             {
-                using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                using (FileStream fs = new FileStream("projects/" + cur + "/data/lynx2d.js", FileMode.Create))
                 {
-                    WebClient client = new WebClient();
+                    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                    {
+                        WebClient client = new WebClient();
 
-                    w.Write(client.DownloadString(new Uri("http://www.lythumn.com/lynx2d/res/lynx2d.js")));
+                        w.Write(client.DownloadString(new Uri("http://www.lythumn.com/lynx2d/res/lynx2d.js")));
 
-                    client.Dispose();
-                    w.Dispose();
-                    fs.Dispose();
+                        client.Dispose();
+                        w.Dispose();
+                        fs.Dispose();
 
-                    if (setsStatus) form.SetStatus("The Lynx2D framework has been reloaded.", Main.StatusType.Message);
+                        if (setsStatus) form.SetStatus("The Lynx2D framework has been reloaded.", Main.StatusType.Message);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                form.SetStatus("Exception occurred while reloading framework.", Main.StatusType.Warning);
+            }
+        }
+
+        public static void InstallResources(bool setsStatus)
+        {
+            try
+            {
+                int installed = 0;
+
+                if (!File.Exists("projects/" + cur + "/res/lynx2d/sprite.png"))
+                {
+                    File.Copy(@"resources/sprite.png", "projects/" + cur + "/res/lynx2d/sprite.png");
+                    installed++;
+                }
+                if (!File.Exists("projects/" + cur + "/res/lynx2d/pointer.png"))
+                {
+                    File.Copy(@"resources/pointer.png", "projects/" + cur + "/res/lynx2d/pointer.png");
+                    installed++;
+                }
+                if (!File.Exists("projects/" + cur + "/res/lynx2d/particle.png"))
+                {
+                    File.Copy(@"resources/particle.png", "projects/" + cur + "/res/lynx2d/particle.png");
+                    installed++;
+                }
+
+                if (setsStatus) form.SetStatus(installed + " Lynx2D resource(s) reloaded.", Main.StatusType.Message);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                form.SetStatus("Exception occurred while reloading resources", Main.StatusType.Warning);
             }
         }
     }

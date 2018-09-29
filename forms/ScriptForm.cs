@@ -72,7 +72,7 @@ namespace Lynx2DEngine.forms
 
         private void updateNumberLabel(object sender, EventArgs e)
         {
-            Point pos = new Point(0, 0);
+            Point pos = new Point(0, menuStrip1.Size.Height);
             int firstIndex = scriptCode.GetCharIndexFromPosition(pos);
             int firstLine = scriptCode.GetLineFromCharIndex(firstIndex);
             
@@ -122,6 +122,7 @@ namespace Lynx2DEngine.forms
         {
             MatchCollection keywordMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Keywords);
             MatchCollection methodMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Methods);
+            MatchCollection lxTypeMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.LxTypes);
             MatchCollection typeMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Types);
             MatchCollection commentMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Comments);
             MatchCollection stringMatches = Syntax.Match(scriptCode.Text, SyntaxMatch.Strings);
@@ -147,16 +148,23 @@ namespace Lynx2DEngine.forms
 
             foreach (Match m in methodMatches)
             {
-                scriptCode.SelectionStart = m.Index;
-                scriptCode.SelectionLength = m.Length;
+                scriptCode.SelectionStart = m.Index+1;
+                scriptCode.SelectionLength = m.Length-1;
                 scriptCode.SelectionColor = Color.DarkViolet;
+            }
+
+            foreach (Match m in lxTypeMatches)
+            {
+                scriptCode.SelectionStart = m.Index+3;
+                scriptCode.SelectionLength = m.Length-3;
+                scriptCode.SelectionColor = Color.DarkCyan;
             }
 
             foreach (Match m in typeMatches)
             {
                 scriptCode.SelectionStart = m.Index;
                 scriptCode.SelectionLength = m.Length;
-                scriptCode.SelectionColor = Color.DarkCyan;
+                scriptCode.SelectionColor = Color.DarkSlateBlue;
             }
 
             foreach (Match m in commentMatches)
