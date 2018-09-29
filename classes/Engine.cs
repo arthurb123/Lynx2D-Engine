@@ -78,23 +78,23 @@ namespace Lynx2DEngine
 
             if (objects[id].type == EngineObjectType.GameObject)
             {
-                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.GameObject(" + objects[id].sprite + ", " + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + ");";
+                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.GameObject(" + objects[id].sprite + ", " + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + "); ";
 
                 if (objects[id].collider != string.Empty)
-                    objects[id].buildCode += variable + ".ApplyCollider(" + objects[id].collider + ");";
+                    objects[id].buildCode += variable + ".ApplyCollider(" + objects[id].collider + "); ";
                 
                 if (objects[id].visible)
-                    objects[id].buildCode += variable + ".Show(" + objects[id].layer + ");";
+                    objects[id].buildCode += variable + ".Show(" + objects[id].layer + "); ";
             }
             else if (objects[id].type == EngineObjectType.Sprite)
             {
-                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Sprite('" + objects[id].source + "');";
+                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Sprite('" + objects[id].source + "'); ";
 
                 if (objects[id].rotation > 0 && objects[id].rotation < 360)
-                    objects[id].buildCode += variable + ".Rotation(" + (objects[id].rotation * Math.PI / 180) + ");";
+                    objects[id].buildCode += variable + ".Rotation(" + (objects[id].rotation * Math.PI / 180) + "); ";
 
                 if (objects[id].clipped)
-                    objects[id].buildCode += variable + ".Clip(" + objects[id].cx + ", " + objects[id].cy + ", " + objects[id].cw + ", " + objects[id].ch + ");";
+                    objects[id].buildCode += variable + ".Clip(" + objects[id].cx + ", " + objects[id].cy + ", " + objects[id].cw + ", " + objects[id].ch + "); ";
             }
             else if (objects[id].type == EngineObjectType.Collider)
             {
@@ -102,22 +102,23 @@ namespace Lynx2DEngine
                 if (objects[id].child != -1) callback = ", function(data) {" + objects[objects[id].child].code + "}";
 
                 objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Collider(" + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + ", " + objects[id].isStatic.ToString().ToLower() + callback + ");";
-                objects[id].buildCode += variable + ".Solid(" + objects[id].isSolid.ToString().ToLower() + ");";
+                objects[id].buildCode += variable + ".Solid(" + objects[id].isSolid.ToString().ToLower() + "); ";
 
                 if (objects[id].visible)
-                    objects[id].buildCode += variable + ".Enable();";
+                    objects[id].buildCode += variable + ".Enable(); ";
                 else
-                    objects[id].buildCode += variable + ".Disable();";
+                    objects[id].buildCode += variable + ".Disable(); ";
             }
             else if (objects[id].type == EngineObjectType.Emitter)
             {
-                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Emitter(" + objects[id].sprite + ", " + objects[id].x + ", " + objects[id].y + ", " + objects[id].amount + ", " + objects[id].duration + ");";
+                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Emitter(" + objects[id].sprite + ", " + objects[id].x + ", " + objects[id].y + ", " + objects[id].amount + ", " + objects[id].duration + "); ";
                 objects[id].buildCode += variable + ".Setup(" + objects[id].minvx + ", " + objects[id].maxvx + ", " + objects[id].minvy + ", " + objects[id].maxvy + ", " + objects[id].minSize + ", " + objects[id].maxSize + "); ";
+                objects[id].buildCode += variable + ".Speed(" + objects[id].speed + "); ";
 
                 if (objects[id].visible)
-                    objects[id].buildCode += variable + ".Show(" + objects[id].layer + ");";
+                    objects[id].buildCode += variable + ".Show(" + objects[id].layer + "); ";
                 else
-                    objects[id].buildCode += variable + ".Hide();";
+                    objects[id].buildCode += variable + ".Hide(); ";
             }
             else if (objects[id].type == EngineObjectType.Script) objects[id].buildCode = lineBreaks + objects[id].code;
         }
@@ -435,6 +436,13 @@ namespace Lynx2DEngine
             objects[id].duration = duration;
         }
 
+        public static void SetEngineObjectSpeed(int id, float speed)
+        {
+            if (objects[id] == null) return;
+
+            objects[id].speed = speed;
+        }
+
         public static void RenameEngineObject(int id, string name)
         {
             if (objects[id] == null) return;
@@ -584,6 +592,16 @@ namespace Lynx2DEngine
             temp.w = w;
             temp.h = h;
 
+            temp.minvx = minvx;
+            temp.maxvx = maxvx;
+            temp.minvy = minvy;
+            temp.maxvy = maxvy;
+            temp.minSize = minSize;
+            temp.maxSize = maxSize;
+            temp.speed = speed;
+            temp.amount = amount;
+            temp.duration = duration;
+
             temp.source = source;
             temp.cx = cx;
             temp.cy = cy;
@@ -612,13 +630,13 @@ namespace Lynx2DEngine
         public int w = 64;
         public int h = 64;
 
-        public float minvx = -1f;
-        public float maxvx = 1f;
-        public float minvy = -1f;
-        public float maxvy = -1;
+        public float minvx = -2f;
+        public float maxvx = 2f;
+        public float minvy = -2f;
+        public float maxvy = 2f;
         public int minSize = 6;
         public int maxSize = 12;
-        public float speed = 24;
+        public float speed = 8;
         public int duration = 30;
         public int amount = 12;
 

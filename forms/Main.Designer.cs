@@ -36,15 +36,16 @@
             this.loadProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buildToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.buildRefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buildSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addGameObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addColliderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addEmitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildRefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +57,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewDocumentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDevToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadStandardResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadFrameworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,8 +66,6 @@
             this.browserContainer = new System.Windows.Forms.Panel();
             this.hierarchy = new System.Windows.Forms.TreeView();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.addEmitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reloadStandardResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -102,14 +102,14 @@
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newProjectToolStripMenuItem.Text = "New Project";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // loadProjectToolStripMenuItem
             // 
             this.loadProjectToolStripMenuItem.Name = "loadProjectToolStripMenuItem";
-            this.loadProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.loadProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadProjectToolStripMenuItem.Text = "Load Project";
             this.loadProjectToolStripMenuItem.Click += new System.EventHandler(this.loadProjectToolStripMenuItem_Click);
             // 
@@ -117,7 +117,7 @@
             // 
             this.saveProjectToolStripMenuItem.Enabled = false;
             this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
-            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveProjectToolStripMenuItem.Text = "Save Project";
             this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.saveProjectToolStripMenuItem_Click);
             // 
@@ -125,41 +125,9 @@
             // 
             this.showProjectToolStripMenuItem.Enabled = false;
             this.showProjectToolStripMenuItem.Name = "showProjectToolStripMenuItem";
-            this.showProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.showProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showProjectToolStripMenuItem.Text = "Show Project";
             this.showProjectToolStripMenuItem.Click += new System.EventHandler(this.showProjectToolStripMenuItem_Click);
-            // 
-            // buildToolStripMenuItem
-            // 
-            this.buildToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.buildToolStripMenuItem1,
-            this.buildRefreshToolStripMenuItem,
-            this.buildSettingsToolStripMenuItem});
-            this.buildToolStripMenuItem.Enabled = false;
-            this.buildToolStripMenuItem.Name = "buildToolStripMenuItem";
-            this.buildToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.buildToolStripMenuItem.Text = "Build";
-            // 
-            // buildToolStripMenuItem1
-            // 
-            this.buildToolStripMenuItem1.Name = "buildToolStripMenuItem1";
-            this.buildToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.buildToolStripMenuItem1.Text = "Build Project";
-            this.buildToolStripMenuItem1.Click += new System.EventHandler(this.buildToolStripMenuItem1_Click);
-            // 
-            // buildRefreshToolStripMenuItem
-            // 
-            this.buildRefreshToolStripMenuItem.Name = "buildRefreshToolStripMenuItem";
-            this.buildRefreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.buildRefreshToolStripMenuItem.Text = "Build and Refresh";
-            this.buildRefreshToolStripMenuItem.Click += new System.EventHandler(this.buildRefreshToolStripMenuItem_Click);
-            // 
-            // buildSettingsToolStripMenuItem
-            // 
-            this.buildSettingsToolStripMenuItem.Name = "buildSettingsToolStripMenuItem";
-            this.buildSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.buildSettingsToolStripMenuItem.Text = "Build Settings";
-            this.buildSettingsToolStripMenuItem.Click += new System.EventHandler(this.buildSettingsToolStripMenuItem_Click);
             // 
             // gameToolStripMenuItem
             // 
@@ -177,30 +145,69 @@
             // addGameObjectToolStripMenuItem
             // 
             this.addGameObjectToolStripMenuItem.Name = "addGameObjectToolStripMenuItem";
-            this.addGameObjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addGameObjectToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addGameObjectToolStripMenuItem.Text = "Add GameObject";
             this.addGameObjectToolStripMenuItem.Click += new System.EventHandler(this.addGameObjectToolStripMenuItem_Click);
             // 
             // addColliderToolStripMenuItem
             // 
             this.addColliderToolStripMenuItem.Name = "addColliderToolStripMenuItem";
-            this.addColliderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addColliderToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addColliderToolStripMenuItem.Text = "Add Collider";
             this.addColliderToolStripMenuItem.Click += new System.EventHandler(this.addColliderToolStripMenuItem_Click);
             // 
             // addSpriteToolStripMenuItem
             // 
             this.addSpriteToolStripMenuItem.Name = "addSpriteToolStripMenuItem";
-            this.addSpriteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addSpriteToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addSpriteToolStripMenuItem.Text = "Add Sprite";
             this.addSpriteToolStripMenuItem.Click += new System.EventHandler(this.addSpriteToolStripMenuItem_Click);
             // 
             // addScriptToolStripMenuItem
             // 
             this.addScriptToolStripMenuItem.Name = "addScriptToolStripMenuItem";
-            this.addScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addScriptToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addScriptToolStripMenuItem.Text = "Add Script";
             this.addScriptToolStripMenuItem.Click += new System.EventHandler(this.addScriptToolStripMenuItem_Click);
+            // 
+            // addEmitterToolStripMenuItem
+            // 
+            this.addEmitterToolStripMenuItem.Name = "addEmitterToolStripMenuItem";
+            this.addEmitterToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.addEmitterToolStripMenuItem.Text = "Add Emitter";
+            this.addEmitterToolStripMenuItem.Click += new System.EventHandler(this.addEmitterToolStripMenuItem_Click);
+            // 
+            // buildToolStripMenuItem
+            // 
+            this.buildToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buildToolStripMenuItem1,
+            this.buildRefreshToolStripMenuItem,
+            this.buildSettingsToolStripMenuItem});
+            this.buildToolStripMenuItem.Enabled = false;
+            this.buildToolStripMenuItem.Name = "buildToolStripMenuItem";
+            this.buildToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.buildToolStripMenuItem.Text = "Build";
+            // 
+            // buildToolStripMenuItem1
+            // 
+            this.buildToolStripMenuItem1.Name = "buildToolStripMenuItem1";
+            this.buildToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
+            this.buildToolStripMenuItem1.Text = "Build Project";
+            this.buildToolStripMenuItem1.Click += new System.EventHandler(this.buildToolStripMenuItem1_Click);
+            // 
+            // buildRefreshToolStripMenuItem
+            // 
+            this.buildRefreshToolStripMenuItem.Name = "buildRefreshToolStripMenuItem";
+            this.buildRefreshToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.buildRefreshToolStripMenuItem.Text = "Build and Refresh";
+            this.buildRefreshToolStripMenuItem.Click += new System.EventHandler(this.buildRefreshToolStripMenuItem_Click);
+            // 
+            // buildSettingsToolStripMenuItem
+            // 
+            this.buildSettingsToolStripMenuItem.Name = "buildSettingsToolStripMenuItem";
+            this.buildSettingsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.buildSettingsToolStripMenuItem.Text = "Build Settings";
+            this.buildSettingsToolStripMenuItem.Click += new System.EventHandler(this.buildSettingsToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -309,6 +316,14 @@
             this.showDevToolsToolStripMenuItem.Text = "Show DevTools";
             this.showDevToolsToolStripMenuItem.Click += new System.EventHandler(this.showDevToolsToolStripMenuItem_Click);
             // 
+            // reloadStandardResourcesToolStripMenuItem
+            // 
+            this.reloadStandardResourcesToolStripMenuItem.Enabled = false;
+            this.reloadStandardResourcesToolStripMenuItem.Name = "reloadStandardResourcesToolStripMenuItem";
+            this.reloadStandardResourcesToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.reloadStandardResourcesToolStripMenuItem.Text = "Reload Resources";
+            this.reloadStandardResourcesToolStripMenuItem.Click += new System.EventHandler(this.reloadStandardResourcesToolStripMenuItem_Click);
+            // 
             // reloadFrameworkToolStripMenuItem
             // 
             this.reloadFrameworkToolStripMenuItem.Enabled = false;
@@ -381,21 +396,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(140, 537);
             this.panel1.TabIndex = 2;
-            // 
-            // addEmitterToolStripMenuItem
-            // 
-            this.addEmitterToolStripMenuItem.Name = "addEmitterToolStripMenuItem";
-            this.addEmitterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addEmitterToolStripMenuItem.Text = "Add Emitter";
-            this.addEmitterToolStripMenuItem.Click += new System.EventHandler(this.addEmitterToolStripMenuItem_Click);
-            // 
-            // reloadStandardResourcesToolStripMenuItem
-            // 
-            this.reloadStandardResourcesToolStripMenuItem.Enabled = false;
-            this.reloadStandardResourcesToolStripMenuItem.Name = "reloadStandardResourcesToolStripMenuItem";
-            this.reloadStandardResourcesToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.reloadStandardResourcesToolStripMenuItem.Text = "Reload Resources";
-            this.reloadStandardResourcesToolStripMenuItem.Click += new System.EventHandler(this.reloadStandardResourcesToolStripMenuItem_Click);
             // 
             // Main
             // 

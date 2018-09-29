@@ -72,7 +72,7 @@ namespace Lynx2DEngine.forms
 
         private void updateNumberLabel(object sender, EventArgs e)
         {
-            Point pos = new Point(0, menuStrip1.Size.Height);
+            Point pos = new Point(0, 0);
             int firstIndex = scriptCode.GetCharIndexFromPosition(pos);
             int firstLine = scriptCode.GetLineFromCharIndex(firstIndex);
             
@@ -87,20 +87,22 @@ namespace Lynx2DEngine.forms
             int largestSize = 0;
             for (int i = firstLine; i <= lastLine; i++)
             {
-                int id = i + 1;
+                string id = (i+1).ToString();
 
-                if (id.ToString().Length > largestSize) largestSize = id.ToString().Length;
+                if (id.Length > largestSize) largestSize = id.Length;
                 numberLabel.Text += id + ".\n";
             }
 
-            numberLabel.Size = new Size(28 + (largestSize - 1) * 10, Size.Height);
+            numberLabel.Size = new Size(28 + (largestSize - 1) * 10, Size.Height-menuStrip1.Size.Height);
         }
 
         private void scriptCode_VScroll(object sender, EventArgs e)
         {
             int d = scriptCode.GetPositionFromCharIndex(0).Y %
                                       (scriptCode.Font.Height + 1);
-            numberLabel.Location = new Point(0, d);
+            if (d < 0) d = 0;
+
+            numberLabel.Location = new Point(0, d+menuStrip1.Size.Height);
 
             updateNumberLabel(sender, e);
         }

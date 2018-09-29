@@ -48,6 +48,11 @@
             this.label7 = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.speed = new System.Windows.Forms.NumericUpDown();
+            this.visible = new System.Windows.Forms.CheckBox();
+            this.layer = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.duration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).BeginInit();
@@ -58,6 +63,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.minY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layer)).BeginInit();
             this.SuspendLayout();
             // 
             // label5
@@ -72,28 +79,28 @@
             // 
             // duration
             // 
-            this.duration.Location = new System.Drawing.Point(125, 160);
+            this.duration.Location = new System.Drawing.Point(84, 189);
             this.duration.Maximum = new decimal(new int[] {
             1000,
             0,
             0,
             0});
             this.duration.Name = "duration";
-            this.duration.Size = new System.Drawing.Size(72, 20);
+            this.duration.Size = new System.Drawing.Size(64, 20);
             this.duration.TabIndex = 53;
             this.duration.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.duration.ValueChanged += new System.EventHandler(this.duration_ValueChanged);
             // 
             // amount
             // 
-            this.amount.Location = new System.Drawing.Point(30, 160);
+            this.amount.Location = new System.Drawing.Point(14, 189);
             this.amount.Maximum = new decimal(new int[] {
             1000,
             0,
             0,
             0});
             this.amount.Name = "amount";
-            this.amount.Size = new System.Drawing.Size(72, 20);
+            this.amount.Size = new System.Drawing.Size(64, 20);
             this.amount.TabIndex = 52;
             this.amount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.amount.ValueChanged += new System.EventHandler(this.amount_ValueChanged);
@@ -101,7 +108,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(43, 144);
+            this.label1.Location = new System.Drawing.Point(22, 173);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
             this.label1.TabIndex = 51;
@@ -137,7 +144,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(133, 144);
+            this.label3.Location = new System.Drawing.Point(91, 173);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 13);
             this.label3.TabIndex = 55;
@@ -229,7 +236,7 @@
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel2.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel2.Location = new System.Drawing.Point(5, 224);
+            this.linkLabel2.Location = new System.Drawing.Point(5, 234);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(47, 13);
             this.linkLabel2.TabIndex = 66;
@@ -243,7 +250,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Red;
-            this.linkLabel1.Location = new System.Drawing.Point(50, 224);
+            this.linkLabel1.Location = new System.Drawing.Point(50, 234);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(38, 13);
             this.linkLabel1.TabIndex = 65;
@@ -252,11 +259,75 @@
             this.linkLabel1.VisitedLinkColor = System.Drawing.Color.Red;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(166, 173);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(38, 13);
+            this.label8.TabIndex = 68;
+            this.label8.Text = "Speed";
+            // 
+            // speed
+            // 
+            this.speed.Location = new System.Drawing.Point(154, 189);
+            this.speed.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.speed.Name = "speed";
+            this.speed.Size = new System.Drawing.Size(64, 20);
+            this.speed.TabIndex = 67;
+            this.speed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.speed.ValueChanged += new System.EventHandler(this.speed_ValueChanged);
+            // 
+            // visible
+            // 
+            this.visible.AutoSize = true;
+            this.visible.Checked = true;
+            this.visible.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.visible.Location = new System.Drawing.Point(148, 140);
+            this.visible.Name = "visible";
+            this.visible.Size = new System.Drawing.Size(56, 17);
+            this.visible.TabIndex = 69;
+            this.visible.Text = "Visible";
+            this.visible.UseVisualStyleBackColor = true;
+            this.visible.CheckedChanged += new System.EventHandler(this.visible_CheckedChanged);
+            // 
+            // layer
+            // 
+            this.layer.Location = new System.Drawing.Point(67, 137);
+            this.layer.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.layer.Name = "layer";
+            this.layer.Size = new System.Drawing.Size(72, 20);
+            this.layer.TabIndex = 71;
+            this.layer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.layer.ValueChanged += new System.EventHandler(this.layer_ValueChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(4, 139);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(33, 13);
+            this.label9.TabIndex = 70;
+            this.label9.Text = "Layer";
+            // 
             // EmitterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 246);
+            this.ClientSize = new System.Drawing.Size(234, 256);
+            this.Controls.Add(this.layer);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.visible);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.speed);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.maxSize);
@@ -278,8 +349,8 @@
             this.Controls.Add(this.label2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(250, 285);
-            this.MinimumSize = new System.Drawing.Size(250, 285);
+            this.MaximumSize = new System.Drawing.Size(250, 295);
+            this.MinimumSize = new System.Drawing.Size(250, 295);
             this.Name = "EmitterForm";
             this.Text = "EmitterForm";
             this.Load += new System.EventHandler(this.EmitterForm_Load);
@@ -293,6 +364,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.minY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.speed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -319,5 +392,10 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown speed;
+        private System.Windows.Forms.CheckBox visible;
+        private System.Windows.Forms.NumericUpDown layer;
+        private System.Windows.Forms.Label label9;
     }
 }

@@ -41,6 +41,8 @@ namespace Lynx2DEngine.forms
             maxSize.Value = obj.maxSize;
             amount.Value = obj.amount;
             duration.Value = obj.duration;
+            speed.Value = (decimal)obj.speed;
+            layer.Value = obj.layer;
 
             System.Threading.Thread.Sleep(10);
 
@@ -81,32 +83,18 @@ namespace Lynx2DEngine.forms
         {
             if (!canDetect) return;
 
-            try
-            {
-                Engine.SetEngineObjectPosition(engineId, (int)x.Value, (int)y.Value);
+            Engine.SetEngineObjectPosition(engineId, (int)x.Value, (int)y.Value);
 
-                Engine.ExecuteScript(obj.Variable() + ".Position(" + x.Value + ", " + y.Value + ");");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-            }
+            Engine.ExecuteScript(obj.Variable() + ".Position(" + x.Value + ", " + y.Value + ");");
         }
 
         private void SetSetup()
         {
             if (!canDetect) return;
 
-            try
-            {
-                Engine.SetEngineObjectSetup(engineId, (float)minX.Value, (float)maxX.Value, (float)minY.Value, (float)maxY.Value, (int)minSize.Value, (int)maxSize.Value);
+            Engine.SetEngineObjectSetup(engineId, (float)minX.Value, (float)maxX.Value, (float)minY.Value, (float)maxY.Value, (int)minSize.Value, (int)maxSize.Value);
 
-                Engine.ExecuteScript(obj.Variable() + ".Setup(" + minX.Value + ", " + maxX.Value + ", " + minY.Value + ", " + maxY.Value + ", " + minSize.Value + ", " + maxSize.Value + ");");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-            }
+            Engine.ExecuteScript(obj.Variable() + ".Setup(" + minX.Value + ", " + maxX.Value + ", " + minY.Value + ", " + maxY.Value + ", " + minSize.Value + ", " + maxSize.Value + ");");
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -164,30 +152,46 @@ namespace Lynx2DEngine.forms
 
         private void amount_ValueChanged(object sender, EventArgs e)
         {
-            try
-            {
-                Engine.SetEngineObjectAmount(engineId, (int)amount.Value);
+            Engine.SetEngineObjectAmount(engineId, (int)amount.Value);
 
-                Engine.ExecuteScript(obj.Variable() + ".AMOUNT = " + amount.Value + ";");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Lynx2D Engine - Exception");
-            }
+            Engine.ExecuteScript(obj.Variable() + ".AMOUNT = " + amount.Value + ";");
         }
 
         private void duration_ValueChanged(object sender, EventArgs e)
         {
-            try
-            {
-                Engine.SetEngineObjectDuration(engineId, (int)duration.Value);
+            Engine.SetEngineObjectDuration(engineId, (int)duration.Value);
 
-                Engine.ExecuteScript(obj.Variable() + ".DURATION = " + duration.Value + ";");
-            }
-            catch (Exception ex)
+            Engine.ExecuteScript(obj.Variable() + ".DURATION = " + duration.Value + ";");
+        }
+
+        private void visible_CheckedChanged(object sender, EventArgs e)
+        {
+            Engine.SetEngineObjectVisible(engineId, visible.Checked);
+
+            if (!visible.Checked)
             {
-                MessageBox.Show(ex.Message, "Lynx2D Engine - Exception");
+                Engine.ExecuteScript(obj.Variable() + ".Hide()");
+                layer.Enabled = false;
             }
+            else
+            {
+                Engine.ExecuteScript(obj.Variable() + ".Show(" + layer.Value + ");");
+                layer.Enabled = true;
+            }
+        }
+
+        private void layer_ValueChanged(object sender, EventArgs e)
+        {
+            Engine.SetEngineObjectLayer(engineId, (int)layer.Value);
+
+            Engine.ExecuteScript(obj.Variable() + ".Hide().Show(" + layer.Value + ");");
+        }
+
+        private void speed_ValueChanged(object sender, EventArgs e)
+        {
+            Engine.SetEngineObjectSpeed(engineId, (float)speed.Value);
+
+            Engine.ExecuteScript(obj.Variable() + ".Speed(" + speed.Value + ");");
         }
     }
 }

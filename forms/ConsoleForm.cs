@@ -22,7 +22,14 @@ namespace Lynx2DEngine
 
         public void AddOutput(string msg)
         {
-            outputText.Text += TimeFormat() + msg + "\n";
+            try
+            {
+                outputText.Text += TimeFormat() + msg + "\n";
+            }
+            catch (Exception e)
+            {
+                //Do something with this exception
+            }
         }
     }
 }

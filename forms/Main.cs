@@ -474,12 +474,16 @@ namespace Lynx2DEngine
             }
 
             string spriteCode = "var Sprite" + sprite + " = new lx.Sprite('res/lynx2d/particle.png');";
-            string emCode = "var Emitter" + em + " = new lx.Emitter(Sprite" + sprite + ", 0, 0, 12, 24);";
-
             int spriteR = Engine.AddEngineObject(EngineObjectType.Sprite, spriteCode, -1, em);
+
+            EngineObject spriteEO = Engine.GetEngineObject(spriteR);
+            string emCode =
+                "var Emitter" + em + " = new lx.Emitter(Sprite" + sprite + ", 0, 0, " + spriteEO.amount + ", " + spriteEO.duration + ")" +
+                ".Speed(" + spriteEO.speed + ")" +
+                ".Setup(" + spriteEO.minvx + ", " + spriteEO.maxvx + ", " + spriteEO.minvy + ", " + spriteEO.maxvy + ", " + spriteEO.minSize + ", " + spriteEO.maxSize + ");";
             int emR = Engine.AddEngineObject(EngineObjectType.Emitter, emCode, sprite, -1);
 
-            Engine.SetEngineObjectSource(emR, "res/lynx2d/particle.png");
+            Engine.SetEngineObjectSource(spriteR, "res/lynx2d/particle.png");
 
             if (spriteR != sprite)
                 MessageBox.Show("Invalid id used while creating a Sprite.", "Lynx2D Engine - Warning");

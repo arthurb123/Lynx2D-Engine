@@ -158,7 +158,7 @@ namespace Lynx2DEngine
                 {
                     using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
                     {
-                        w.Write("<html><head><link id='icon' type='image / ico' rel='shortcut icon'/><meta charset='utf-8'/></head><body><script type='text/javascript' src='data/lynx2d.js'></script><script type='text/javascript' src='data/game.js'></script></body></html>");
+                        w.Write("<html>\n<head>\n  <link id='icon' type='image / ico' rel='shortcut icon'/>\n  <meta charset='utf-8'/>\n</head>\n<body>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  <script type='text/javascript' src='data/game.js'></script>\n</body>\n</html>");
                         w.Dispose();
                         fs.Dispose();
                     }
