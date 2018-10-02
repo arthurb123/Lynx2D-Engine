@@ -535,3 +535,10 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.exe
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.pdb
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.csprojAssemblyReference.cache
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.EmitterForm.resources
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.TilemapForm.resources
+D:\lynx2d engine\bin\x64\Debug\resources\particle.png
+D:\lynx2d engine\bin\x64\Debug\resources\pointer.png
+D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.BuildSettingsForm.resources
+D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.EmitterForm.resources
+D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.GridForm.resources
+D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.TilemapForm.resources

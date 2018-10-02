@@ -88,7 +88,7 @@ function Lynx2D() {
                 if (obj != undefined) {
                     if (obj.TYPE == 'key' && lx.CONTEXT.CONTROLLER.KEYS[obj.EVENT] || obj.TYPE == 'mousebutton' && lx.CONTEXT.CONTROLLER.MOUSE.BUTTONS[obj.EVENT]) {
                         for (var i = 0; i < obj.CALLBACK.length; i++) {
-                            if (obj.CALLBACK[i] != undefined) obj.CALLBACK[i]();
+                            if (obj.CALLBACK[i] != undefined) obj.CALLBACK[i](lx.CONTEXT.CONTROLLER.MOUSE.POS);
                         }   
                     }
                 }

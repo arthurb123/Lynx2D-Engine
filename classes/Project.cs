@@ -17,6 +17,7 @@ namespace Lynx2DEngine
 
         public static void Load(bool needsName)
         {
+            form.killChildren();
             string old_cur = cur;
 
             if (!Manager.CheckDirectory("projects", false))

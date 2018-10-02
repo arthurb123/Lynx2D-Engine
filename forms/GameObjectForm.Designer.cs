@@ -195,6 +195,7 @@
             // 
             // sprite
             // 
+            this.sprite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.sprite.FormattingEnabled = true;
             this.sprite.Location = new System.Drawing.Point(70, 124);
             this.sprite.Name = "sprite";
@@ -204,6 +205,7 @@
             // 
             // collider
             // 
+            this.collider.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.collider.FormattingEnabled = true;
             this.collider.Location = new System.Drawing.Point(69, 156);
             this.collider.Name = "collider";

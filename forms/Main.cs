@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
@@ -191,6 +192,13 @@ namespace Lynx2DEngine
                         emit.Initialize(obj.id);
 
                         break;
+                    case EngineObjectType.Tilemap:
+                        TilemapForm tilemap = new TilemapForm();
+
+                        tilemap.Show();
+                        tilemap.Initialize(obj.id);
+
+                        break;
                 }
             }
             catch (Exception exc)
@@ -237,6 +245,9 @@ namespace Lynx2DEngine
                             r = AddEmitter();
                             result = r[0];
                             child = r[1];
+                            break;
+                        case EngineObjectType.Tilemap:
+                            result = AddTilemap();
                             break;
                     }
 
@@ -378,6 +389,19 @@ namespace Lynx2DEngine
             }
         }
 
+        private void addTilemapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                AddTilemap();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                SetStatus("Exception occurred while adding Tilemap", Main.StatusType.Warning);
+            }
+        }
+
         private List<int> AddGameObject()
         {
             int sprite = Engine.GetEngineObjects().Length;
@@ -504,6 +528,15 @@ namespace Lynx2DEngine
             string code = "//JavaScript code";
 
             int result = Engine.AddEngineObject(EngineObjectType.Script, code, -1, -1);
+
+            UpdateHierarchy();
+
+            return result;
+        }
+
+        private int AddTilemap()
+        {
+            int result = Engine.AddEngineObject(EngineObjectType.Tilemap, "//Tilemap code", -1, -1);
 
             UpdateHierarchy();
 
@@ -650,6 +683,7 @@ namespace Lynx2DEngine
                 Camera.Remove();
                 Pointer.Remove();
                 Grid.Remove();
+                Tilemapper.RemoveAll();
 
                 browser.Load(Project.WorkDirectory() + "/index.html");
             }
@@ -669,6 +703,8 @@ namespace Lynx2DEngine
 
             browser = new ChromiumWebBrowser("about:blank");
             browser.LoadingStateChanged += OnBrowserLoadingStateChanged;
+            browser.ConsoleMessage += OnBrowserConsoleMessage;
+            browser.MenuHandler = new CustomMenuHandler();
 
             browserContainer.Controls.Add(browser);
             browser.Dock = DockStyle.Fill;
@@ -684,7 +720,26 @@ namespace Lynx2DEngine
                 debugToolStripMenuItem_Click(sender, args);
                 drawCollidersToolStripMenuItem_Click(sender, args);
                 imageSmoothingToolStripMenuItem_Click(sender, args);
+
+                Tilemapper.InjectAll();
             }
+        }
+
+        private void OnBrowserConsoleMessage(object sender, ConsoleMessageEventArgs args)
+        {
+            if (args.Message.Contains("Lynx2D"))
+                return;
+            else if (args.Message.Contains("ENGINE_INTERACTION"))
+            {
+                string msg = args.Message.Replace("ENGINE_INTERACTION_", "");
+
+                //Post msg to all console message handlers
+                Tilemapper.HandleConsoleInteraction(msg);
+
+                return;
+            }
+
+            AddToConsole(args.Message);
         }
 
         public void AddToConsole(string msg)
@@ -717,6 +772,46 @@ namespace Lynx2DEngine
         {
             Pointer.Remove();
         }
+
+        public void killChildren()
+        {
+            try
+            {
+                FormCollection fc = Application.OpenForms;
+
+                foreach (Form frm in fc.Cast<Form>().ToList())
+                    if (!(frm is Main)) frm.Close();
+            }
+            catch (Exception e)
+            {
+                SetStatus("Could not close all children.", StatusType.Warning);
+                MessageBox.Show(e.Message);
+            }
+        }
         #endregion
+    }
+}
+
+public class CustomMenuHandler : CefSharp.IContextMenuHandler
+{
+    public void OnBeforeContextMenu(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
+    {
+        model.Clear();
+    }
+
+    public bool OnContextMenuCommand(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, CefMenuCommand commandId, CefEventFlags eventFlags)
+    {
+
+        return false;
+    }
+
+    public void OnContextMenuDismissed(IWebBrowser browserControl, IBrowser browser, IFrame frame)
+    {
+
+    }
+
+    public bool RunContextMenu(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model, IRunContextMenuCallback callback)
+    {
+        return false;
     }
 }

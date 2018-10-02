@@ -59,7 +59,7 @@ namespace Lynx2DEngine
                     sprite.Items.Add(o);
                 }
 
-            sprite.SelectedText = obj.sprite;
+            sprite.Text = obj.sprite;
         }
 
         private void updateColliderSelection()
@@ -73,7 +73,7 @@ namespace Lynx2DEngine
                     collider.Items.Add(o);
                 }
 
-            collider.SelectedText = obj.collider;
+            collider.Text = obj.collider;
         }
 
         private void UpdateTitle()

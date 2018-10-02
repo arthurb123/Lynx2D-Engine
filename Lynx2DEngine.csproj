@@ -112,6 +112,8 @@
     <Compile Include="classes\Grid.cs" />
     <Compile Include="classes\Pointer.cs" />
     <Compile Include="classes\Syntax.cs" />
+    <Compile Include="classes\Tilemap.cs" />
+    <Compile Include="classes\Tilemapper.cs" />
     <Compile Include="forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,6 +179,12 @@
     <Compile Include="forms\ScriptForm.Designer.cs">
       <DependentUpon>ScriptForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\TilemapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\TilemapForm.Designer.cs">
+      <DependentUpon>TilemapForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="forms\SpriteForm.cs">
       <SubType>Form</SubType>
@@ -222,6 +230,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\SpriteForm.resx">
       <DependentUpon>SpriteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\TilemapForm.resx">
+      <DependentUpon>TilemapForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

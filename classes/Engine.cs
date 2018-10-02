@@ -12,7 +12,7 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static EngineObject[] objects = new EngineObject[0];
+        public static EngineObject[] objects = new EngineObject[0];
         public static BuildSettings bSettings = new BuildSettings();
         public static EngineSettings eSettings = new EngineSettings();
 
@@ -39,6 +39,9 @@ namespace Lynx2DEngine
 
             if (objects[id].child != -1) RemoveEngineObject(objects[id].child, false);
             if (objects[id].parent != -1) objects[objects[id].parent].child = -1;
+
+            if (objects[id].type == EngineObjectType.Tilemap)
+                Tilemapper.RemoveMap(objects[id].tileMap);
 
             objects[id] = null;
 
@@ -158,7 +161,7 @@ namespace Lynx2DEngine
                 Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.OpenOrCreate);
                 BinaryFormatter bf = new BinaryFormatter();
 
-                bf.Serialize(stream, new EngineState(objects, bSettings, eSettings));
+                bf.Serialize(stream, new EngineState(objects, bSettings, eSettings, Tilemapper.maps));
                 stream.Close();
             }
             catch (Exception e)
@@ -213,6 +216,7 @@ namespace Lynx2DEngine
             objects = new EngineObject[0];
             bSettings = new BuildSettings();
             eSettings = new EngineSettings();
+            Tilemapper.Clear();
 
             try
             {
@@ -226,6 +230,7 @@ namespace Lynx2DEngine
                 if (temp.objects != null) objects = temp.objects;
                 if (temp.bSettings != null) bSettings = temp.bSettings;
                 if (temp.eSettings != null) eSettings = temp.eSettings;
+                if (temp.eTileMaps != null) Tilemapper.LoadFromEngineState(temp.eTileMaps);
 
                 stream.Close();
             }
@@ -241,26 +246,27 @@ namespace Lynx2DEngine
             objects = new EngineObject[0];
             bSettings = new BuildSettings();
             eSettings = new EngineSettings();
+            Tilemapper.Clear();
         }
 
         public static async void ExecuteScript(string script)
         {
             JavascriptResponse response = await form.browser.EvaluateScriptAsync(script);
 
-            if (response.Message != null && response.Message != string.Empty)
+            /*if (response.Message != null && response.Message != string.Empty)
             {
                 form.AddToConsole(response.Message);
-            }
+            }*/
         }
 
         public static async Task<string> ExecuteScriptWithResult(string script)
         {
             JavascriptResponse response = await form.browser.EvaluateScriptAsync(script);
 
-            if (response.Message != null && response.Message != string.Empty)
+            /*if (response.Message != null && response.Message != string.Empty)
             {
                 form.AddToConsole(response.Message);
-            }
+            }*/
 
             return response.Result.ToString();
         }
@@ -458,16 +464,18 @@ namespace Lynx2DEngine
     [Serializable]
     class EngineState
     {
-        public EngineState (EngineObject[] objects, BuildSettings bSettings, EngineSettings eSettings)
+        public EngineState (EngineObject[] objects, BuildSettings bSettings, EngineSettings eSettings, Tilemap[] eTileMaps) 
         {
             this.objects = objects;
             this.bSettings = bSettings;
             this.eSettings = eSettings;
+            this.eTileMaps = eTileMaps;
         }
 
         public EngineObject[] objects;
         public BuildSettings bSettings;
         public EngineSettings eSettings;
+        public Tilemap[] eTileMaps;
     }
 
     [Serializable]
@@ -513,6 +521,11 @@ namespace Lynx2DEngine
                     Engine.ExecuteScript(Variable() + ".Show(0);"); ;
 
                     break;
+                case EngineObjectType.Tilemap:
+                    name = "Tilemap";
+                    tileMap = Tilemapper.AddMap(new Tilemap(10, 10), true);
+
+                    break;
             }
         }
 
@@ -551,6 +564,11 @@ namespace Lynx2DEngine
                     name = "Emitter";
                     sprite = "Sprite" + this.child;
                     Engine.ExecuteScript(Variable() + ".Show(0);"); ;
+
+                    break;
+                case EngineObjectType.Tilemap:
+                    name = "Tilemap";
+                    tileMap = Tilemapper.AddMap(new Tilemap(10, 10), true);
 
                     break;
             }
@@ -656,6 +674,8 @@ namespace Lynx2DEngine
         public bool isStatic = false;
         public bool isSolid = true;
         public bool applied = false;
+
+        public int tileMap = -1;
     }
 
     [Serializable]
@@ -693,6 +713,7 @@ namespace Lynx2DEngine
         Sprite,
         Script,
         Collider,
-        Emitter
+        Emitter,
+        Tilemap
     }
 }
