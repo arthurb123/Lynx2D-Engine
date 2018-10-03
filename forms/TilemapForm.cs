@@ -11,6 +11,7 @@ namespace Lynx2DEngine.forms
 
         private int engineId;
         private EngineObject obj;
+        private bool canDetect = false;
 
         private Point selected = default(Point);
 
@@ -36,6 +37,10 @@ namespace Lynx2DEngine.forms
                 loadSelectedSprite(false);
 
             OnResize(null);
+
+            System.Threading.Thread.Sleep(10);
+
+            canDetect = true;
         }
         
         private void UpdateTitle()
@@ -46,6 +51,8 @@ namespace Lynx2DEngine.forms
 
         private void sprite_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (!canDetect) return;
+
             if (tm == null) return;
 
             loadSelectedSprite(true);
@@ -169,13 +176,18 @@ namespace Lynx2DEngine.forms
 
         private void tilesize_ValueChanged(object sender, EventArgs e)
         {
+            if (!canDetect) return;
+
             tm.tilesize = (int)tilesize.Value;
 
             Tilemapper.RefreshEditingEvent();
+            Tilemapper.SetCurrentTile();
         }
 
         private void layer_ValueChanged(object sender, EventArgs e)
         {
+            if (!canDetect) return;
+
             Tilemapper.AdjustLayer(tm.id, (int)layer.Value);
             Tilemapper.ConvertAndSetMap(tm);
         }
@@ -195,16 +207,22 @@ namespace Lynx2DEngine.forms
 
         private void x_ValueChanged(object sender, EventArgs e)
         {
+            if (!canDetect) return;
+
             tm.x = (int)x.Value;
 
             Tilemapper.ConvertAndSetMap(tm);
+            Tilemapper.SetCurrentTile();
         }
 
         private void y_ValueChanged(object sender, EventArgs e)
         {
+            if (!canDetect) return;
+
             tm.y = (int)y.Value;
 
             Tilemapper.ConvertAndSetMap(tm);
+            Tilemapper.SetCurrentTile();
         }
     }
 }

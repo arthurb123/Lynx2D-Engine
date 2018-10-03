@@ -1,4 +1,4 @@
-﻿lx.Initialize('stargazing'); lx.Smoothing(false); lx.Start(60);var StarSprite = new lx.Sprite('res/star.png');function Star() {
+﻿lx.Initialize('stargazing'); lx.Smoothing(false); lx.Start(60);var StarSprite = new lx.Sprite('res/star.png'); function Star() {
 	this.x = Math.round(-Math.random()*lx.GetDimensions().width+Math.random()*lx.GetDimensions().width);
 	this.y = Math.round(-Math.random()*lx.GetDimensions().height+Math.random()*lx.GetDimensions().height);
 	this.z = Math.round(Math.random()*lx.GetDimensions().width);

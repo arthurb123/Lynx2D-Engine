@@ -41,6 +41,7 @@ namespace Lynx2DEngine.forms
  
             visible.Checked = obj.visible;
             isStatic.Checked = obj.isStatic;
+            solid.Checked = obj.isSolid;
 
             System.Threading.Thread.Sleep(10);
 

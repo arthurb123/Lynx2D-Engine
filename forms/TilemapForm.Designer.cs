@@ -146,6 +146,7 @@
             // 
             // linkLabel2
             // 
+            this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
@@ -161,6 +162,7 @@
             // 
             // linkLabel1
             // 
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
@@ -176,26 +178,16 @@
             // 
             // x
             // 
-            this.x.Location = new System.Drawing.Point(32, 5);
-            this.x.Maximum = new decimal(new int[] {
-            10000,
+            this.x.Increment = new decimal(new int[] {
             0,
-            0,
-            0});
-            this.x.Minimum = new decimal(new int[] {
-            1,
             0,
             0,
             0});
+            this.x.Location = new System.Drawing.Point(36, 6);
             this.x.Name = "x";
             this.x.Size = new System.Drawing.Size(70, 20);
             this.x.TabIndex = 40;
             this.x.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.x.Value = new decimal(new int[] {
-            64,
-            0,
-            0,
-            0});
             this.x.ValueChanged += new System.EventHandler(this.x_ValueChanged);
             // 
             // label4
@@ -209,26 +201,16 @@
             // 
             // y
             // 
+            this.y.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.y.Location = new System.Drawing.Point(137, 5);
-            this.y.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.y.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.y.Name = "y";
             this.y.Size = new System.Drawing.Size(70, 20);
             this.y.TabIndex = 42;
             this.y.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.y.Value = new decimal(new int[] {
-            64,
-            0,
-            0,
-            0});
             this.y.ValueChanged += new System.EventHandler(this.y_ValueChanged);
             // 
             // label5

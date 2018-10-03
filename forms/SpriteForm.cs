@@ -44,9 +44,9 @@ namespace Lynx2DEngine
             }
             clipped.Checked = obj.clipped;
 
-            GetSpriteSize();
-
             System.Threading.Thread.Sleep(10);
+
+            GetSpriteSize();
 
             canDetect = true;
         }

@@ -88,7 +88,7 @@ function Lynx2D() {
                 if (obj != undefined) {
                     if (obj.TYPE == 'key' && lx.CONTEXT.CONTROLLER.KEYS[obj.EVENT] || obj.TYPE == 'mousebutton' && lx.CONTEXT.CONTROLLER.MOUSE.BUTTONS[obj.EVENT]) {
                         for (var i = 0; i < obj.CALLBACK.length; i++) {
-                            if (obj.CALLBACK[i] != undefined) obj.CALLBACK[i]();
+                            if (obj.CALLBACK[i] != undefined) obj.CALLBACK[i](lx.CONTEXT.CONTROLLER.MOUSE.POS);
                         }   
                     }
                 }
@@ -155,7 +155,10 @@ function Lynx2D() {
                     if (obj != undefined) obj.RENDER();
                 });
                 
-                if (this.LAYER_DRAW_EVENTS[i] != undefined) this.LAYER_DRAW_EVENTS[i](lx.CONTEXT.GRAPHICS);
+                if (this.LAYER_DRAW_EVENTS[i] != undefined) {
+                    for (var ii = 0; ii < this.LAYER_DRAW_EVENTS[i].length; ii++)
+                        if (this.LAYER_DRAW_EVENTS[i][ii] != undefined) this.LAYER_DRAW_EVENTS[i][ii](lx.CONTEXT.GRAPHICS);
+                }
             }
             
             //Debug
@@ -207,7 +210,7 @@ function Lynx2D() {
         },
         ADD_EVENT: function(TYPE, EVENT, CALLBACK) {
             for (var i = 0; i < this.EVENTS.length; i++) {
-                if (this.EVENTS[i].TYPE == TYPE && this.EVENTS[i].EVENT == EVENT) {
+                if (this.EVENTS[i] != undefined && this.EVENTS[i].TYPE == TYPE && this.EVENTS[i].EVENT == EVENT) {
                     this.EVENTS[i].CALLBACK[this.EVENTS[i].CALLBACK.length] = CALLBACK;
                     return;   
                 }
@@ -254,8 +257,8 @@ function Lynx2D() {
         TRANSLATE_FROM_FOCUS: function(POS) {
             if (this.FOCUS == undefined) return POS;
             else return {
-                X: POS.X-this.FOCUS.Position().X+lx.GetDimensions().width/2-this.FOCUS.Size().W/2,
-                Y: POS.Y-this.FOCUS.Position().Y+lx.GetDimensions().height/2-this.FOCUS.Size().H/2
+                X: Math.round(POS.X-this.FOCUS.Position().X+lx.GetDimensions().width/2-this.FOCUS.Size().W/2),
+                Y: Math.round(POS.Y-this.FOCUS.Position().Y+lx.GetDimensions().height/2-this.FOCUS.Size().H/2)
             };
         },
         ON_SCREEN: function(POS, SIZE) {
@@ -269,7 +272,16 @@ function Lynx2D() {
         },
         ADD_LAYER_DRAW_EVENT: function(LAYER, CALLBACK) {
             if (this.BUFFER[LAYER] == undefined) this.BUFFER[LAYER] = [];
-            this.LAYER_DRAW_EVENTS[LAYER] = CALLBACK;
+            if (this.LAYER_DRAW_EVENTS[LAYER] == undefined) this.LAYER_DRAW_EVENTS[LAYER] = [];
+            
+            for (var i = 0; i < this.LAYER_DRAW_EVENTS[LAYER].length+1; i++) {
+                if (this.LAYER_DRAW_EVENTS[LAYER][i] == undefined) {
+                    this.LAYER_DRAW_EVENTS[LAYER][i] = CALLBACK;
+                    return i;
+                }
+            }
+            
+            return -1;
         },
         CLEAR_LAYER_DRAW_EVENT: function(LAYER) {
             this.LAYER_DRAW_EVENTS[LAYER] = undefined;  
