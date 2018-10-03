@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine.forms
@@ -34,6 +28,8 @@ namespace Lynx2DEngine.forms
 
             tilesize.Value = tm.tilesize;
             layer.Value = tm.layer;
+            x.Value = tm.x;
+            y.Value = tm.y;
             updateSpriteSelection();
 
             if (tm.curSprite != string.Empty)
@@ -73,6 +69,11 @@ namespace Lynx2DEngine.forms
 
         private void TilemapForm_Load(object sender, EventArgs e)
         {
+            x.Maximum = Decimal.MaxValue;
+            y.Maximum = Decimal.MaxValue;
+            x.Minimum = -Decimal.MaxValue;
+            y.Minimum = -Decimal.MaxValue;
+
             tileSelection.Paint += new PaintEventHandler(DrawTileMap);
             Resize += new EventHandler(ResizeTileMap);
             FormClosing += new FormClosingEventHandler(TilemapForm_Closing);
@@ -190,6 +191,20 @@ namespace Lynx2DEngine.forms
             Engine.RenameEngineObject(engineId, Input.Prompt("Enter the new name", "Rename " + obj.Variable()));
 
             UpdateTitle();
+        }
+
+        private void x_ValueChanged(object sender, EventArgs e)
+        {
+            tm.x = (int)x.Value;
+
+            Tilemapper.ConvertAndSetMap(tm);
+        }
+
+        private void y_ValueChanged(object sender, EventArgs e)
+        {
+            tm.y = (int)y.Value;
+
+            Tilemapper.ConvertAndSetMap(tm);
         }
     }
 }

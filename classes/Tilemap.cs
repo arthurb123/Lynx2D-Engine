@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine
@@ -11,6 +10,8 @@ namespace Lynx2DEngine
         public int layer = 0;
         public int id = 0;
         public int tilesize = 64;
+        public int x = 0,
+                   y = 0;
 
         public string curSprite = string.Empty;
 
@@ -37,6 +38,9 @@ namespace Lynx2DEngine
 
         public void SetTile(int x, int y, Tile t)
         {
+            x -= this.x;
+            y -= this.y;
+
             try
             {
                 if (x >= map.GetLength(0))
@@ -57,6 +61,9 @@ namespace Lynx2DEngine
 
         public void RemoveTile(int x, int y)
         {
+            x -= this.x;
+            y -= this.y;
+
             try
             {
                 map[x, y] = new Tile();

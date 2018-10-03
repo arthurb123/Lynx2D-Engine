@@ -34,6 +34,7 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.versionText = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -80,18 +81,30 @@
             // 
             this.versionText.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.versionText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.versionText.Location = new System.Drawing.Point(40, 29);
+            this.versionText.Location = new System.Drawing.Point(40, 33);
             this.versionText.Name = "versionText";
             this.versionText.Size = new System.Drawing.Size(219, 14);
             this.versionText.TabIndex = 4;
             this.versionText.Text = "Version";
             this.versionText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(83, 119);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(132, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "lythumn@vps.transip.email";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 121);
+            this.ClientSize = new System.Drawing.Size(314, 141);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.versionText);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.linkLabel1);
@@ -99,8 +112,8 @@
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(330, 160);
-            this.MinimumSize = new System.Drawing.Size(330, 160);
+            this.MaximumSize = new System.Drawing.Size(330, 180);
+            this.MinimumSize = new System.Drawing.Size(330, 180);
             this.Name = "AboutForm";
             this.Text = "Lynx2D Engine - About";
             this.Load += new System.EventHandler(this.AboutForm_Load);
@@ -116,5 +129,6 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label versionText;
+        private System.Windows.Forms.Label label4;
     }
 }
