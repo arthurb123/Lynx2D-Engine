@@ -20,12 +20,34 @@ namespace Lynx2DEngine
             Array.Resize(ref injected, maps.Length);
         }
 
+        public static string ToBuildCode(string var, int map)
+        {
+            Tilemap tm = maps[map];
+
+            string r = "var " + var + " = lx.GAME.ADD_LAYER_DRAW_EVENT(" + tm.layer + ", function(gfx) {";
+
+            for (int i = 0; i < tm.map.GetLength(0); i++)
+                for (int j = 0; j < tm.map.GetLength(1); j++)
+                {
+                    Tile el = tm.map[i, j];
+
+                    if (el != null && el.build)
+                        r += "lx.DrawSprite(" + el.sprite + ".Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + ")," +
+                                i * tm.tilesize + ", " + j * tm.tilesize + ", " + el.cW + ", " + el.cH + ");";
+                }
+
+            r += "});\n";
+
+            return r;
+        }
+
         public static void Clear()
         {
+            RemoveAll();
+
             injected = new bool[0];
             maps = new Tilemap[0];
             selected = null;
-            StopEditing();
         }
 
         public static void InjectAll()
@@ -70,6 +92,8 @@ namespace Lynx2DEngine
         public static void InjectMap(Tilemap tm)
         {
             if (injected[tm.id]) return;
+
+            //Get the variable name
 
             Engine.ExecuteScript("var engineTileMap" + tm.id + "RenderID;");
             injected[tm.id] = true;
@@ -169,9 +193,17 @@ namespace Lynx2DEngine
             editing = -1;
         }
 
-        private static void SetCurrentTile()
+        public static void SetCurrentTile()
         {
             Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + selectedLayer + "][engineTileMapperRenderID] = function(gfx) {" +
+                                    "gfx.save();" +
+                                    "gfx.lineWidth = 2;" +
+                                    "gfx.strokeStyle = 'purple';" +
+                                    "var tPos = { X: 0, Y: 0 };" +
+                                    "if (lx.GAME.FOCUS != undefined) " +
+                                        "tPos = lx.GAME.TRANSLATE_FROM_FOCUS(tPos);" +
+                                    "gfx.strokeRect(tPos.X, tPos.Y, " + (maps[editing].map.GetLength(1)*maps[editing].tilesize) + ", " + (maps[editing].map.GetLength(0) * maps[editing].tilesize) + ");" +
+                                    "gfx.restore();" +
                                     "var center = { X: lx.GetDimensions().width/2, Y: lx.GetDimensions().height/2 };" +
                                     "if (lx.GAME.FOCUS != undefined) center = lx.GAME.FOCUS.POS;" +
                                     "lx.DrawSprite(" + selected.sprite + ".Clip(" +
@@ -192,11 +224,9 @@ namespace Lynx2DEngine
             if (x < 0 || y < 0)
             {
                 MessageBox.Show("Tilemaps do not support negative values (yet).", "Lynx2D Engine - Exception");
-                return;
             }
 
             maps[editing].SetTile(x, y, selected);
-            ConvertAndSetMap(maps[editing]);
         }
 
         public static void RemoveTile(int x, int y)

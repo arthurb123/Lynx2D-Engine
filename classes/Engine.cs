@@ -85,7 +85,7 @@ namespace Lynx2DEngine
 
                 if (objects[id].collider != string.Empty)
                     objects[id].buildCode += variable + ".ApplyCollider(" + objects[id].collider + "); ";
-                
+
                 if (objects[id].visible)
                     objects[id].buildCode += variable + ".Show(" + objects[id].layer + "); ";
             }
@@ -124,6 +124,7 @@ namespace Lynx2DEngine
                     objects[id].buildCode += variable + ".Hide(); ";
             }
             else if (objects[id].type == EngineObjectType.Script) objects[id].buildCode = lineBreaks + objects[id].code;
+            else if (objects[id].type == EngineObjectType.Tilemap) objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(objects[id].Variable(), objects[id].tileMap);
         }
 
         public static EngineObject GetEngineObject(int id)
@@ -181,6 +182,7 @@ namespace Lynx2DEngine
                 string emitters = "";
                 string gameobjects = "";
                 string sprites = "";
+                string tilemaps = "";
 
                 //Build engine objects
                 for (int i = 0; i < objects.Length; i++)
@@ -194,6 +196,7 @@ namespace Lynx2DEngine
                     else if (objects[i].type == EngineObjectType.Script && objects[i].parent == -1) scripts += objects[i].buildCode;
                     else if (objects[i].type == EngineObjectType.Collider) colliders += objects[i].buildCode;
                     else if (objects[i].type == EngineObjectType.Emitter) emitters += objects[i].buildCode;
+                    else if (objects[i].type == EngineObjectType.Tilemap) tilemaps += objects[i].buildCode;
 
                     objects[i].buildCode = "";
                 }
@@ -202,7 +205,7 @@ namespace Lynx2DEngine
                 if (bSettings.hasIcon)
                     buildSettings += "document.getElementById('icon').href='" + bSettings.iconLocation + "';";
 
-                Project.AddGameCode(buildSettings + sprites + colliders + gameobjects + emitters + scripts);
+                Project.AddGameCode(buildSettings + sprites + tilemaps + colliders + gameobjects + emitters + scripts);
             }
             catch (Exception e)
             {

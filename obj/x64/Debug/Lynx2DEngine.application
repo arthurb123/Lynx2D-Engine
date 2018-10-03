@@ -7,14 +7,14 @@
     <framework targetVersion="4.6.1" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Lynx2DEngine.exe.manifest" size="4842">
+    <dependentAssembly dependencyType="install" codebase="Lynx2DEngine.exe.manifest" size="3967">
       <assemblyIdentity name="Lynx2DEngine.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>TlI0EFVx5WZuHMsF6CwwvdYb22/7udyp72o7j/K7Rio=</dsig:DigestValue>
+        <dsig:DigestValue>9oxe8q8+AH6lrgHJL7DdDjUtXvNUqvDwI2FEe1G6z0A=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

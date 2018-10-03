@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine
@@ -24,34 +25,29 @@ namespace Lynx2DEngine
 
         public void Resize(int width, int height)
         {
-            Tile[,] newArray = new Tile[height, width];
-
-            int minRows = Math.Min(height, map.GetLength(0));
-            int minCols = Math.Min(width, map.GetLength(1));
+            Tile[,] newArray = new Tile[width, height];
 
             for (int i = 0; i < map.GetLength(0); i++)
                 for (int j = 0; j < map.GetLength(1); j++)
-                {
-                    if (i < minRows && j < minCols) newArray[i, j] = map[i, j];
-                    else newArray[i, j] = new Tile();
-                }
+                    newArray[i, j] = map[i, j];
 
             map = newArray;
+            Tilemapper.SetCurrentTile();
         }
 
         public void SetTile(int x, int y, Tile t)
         {
             try
             {
-                //MessageBox.Show(x + " | " + y + " | " + map.GetLength(0) + " | " + map.GetLength(1));
-
-                if (y >= map.GetLength(0))
-                    Resize(map.GetLength(1), y);
-                if (x >= map.GetLength(1))
-                    Resize(x, map.GetLength(0));
+                if (x >= map.GetLength(0))
+                    Resize(x+1, map.GetLength(1));
+                if (y >= map.GetLength(1))
+                    Resize(map.GetLength(0), y+1);
 
                 t.build = true;
                 map[x, y] = t;
+
+                Tilemapper.ConvertAndSetMap(this);
             }
             catch (Exception e)
             {

@@ -542,3 +542,6 @@ D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.BuildSettingsForm.resources
 D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.EmitterForm.resources
 D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.GridForm.resources
 D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.TilemapForm.resources
+C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\resources\particle.png
+C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.EmitterForm.resources
+C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.TilemapForm.resources
