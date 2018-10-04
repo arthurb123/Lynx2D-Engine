@@ -11,7 +11,7 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static readonly string version = "0.3.0";
+        private static readonly string version = "0.3.1";
         private static readonly string stage = "alpha";
 
         public static bool CheckOnline()

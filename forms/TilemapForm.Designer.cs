@@ -246,6 +246,7 @@
             this.Name = "TilemapForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "TilemapForm";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.TilemapForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tilesize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tileSelection)).EndInit();

@@ -353,6 +353,7 @@
             this.MinimumSize = new System.Drawing.Size(250, 295);
             this.Name = "EmitterForm";
             this.Text = "EmitterForm";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.EmitterForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.duration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.amount)).EndInit();

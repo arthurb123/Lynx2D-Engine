@@ -290,6 +290,7 @@
             this.MinimumSize = new System.Drawing.Size(250, 360);
             this.Name = "SpriteForm";
             this.Text = "Sprite Form";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.SpriteForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.h)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.w)).EndInit();

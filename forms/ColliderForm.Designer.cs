@@ -217,6 +217,7 @@
             this.Name = "ColliderForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ColliderForm";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.ColliderForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.h)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.w)).EndInit();

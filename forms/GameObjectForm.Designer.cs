@@ -266,6 +266,7 @@
             this.Name = "GameObjectForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Game Object";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.GameObjectForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.x)).EndInit();

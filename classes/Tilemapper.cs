@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine
@@ -32,8 +33,7 @@ namespace Lynx2DEngine
                     Tile el = tm.map[i, j];
 
                     if (el != null && el.build)
-                        r += "lx.DrawSprite(" + el.sprite + ".Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + ")," +
-                                (i + tm.x) * tm.tilesize + ", " + (j + tm.y) * tm.tilesize + ", " + el.cW + ", " + el.cH + ");";
+                        r += BuildTile(i, j, tm, el);
                 }
 
             r += "});\n";
@@ -129,20 +129,25 @@ namespace Lynx2DEngine
 
             string r = "";
 
+
             for (int i = 0; i < tm.map.GetLength(0); i++)
                 for (int j = 0; j < tm.map.GetLength(1); j++)
                 {
                     Tile el = tm.map[i, j];
 
                     if (el != null && el.build)
-                        r += "lx.DrawSprite(" + el.sprite + ".Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + ")," +
-                                (i + tm.x) * tm.tilesize + ", " + (j + tm.y) * tm.tilesize + ", " + el.cW + ", " + el.cH + ");";
+                        r += BuildTile(i, j, tm, el);
                 }
 
-            Engine.ExecuteScript("");
             Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + tm.layer + "][engineTileMap" + tm.id + "RenderID] = function(gfx){ " +
                                     r +
                                 "};");
+        }
+
+        public static string BuildTile(int i, int j, Tilemap tm, Tile el)
+        {
+            return "lx.DrawSprite(" + el.sprite + ".Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + ")," +
+                                (i + tm.x) * tm.tilesize + ", " + (j + tm.y) * tm.tilesize + ", " + el.cW + ", " + el.cH + ");";
         }
 
         public static void RemoveMap(int map)

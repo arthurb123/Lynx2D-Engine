@@ -13,6 +13,9 @@ namespace Lynx2DEngine.forms
         private EngineObject obj;
         private bool canDetect = false;
 
+        private Point tilesetOffset = new Point(0, 0);
+        private bool dragging = false;
+        private Point oldMouse = default(Point);
         private Point selected = default(Point);
 
         public TilemapForm()
@@ -82,6 +85,10 @@ namespace Lynx2DEngine.forms
             y.Minimum = -Decimal.MaxValue;
 
             tileSelection.Paint += new PaintEventHandler(DrawTileMap);
+            tileSelection.MouseDown += new MouseEventHandler(tileSelection_MouseDown);
+            tileSelection.MouseDown += new MouseEventHandler(SelectTile);
+            tileSelection.MouseMove += new MouseEventHandler(tileSelection_MouseMove);
+            tileSelection.MouseUp += new MouseEventHandler(tileSelection_MouseUp);
             Resize += new EventHandler(ResizeTileMap);
             FormClosing += new FormClosingEventHandler(TilemapForm_Closing);
         }
@@ -109,7 +116,6 @@ namespace Lynx2DEngine.forms
         private void drawTimer_Tick(object sender, EventArgs e)
         {
             tileSelection.Invalidate();
-            tileSelection.MouseDown += new MouseEventHandler(SelectTile);
         }
 
         private void DrawTileMap(object sender, PaintEventArgs e)
@@ -124,19 +130,19 @@ namespace Lynx2DEngine.forms
                 g.Clear(Color.Gray);
 
                 if (cur != null)
-                    g.DrawImage(cur, 0, 0, cur.Size.Width, cur.Size.Height);
+                    g.DrawImage(cur, tilesetOffset.X, tilesetOffset.Y, cur.Size.Width, cur.Size.Height);
 
-                for (int y = 0; y < tileSelection.Height / tm.tilesize; y++)
-                    for (int x = 0; x < tileSelection.Width / tm.tilesize; x++)
+                for (int y = 0; y < (tileSelection.Height - tilesetOffset.Y) / tm.tilesize; y++)
+                    for (int x = 0; x < (tileSelection.Width - tilesetOffset.X) / tm.tilesize; x++)
                     {
-                        g.DrawRectangle(Pens.Black, new Rectangle(x * tm.tilesize, y * tm.tilesize, tm.tilesize, tm.tilesize));
+                        g.DrawRectangle(Pens.Black, new Rectangle(x * tm.tilesize + tilesetOffset.X, y * tm.tilesize + tilesetOffset.Y, tm.tilesize, tm.tilesize));
                     }
 
                 Point cursor = GetCursorTile();
-                g.DrawRectangle(Pens.Silver, new Rectangle(cursor.X * tm.tilesize, cursor.Y * tm.tilesize, tm.tilesize, tm.tilesize));
+                g.DrawRectangle(Pens.Silver, new Rectangle(cursor.X * tm.tilesize + tilesetOffset.X, cursor.Y * tm.tilesize + tilesetOffset.Y, tm.tilesize, tm.tilesize));
 
                 if (selected != default(Point))
-                    g.DrawRectangle(Pens.WhiteSmoke, new Rectangle(selected.X * tm.tilesize, selected.Y * tm.tilesize, tm.tilesize, tm.tilesize));
+                    g.DrawRectangle(Pens.WhiteSmoke, new Rectangle(selected.X * tm.tilesize + tilesetOffset.X, selected.Y * tm.tilesize + tilesetOffset.Y, tm.tilesize, tm.tilesize));
             }
             catch (Exception ex)
             {
@@ -149,12 +155,12 @@ namespace Lynx2DEngine.forms
         {
             Point map = tileSelection.PointToClient(MousePosition);
 
-            return new Point(map.X / tm.tilesize, map.Y / tm.tilesize);
+            return new Point((map.X - tilesetOffset.X) / tm.tilesize, (map.Y - tilesetOffset.Y) / tm.tilesize);
         }
 
         private void SelectTile(object sender, MouseEventArgs e)
         {
-            if (selected == GetCursorTile() || selected.X < 0 || selected.Y < 0) return;
+            if (e.Button != MouseButtons.Left || selected == GetCursorTile() || selected.X < 0 || selected.Y < 0) return;
 
             try
             {
@@ -223,6 +229,31 @@ namespace Lynx2DEngine.forms
 
             Tilemapper.ConvertAndSetMap(tm);
             Tilemapper.SetCurrentTile();
+        }
+
+        private void tileSelection_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Middle || e.Button == MouseButtons.Right)
+            {
+                oldMouse = tileSelection.PointToClient(MousePosition);
+                dragging = true;
+            }
+        }
+
+        private void tileSelection_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                tilesetOffset.X += (e.X - oldMouse.X);
+                tilesetOffset.Y += (e.Y - oldMouse.Y);
+
+                oldMouse = new Point(e.X, e.Y);
+            }
+        }
+
+        private void tileSelection_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
         }
     }
 }
