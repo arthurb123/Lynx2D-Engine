@@ -7,7 +7,7 @@ namespace Lynx2DEngine
         private static string keywords = @"\b(function|var|for|while|let|const|else|if|new|in|end|return|break|true|false|" +
                                          @"undefined|null|NaN|Infinity|eval|uneval|isFinity|isNaN|parseFloat|parseInt)\b";
         private static string methods = @"\b(.Initialize|.Start|.Smoothing|.Framerate|.GetDimensions|.OnKey|.OnMouse|.StopKey|.StopMouse|.MouseMove|" +
-                                        @".ParticleLimit|.ClearLoops|.ClearLayerDraw|.ResetCentering|.ResetLayerDraw|.ChannelVolume" +
+                                        @".ClearMouse|.RemoveMouse|.ParticleLimit|.ClearLoops|.ClearLayerDraw|.ResetCentering|.ResetLayerDraw|.ChannelVolume" +
                                         @".FindGameObjectWithIdentifier|.FindGameObjectsWithIdentifier|.FindGameObjectWithCollider|" +
                                         @".DrawSprite|.OnLayerDraw|.Loops|.CreateCollider|.Show|.Hide|.Focus|.Setup|.Text|.Color|" +
                                         @".Position|.Size|.Draws|.Rotation|.Clip|.MaxVelocity|.AddVelocity|.Alignment|.Movement|" +

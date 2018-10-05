@@ -171,5 +171,6 @@ namespace Lynx2DEngine.forms
 
             Engine.ExecuteScript(obj.Variable() + ".SOLID = " + solid.Checked.ToString().ToLower() + ";");
         }
+
     }
 }
