@@ -65,12 +65,29 @@ namespace Lynx2DEngine.forms
 
         private void lineBreaks_ValueChanged(object sender, EventArgs e)
         {
+            if (!lineBreaks.Enabled) return;
+
             Engine.bSettings.lineBreaks = (int)lineBreaks.Value;
         }
 
         private void obfuscates_CheckedChanged(object sender, EventArgs e)
         {
             Engine.bSettings.obfuscates = obfuscates.Checked;
+
+            if (obfuscates.Checked)
+            {
+                Obfuscater.Inject();
+
+                lineBreaks.Enabled = false;
+                lineBreaks.Value = 0;
+            }
+            else
+            {
+                Obfuscater.Remove();
+
+                lineBreaks.Value = Engine.bSettings.lineBreaks;
+                lineBreaks.Enabled = true;
+            }
         }
 
         private void BuildSettingsForm_Closing(object sender, EventArgs e)

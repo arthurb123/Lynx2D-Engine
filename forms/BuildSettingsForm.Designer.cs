@@ -84,7 +84,6 @@
             this.obfuscates.TabIndex = 3;
             this.obfuscates.Text = "Obfuscate (requires internet)";
             this.obfuscates.UseVisualStyleBackColor = true;
-            this.obfuscates.Visible = false;
             this.obfuscates.CheckedChanged += new System.EventHandler(this.obfuscates_CheckedChanged);
             // 
             // label3

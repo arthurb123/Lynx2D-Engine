@@ -142,6 +142,12 @@ namespace Lynx2DEngine
 
         private void hierarchy_MouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            if (Engine.bSettings.obfuscates)
+            {
+                MessageBox.Show("Project editing is disabled when using obfuscated build code.", "Lynx2D Engine - Error");
+                return;
+            }
+
             try
             {
                 EngineObject obj = Engine.GetEngineObjects()[(int)e.Node.Tag];
@@ -197,7 +203,7 @@ namespace Lynx2DEngine
 
                         tilemap.Show();
                         tilemap.Initialize(obj.id);
-
+                        
                         break;
                 }
             }
@@ -318,7 +324,7 @@ namespace Lynx2DEngine
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
                 SetStatus("Exception occurred trying to open project.", StatusType.Warning);
             }
-        }
+        } 
         #endregion
 
         #region "Game Toolstrip Stuff"
@@ -683,6 +689,7 @@ namespace Lynx2DEngine
                 Camera.Remove();
                 Pointer.Remove();
                 Grid.Remove();
+                Obfuscater.Remove();
                 Tilemapper.RemoveAll();
 
                 browser.Load(Project.WorkDirectory() + "/index.html");
@@ -702,6 +709,11 @@ namespace Lynx2DEngine
             Cef.Initialize(settings);
 
             browser = new ChromiumWebBrowser("about:blank");
+            browser.BrowserSettings = new BrowserSettings()
+            {
+                BackgroundColor = Cef.ColorSetARGB(0, 255, 255, 255)
+            };
+
             browser.LoadingStateChanged += OnBrowserLoadingStateChanged;
             browser.ConsoleMessage += OnBrowserConsoleMessage;
             browser.MenuHandler = new CustomMenuHandler();
@@ -720,6 +732,9 @@ namespace Lynx2DEngine
                 debugToolStripMenuItem_Click(sender, args);
                 drawCollidersToolStripMenuItem_Click(sender, args);
                 imageSmoothingToolStripMenuItem_Click(sender, args);
+
+                if (Engine.bSettings.obfuscates)
+                    Obfuscater.Inject();
 
                 Tilemapper.InjectAll();
             }

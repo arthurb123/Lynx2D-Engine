@@ -75,9 +75,12 @@ namespace Lynx2DEngine
         private static void GenerateEngineObjectCode(int id)
         {
             string lineBreaks = new string('\n', bSettings.lineBreaks);
+            if (bSettings.obfuscates)
+                lineBreaks = "";
+
             string variable = lineBreaks + objects[id].Variable();
 
-            form.SetStatus("Building '" + objects[id].Variable() + "'", Main.StatusType.Alert);
+            form.SetStatus("Building '" + objects[id].Variable() + "'", Main.StatusType.Message);
 
             if (objects[id].type == EngineObjectType.GameObject)
             {
@@ -210,7 +213,7 @@ namespace Lynx2DEngine
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Could not build project.", Main.StatusType.Alert);
+                form.SetStatus("Could not build project code.", Main.StatusType.Alert);
             }
         }
 

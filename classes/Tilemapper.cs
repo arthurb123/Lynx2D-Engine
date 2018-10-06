@@ -52,6 +52,9 @@ namespace Lynx2DEngine
 
         public static void InjectAll()
         {
+            if (Engine.bSettings.obfuscates)
+                return;
+
             for (int i = 0; i < maps.Length; i++)
                 if (maps[i] != null) InjectMap(i);
         }

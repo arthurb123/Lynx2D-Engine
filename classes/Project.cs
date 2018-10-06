@@ -106,9 +106,12 @@ namespace Lynx2DEngine
             form.SetStatus("'" + cur + "' has been saved.", Main.StatusType.Message);
         }
 
-        public static void Build(bool refreshes)
+        public static async void Build(bool refreshes)
         {
             if (cur == string.Empty || cur == "HAS_BEEN_CLOSED") return;
+
+            bool obfuscated = false;
+            form.SetStatus("Started building project.", Main.StatusType.Message);
 
             Save();
 
@@ -118,6 +121,28 @@ namespace Lynx2DEngine
             {
                 using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
                 {
+                    if (Engine.bSettings.obfuscates)
+                    {
+                        if (!Feed.CheckOnline())
+                            form.SetStatus("Build obfuscation requires a internet connection.", Main.StatusType.Warning);
+                        else
+                        {
+                            form.SetStatus("Obfuscating build code.", Main.StatusType.Message);
+
+                            try
+                            {
+                                string r = await Obfuscater.Encode(gameCode);
+                                gameCode = r;
+
+                                obfuscated = true;
+                            }
+                            catch (Exception e)
+                            {
+                                form.SetStatus("Could not obfuscate build code.", Main.StatusType.Warning);
+                            }
+                        }
+                    }
+
                     w.Write(gameCode);
 
                     w.Dispose();
@@ -126,7 +151,8 @@ namespace Lynx2DEngine
             }
 
             gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(false); lx.Start(60);";
-            form.SetStatus("'" + cur + "' has been build.", Main.StatusType.Message);
+            if (obfuscated || !Engine.bSettings.obfuscates)
+                form.SetStatus("'" + cur + "' has been build.", Main.StatusType.Message);
 
             if (refreshes) form.refreshBrowser();
         }
