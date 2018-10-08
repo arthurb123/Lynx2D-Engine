@@ -15,7 +15,7 @@ namespace Lynx2DEngine
             if (injected)
                 Remove();
 
-            Engine.ExecuteScript("var engineGridRenderID = lx.GAME.ENGINE_RENDER.length; lx.GAME.ENGINE_RENDER[engineGridRenderID] = function(gfx) { " +
+            Engine.ExecuteScript("var engineGridRenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + Engine.eSettings.gridLayer + ", function(gfx) { " +
                 "gfx.save();" +
                 "gfx.lineWidth = " + Engine.eSettings.gridStrokeSize + ";" +
                 "gfx.strokeStyle = '" + Engine.eSettings.gridColor + "';" +
@@ -32,7 +32,7 @@ namespace Lynx2DEngine
                     "}" +
                 "}" +
                 "gfx.restore();" +
-            "};");
+            "});");
 
             injected = true;
         }
@@ -41,7 +41,7 @@ namespace Lynx2DEngine
         {
             if (!injected) return;
 
-            Engine.ExecuteScript("lx.GAME.ENGINE_RENDER.splice(engineGridRenderID, 1); engineGridRenderID = undefined;");
+            Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + Engine.eSettings.gridLayer + "][engineGridRenderID] = undefined; engineGridRenderID = undefined;");
 
             injected = false;
         }

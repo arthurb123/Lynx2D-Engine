@@ -703,6 +703,7 @@ namespace Lynx2DEngine
         public bool drawColliders = false;
 
         public bool grid = true;
+        public int gridLayer = 0;
         public int gridSize = 64;
         public int gridStrokeSize = 2;
         public int gridWidth = 16;

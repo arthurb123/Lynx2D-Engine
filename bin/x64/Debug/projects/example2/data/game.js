@@ -16,11 +16,11 @@ HouseCollider.Solid(true);
 HouseCollider.Enable(); 
 var PlayerCollider = new lx.Collider(6, 8, 36, 40, false, function(data) {});
 PlayerCollider.Solid(true); 
-PlayerCollider.Enable(); 
+PlayerCollider.Disable(); 
 var PropCollider = new lx.Collider(18, 18, 24, 32, false, function(data) {});
 PropCollider.Solid(true); 
 PropCollider.Enable(); 
-var FireCollider = new lx.Collider(18, 152, 32, 26, true, function(data) {if (lx.FindGameObjectWithCollider(data.trigger).Identifier() == "Player")
+var FireCollider = new lx.Collider(21, 152, 26, 26, true, function(data) {if (lx.FindGameObjectWithCollider(data.trigger).Identifier() == "Player")
 	Player.AddVelocity(
 		Player.Movement().VX*-3,
 		Player.Movement().VY*-3
@@ -35,17 +35,17 @@ Prop2Collider.Solid(true);
 Prop2Collider.Enable(); 
 var Player = new lx.GameObject(PlayerSprite, -60, 30, 48, 48); 
 Player.ApplyCollider(PlayerCollider); 
-Player.Show(3); 
+Player.Show(4); 
 var Prop = new lx.GameObject(Chair, -60, 120, 64, 64); 
 Prop.ApplyCollider(PropCollider); 
-Prop.Show(2); 
+Prop.Show(3); 
 var Prop2 = new lx.GameObject(Chair, 64, 164, 64, 64); 
 Prop2.ApplyCollider(Prop2Collider); 
-Prop2.Show(2); 
+Prop2.Show(3); 
 var FireEmitter = new lx.Emitter(Sprite24, 24, 152, 18, 30); 
 FireEmitter.Setup(0, 0, -1, 0, 12, 22); 
 FireEmitter.Speed(8); 
-FireEmitter.Show(3); 
+FireEmitter.Show(4); 
 Player.Focus();
 Player.Identifier("Player");
 Player.SetTopDownController(.25, .25, 2);
@@ -70,7 +70,7 @@ lx.OnKey('D', function() {
 });
 
 Player.Loops(function() {
-	if (Player.Movement().VX != 0 || Player.Movement().VY != 0) {
+	if (Math.abs(Player.Movement().VX) >= .25 || Math.abs(Player.Movement().VY) >= .25 ) {
 		cur++;
 		if (cur > standard) {
 			cur = 0;

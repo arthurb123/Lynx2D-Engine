@@ -35,6 +35,7 @@ namespace Lynx2DEngine.forms
             gridSize.Value = Engine.eSettings.gridSize;
             gridWidth.Value = Engine.eSettings.gridWidth;
             gridHeight.Value = Engine.eSettings.gridHeight;
+            gridLayer.Value = Engine.eSettings.gridLayer;
             gridStrokeSize.Value = Engine.eSettings.gridStrokeSize;
             gridX.Value = Engine.eSettings.gridOffX;
             gridY.Value = Engine.eSettings.gridOffY;
@@ -117,6 +118,15 @@ namespace Lynx2DEngine.forms
         private void gridOpacity_ValueChanged(object sender, EventArgs e)
         {
             Engine.eSettings.gridOpacity = (int)gridOpacity.Value;
+
+            Grid.Inject();
+        }
+
+        private void gridLayer_ValueChanged(object sender, EventArgs e)
+        {
+            Grid.Remove();
+
+            Engine.eSettings.gridLayer = (int)gridLayer.Value;
 
             Grid.Inject();
         }

@@ -45,7 +45,6 @@
             this.sprite = new System.Windows.Forms.ComboBox();
             this.collider = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.removeCollider = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.layer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.x)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).BeginInit();
@@ -209,7 +208,7 @@
             this.collider.FormattingEnabled = true;
             this.collider.Location = new System.Drawing.Point(69, 156);
             this.collider.Name = "collider";
-            this.collider.Size = new System.Drawing.Size(126, 21);
+            this.collider.Size = new System.Drawing.Size(152, 21);
             this.collider.TabIndex = 39;
             this.collider.SelectedIndexChanged += new System.EventHandler(this.collider_SelectedIndexChanged);
             // 
@@ -221,21 +220,6 @@
             this.label6.Size = new System.Drawing.Size(41, 13);
             this.label6.TabIndex = 38;
             this.label6.Text = "Collider";
-            // 
-            // removeCollider
-            // 
-            this.removeCollider.AutoSize = true;
-            this.removeCollider.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.removeCollider.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.removeCollider.LinkColor = System.Drawing.Color.Red;
-            this.removeCollider.Location = new System.Drawing.Point(195, 156);
-            this.removeCollider.Name = "removeCollider";
-            this.removeCollider.Size = new System.Drawing.Size(32, 18);
-            this.removeCollider.TabIndex = 40;
-            this.removeCollider.TabStop = true;
-            this.removeCollider.Text = "[X]";
-            this.removeCollider.VisitedLinkColor = System.Drawing.Color.Red;
-            this.removeCollider.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.removeCollider_LinkClicked);
             // 
             // GameObjectForm
             // 
@@ -258,7 +242,6 @@
             this.Controls.Add(this.layer);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.removeCollider);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(250, 320);
@@ -295,6 +278,5 @@
         private System.Windows.Forms.ComboBox sprite;
         private System.Windows.Forms.ComboBox collider;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.LinkLabel removeCollider;
     }
 }

@@ -343,11 +343,13 @@ function Lynx2D() {
             this.GO_MOUSE_EVENTS[ID] = undefined;
         },
         HANDLE_MOUSE_CLICK: function (BUTTON) {
-            this.GO_MOUSE_EVENTS.forEach(function(EVENT) {
-                if (EVENT != undefined && EVENT.BUTTON == BUTTON && lx.GAME.GET_MOUSE_IN_BOX(EVENT.GO.POS, EVENT.GO.SIZE))
-                    EVENT.CALLBACK();
-            });
-            
+            for (var i = 0; i < this.GO_MOUSE_EVENTS.length; i++)
+                if (this.GO_MOUSE_EVENTS[i] != undefined && this.GO_MOUSE_EVENTS[i].BUTTON == BUTTON)
+                    if (this.GO_MOUSE_EVENTS[i].GO == undefined)
+                        this.GO_MOUSE_EVENTS[i] = undefined;
+                    else if (lx.GAME.GET_MOUSE_IN_BOX(this.GO_MOUSE_EVENTS[i].GO.POS, this.GO_MOUSE_EVENTS[i].GO.SIZE))
+                        this.GO_MOUSE_EVENTS[i].CALLBACK();
+                      
             //...
         },
         GET_MOUSE_IN_BOX: function (POS, SIZE) {
@@ -887,8 +889,6 @@ function Lynx2D() {
             
             if (this.COLLIDER != undefined) this.COLLIDER.Disable();
             
-            this.ClearClick();
-            
             return this;
         };
         
@@ -1010,9 +1010,8 @@ function Lynx2D() {
                 console.log(lx.GAME.LOG.TIMEFORMAT() + 'GameObject already has a click handler for button ' + button + '.');
                 
                 return this;
-            } else {
+            } else 
                 this.CLICK_ID[button] = lx.GAME.ADD_GO_MOUSE_EVENT(this, button, callback);
-            }
             
             return this;
         };

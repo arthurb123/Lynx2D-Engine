@@ -58,6 +58,9 @@ namespace Lynx2DEngine
         private void updateColliderSelection()
         {
             if (collider.Items.Count == 0)
+            {
+                collider.Items.Add("<None>");
+
                 foreach (EngineObject o in Engine.GetEngineObjectsWithType(EngineObjectType.Collider))
                 {
                     if (o == null)
@@ -65,8 +68,12 @@ namespace Lynx2DEngine
 
                     collider.Items.Add(o);
                 }
+            }
 
-            collider.Text = obj.collider;
+            if (obj.collider == string.Empty)
+                collider.Text = "<None>";
+            else
+                collider.Text = obj.collider;
         }
 
         private void UpdateTitle()
@@ -185,20 +192,25 @@ namespace Lynx2DEngine
         {
             if (!canDetect) return;
 
-            Engine.SetEngineObjectCollider(engineId, collider.Text);
-            Engine.ExecuteScript(obj.Variable() + ".ApplyCollider(" + collider.Text + ");");
+            string r = collider.Text;
+            removeCollider();
+
+            if (r == "<None>")
+                r = string.Empty;
+            else
+                Engine.ExecuteScript(obj.Variable() + ".ApplyCollider(" + collider.Text + ");");
+
+            Engine.SetEngineObjectCollider(engineId, r);
         }
 
-        private void removeCollider_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void removeCollider()
         {
-            if (!canDetect || collider.Text == string.Empty) return;
+            if (!canDetect) return;
 
-            EngineObject coll = Engine.GetEngineObjectWithVarName(collider.Text);
-            Engine.ExecuteScript(obj.Variable() + ".COLLIDER = undefined; " + collider.Text + ".Position(" + coll.x + ", " + coll.y + ");");
+            EngineObject coll = Engine.GetEngineObjectWithVarName(Engine.objects[engineId].collider);
+            Engine.ExecuteScript(obj.Variable() + ".COLLIDER = undefined; " + Engine.objects[engineId].collider + ".Position(" + coll.x + ", " + coll.y + ");");
 
             Engine.RemoveEngineObjectCollider(engineId);
-
-            collider.Text = string.Empty;
         }
     }
 }
