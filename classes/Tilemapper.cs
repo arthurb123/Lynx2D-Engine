@@ -8,7 +8,7 @@ namespace Lynx2DEngine
     {
         private static bool[] injected = new bool[0];
         public static Tilemap[] maps = new Tilemap[0];
-        private static Tile selected = null;
+        public static Tile selected = null;
         private static int editing = -1;
         private static int selectedLayer = 0;
 
@@ -187,11 +187,9 @@ namespace Lynx2DEngine
                                  "};" +
                                  "var engineTileMapperEventIDL = lx.GAME.ADD_EVENT('mousebutton', 0, function() {" +
                                     "engineTileMapperPostMouse('PLACE_TILE');" +
-                                    "lx.StopMouse(0);" +
                                  "});" +
                                  "var engineTileMapperEventIDR = lx.GAME.ADD_EVENT('mousebutton', 2, function() {" +
                                     "engineTileMapperPostMouse('REMOVE_TILE');" +
-                                    "lx.StopMouse(2);" +
                                  "});");
 
             editing = map;
@@ -259,7 +257,7 @@ namespace Lynx2DEngine
                                 "};");
         }
 
-        public static void PlaceTile(int x, int y, int r)
+        public static void PlaceTile(int x, int y, float r)
         {
             if (editing == -1) return;
             if (x < maps[editing].x || y < maps[editing].y)
@@ -300,11 +298,12 @@ namespace Lynx2DEngine
         {
             if (msg.Contains("PLACE_TILE"))
             {
-                int x = 0, y = 0, r = 0;
+                int x = 0, y = 0;
+                float r = 0;
 
                 int.TryParse(msg.Substring(msg.IndexOf('X') + 1, msg.IndexOf('Y') - msg.IndexOf('X') - 1), out x);
                 int.TryParse(msg.Substring(msg.IndexOf('Y') + 1, msg.IndexOf('R') - msg.IndexOf('Y') - 1), out y);
-                int.TryParse(msg.Substring(msg.IndexOf('R') + 1, msg.IndexOf(')') - msg.IndexOf('R') - 1), out r);
+                float.TryParse(msg.Substring(msg.IndexOf('R') + 1, msg.IndexOf(')') - msg.IndexOf('R') - 1), out r);
 
                 PlaceTile(x, y, r);
             }

@@ -48,6 +48,13 @@ namespace Lynx2DEngine
                 if (y >= map.GetLength(1))
                     Resize(map.GetLength(0), y+1);
 
+                if (map[x, y] != null &&
+                    map[x, y].build &&
+                    map[x, y].cX == Tilemapper.selected.cX &&
+                    map[x, y].cY == Tilemapper.selected.cY &&
+                    map[x, y].r == Tilemapper.selected.r)
+                    return;
+
                 t.build = true;
                 map[x, y] = t;
 
@@ -55,7 +62,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                //MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
             }
         }
 
@@ -95,10 +102,10 @@ namespace Lynx2DEngine
         public bool build = false;
 
         public string sprite;
-        public int cX;
-        public int cY;
+        public int cX = -1;
+        public int cY = -1;
         public int cW;
         public int cH;
-        public int r = 0;
+        public float r = 0;
     }
 }
