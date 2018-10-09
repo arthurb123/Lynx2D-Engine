@@ -16,7 +16,7 @@ HouseCollider.Solid(true);
 HouseCollider.Enable(); 
 var PlayerCollider = new lx.Collider(6, 8, 36, 40, false, function(data) {});
 PlayerCollider.Solid(true); 
-PlayerCollider.Disable(); 
+PlayerCollider.Enable(); 
 var PropCollider = new lx.Collider(18, 18, 24, 32, false, function(data) {});
 PropCollider.Solid(true); 
 PropCollider.Enable(); 

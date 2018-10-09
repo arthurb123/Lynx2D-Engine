@@ -78,6 +78,7 @@
             this.Name = "PromptForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Prompt Caption";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.PromptForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

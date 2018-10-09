@@ -99,5 +99,6 @@ namespace Lynx2DEngine
         public int cY;
         public int cW;
         public int cH;
+        public int r = 0;
     }
 }

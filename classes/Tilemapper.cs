@@ -149,7 +149,7 @@ namespace Lynx2DEngine
 
         public static string BuildTile(int i, int j, Tilemap tm, Tile el)
         {
-            return "lx.DrawSprite(" + el.sprite + ".Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + ")," +
+            return "lx.DrawSprite(" + el.sprite + ".Rotation(" + el.r + ").Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + ")," +
                                 (i + tm.x) * tm.tilesize + ", " + (j + tm.y) * tm.tilesize + ", " + el.cW + ", " + el.cH + ");";
         }
 
@@ -171,10 +171,19 @@ namespace Lynx2DEngine
 
             Engine.ExecuteScript("var engineTileMapperRenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + selectedLayer + ", function(gfx) {});" +
                                  "var engineTileMapperTileSize = " + maps[map].tilesize + ";" +
+                                 "var engineTileSelectionRotation = 0; " +
+                                 "var engineTileSelectionRotationEvent = lx.GAME.ADD_EVENT('mousebutton', 1, function() { " +
+                                    "engineTileSelectionRotation += 90; " +
+                                    "if (engineTileSelectionRotation >= 360) " +
+                                        "engineTileSelectionRotation = 0; " +
+                                    "lx.StopMouse(1); " +
+                                 "});" +
                                  "var engineTileMapperPostMouse = function(key) { " +
                                     "var center = { X: lx.GetDimensions().width/2, Y: lx.GetDimensions().height/2 };" +
+                                    "var rotation = '';" +
                                     "if (lx.GAME.FOCUS != undefined) center = lx.GAME.FOCUS.POS;" +
-                                    "console.log('ENGINE_INTERACTION_' + key + '(' + (Math.floor((center.X-lx.GetDimensions().width/2)/engineTileMapperTileSize) + Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.X/engineTileMapperTileSize)) + ', ' + (Math.floor((center.Y-lx.GetDimensions().height/2)/engineTileMapperTileSize)+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.Y/engineTileMapperTileSize)) + ')');" +
+                                    "if (key == 'PLACE_TILE') rotation = 'R' + (engineTileSelectionRotation*Math.PI/180);" +
+                                    "console.log('ENGINE_INTERACTION_' + key + '(X' + (Math.floor((center.X-lx.GetDimensions().width/2)/engineTileMapperTileSize) + Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.X/engineTileMapperTileSize)) + 'Y' + (Math.floor((center.Y-lx.GetDimensions().height/2)/engineTileMapperTileSize)+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.Y/engineTileMapperTileSize)) + rotation +')');" +
                                  "};" +
                                  "var engineTileMapperEventIDL = lx.GAME.ADD_EVENT('mousebutton', 0, function() {" +
                                     "engineTileMapperPostMouse('PLACE_TILE');" +
@@ -201,7 +210,17 @@ namespace Lynx2DEngine
         {
             if (editing == -1) return;
 
-            Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + selectedLayer + "][engineTileMapperRenderID] = undefined; engineTileMapperRenderID = undefined; lx.GAME.EVENTS[engineTileMapperEventIDL] = undefined; engineTileMapperEventIDL = undefined; lx.GAME.EVENTS[engineTileMapperEventIDR] = undefined; engineTileMapperEventIDR = undefined; engineTileMapperPostMouse = undefined; engineTileMapperTileSize = undefined;");
+            Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + selectedLayer + "][engineTileMapperRenderID] = undefined; " +
+                "engineTileMapperRenderID = undefined; " +
+                "lx.GAME.EVENTS[engineTileMapperEventIDL] = undefined; " +
+                "engineTileMapperEventIDL = undefined; " +
+                "lx.GAME.EVENTS[engineTileMapperEventIDR] = undefined; " +
+                "engineTileMapperEventIDR = undefined; " +
+                "lx.GAME.EVENTS[engineTileSelectionRotationEvent] = undefined;" +
+                "engineTileSelectionRotationEvent = undefined" +
+                "engineTileMapperPostMouse = undefined; " +
+                "engineTileMapperTileSize = undefined;" +
+                "engineTileSelectionRotation = undefined;");
             selected = null;
 
             editing = -1;
@@ -223,7 +242,7 @@ namespace Lynx2DEngine
                                         "X: Math.floor((tPos.X - lx.GetDimensions().width / 2) / " + maps[editing].tilesize + ") * " + maps[editing].tilesize + "+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.X / " + maps[editing].tilesize + ") * " + maps[editing].tilesize + ", " +
                                         "Y: Math.floor((tPos.Y-lx.GetDimensions().height/2)/" + maps[editing].tilesize + ")*" + maps[editing].tilesize + "+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.Y/" + maps[editing].tilesize + ")*" + maps[editing].tilesize +
                                     "};" +
-                                    "lx.DrawSprite(" + selected.sprite + ".Clip(" +
+                                    "lx.DrawSprite(" + selected.sprite + ".Rotation(engineTileSelectionRotation*Math.PI/180).Clip(" +
                                         selected.cX + ", " +
                                         selected.cY + ", " +
                                         selected.cW + ", " +
@@ -240,7 +259,7 @@ namespace Lynx2DEngine
                                 "};");
         }
 
-        public static void PlaceTile(int x, int y)
+        public static void PlaceTile(int x, int y, int r)
         {
             if (editing == -1) return;
             if (x < maps[editing].x || y < maps[editing].y)
@@ -248,6 +267,8 @@ namespace Lynx2DEngine
                 MessageBox.Show("Tilemaps do not support negative values (yet). Try changing the position of the tilemap.", "Lynx2D Engine - Exception");
                 return;
             }
+
+            selected.r = r;
 
             maps[editing].SetTile(x, y, selected);
         }
@@ -279,19 +300,20 @@ namespace Lynx2DEngine
         {
             if (msg.Contains("PLACE_TILE"))
             {
-                int x = 0, y = 0;
+                int x = 0, y = 0, r = 0;
 
-                int.TryParse(msg.Substring(msg.IndexOf("(") + 1, msg.IndexOf(",") - msg.IndexOf("(") - 1), out x);
-                int.TryParse(msg.Substring(msg.IndexOf(",") + 1, msg.IndexOf(")") - msg.IndexOf(",") - 1), out y);
+                int.TryParse(msg.Substring(msg.IndexOf('X') + 1, msg.IndexOf('Y') - msg.IndexOf('X') - 1), out x);
+                int.TryParse(msg.Substring(msg.IndexOf('Y') + 1, msg.IndexOf('R') - msg.IndexOf('Y') - 1), out y);
+                int.TryParse(msg.Substring(msg.IndexOf('R') + 1, msg.IndexOf(')') - msg.IndexOf('R') - 1), out r);
 
-                PlaceTile(x, y);
+                PlaceTile(x, y, r);
             }
             if (msg.Contains("REMOVE_TILE"))
             {
                 int x = 0, y = 0;
 
-                int.TryParse(msg.Substring(msg.IndexOf("(") + 1, msg.IndexOf(",") - msg.IndexOf("(") - 1), out x);
-                int.TryParse(msg.Substring(msg.IndexOf(",") + 1, msg.IndexOf(")") - msg.IndexOf(",") - 1), out y);
+                int.TryParse(msg.Substring(msg.IndexOf('X') + 1, msg.IndexOf('Y') - msg.IndexOf('X') - 1), out x);
+                int.TryParse(msg.Substring(msg.IndexOf('Y') + 1, msg.IndexOf(')') - msg.IndexOf('Y') - 1), out y);
 
                 RemoveTile(x, y);
             }

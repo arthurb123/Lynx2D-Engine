@@ -457,7 +457,7 @@ namespace Lynx2DEngine
 
         public static void RenameEngineObject(int id, string name)
         {
-            if (objects[id] == null) return;
+            if (objects[id] == null || name == "HAS_BEEN_CLOSED") return;
 
             objects[id].Rename(name);
             form.UpdateHierarchy();
