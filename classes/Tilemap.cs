@@ -62,7 +62,9 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                //MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                Engine.ExecuteScript("lx.StopMouse(0);");
+
+                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
             }
         }
 
@@ -77,6 +79,8 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
+                Engine.ExecuteScript("lx.StopMouse(2);");
+
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
             }
         }

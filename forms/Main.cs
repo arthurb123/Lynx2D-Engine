@@ -48,7 +48,7 @@ namespace Lynx2DEngine
         {
             Cef.Shutdown();
 
-            Project.Save();
+            Project.RequestSave();
         }
 
         public void SetGameAvailability(bool available)

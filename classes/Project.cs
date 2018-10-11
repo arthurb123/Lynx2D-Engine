@@ -11,7 +11,7 @@ namespace Lynx2DEngine
 {
     class Project
     {
-        private static string cur = string.Empty;
+        public static string cur = string.Empty;
         public static Main form;
         private static string gameCode;
 
@@ -25,6 +25,9 @@ namespace Lynx2DEngine
                 MessageBox.Show("No projects folder could be found. Please create a project first.", "Lynx2D Engine - Error");
                 return;
             }
+
+            if (cur != string.Empty)
+                RequestSave();
 
             if (needsName) cur = Input.Prompt("Enter the name of the existing project", "Lynx2D - Load Project");
             if (cur == "HAS_BEEN_CLOSED")
@@ -95,6 +98,14 @@ namespace Lynx2DEngine
                 if (Input.YesNo("The projects folder does not exist yet, do you want to create this folder?", "Lynx2D Engine - Question"))
                     Manager.CheckDirectory("projects", true);
             }
+        }
+
+        public static void RequestSave()
+        {
+            if (cur != string.Empty &&
+                cur != "HAS_BEEN_CLOSED" &&
+                Input.YesNo("Do you want to save the current project?", "Lynx2D Engine - Question"))
+            Save();
         }
 
         public static void Save()

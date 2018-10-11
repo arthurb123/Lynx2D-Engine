@@ -208,9 +208,17 @@ namespace Lynx2DEngine
             if (!canDetect) return;
 
             EngineObject coll = Engine.GetEngineObjectWithVarName(Engine.objects[engineId].collider);
+            if (coll == null)
+                return;
+
             Engine.ExecuteScript(obj.Variable() + ".COLLIDER = undefined; " + Engine.objects[engineId].collider + ".Position(" + coll.x + ", " + coll.y + ");");
 
             Engine.RemoveEngineObjectCollider(engineId);
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -226,6 +226,8 @@ namespace Lynx2DEngine
 
         public static void SetCurrentTile()
         {
+            if (editing == -1) return;
+
             Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + selectedLayer + "][engineTileMapperRenderID] = function(gfx) {" +
                                     "gfx.save();" +
                                     "gfx.lineWidth = 2;" +
@@ -262,6 +264,8 @@ namespace Lynx2DEngine
             if (editing == -1) return;
             if (x < maps[editing].x || y < maps[editing].y)
             {
+                Engine.ExecuteScript("lx.StopMouse(0);");
+
                 MessageBox.Show("Tilemaps do not support negative values (yet). Try changing the position of the tilemap.", "Lynx2D Engine - Exception");
                 return;
             }
@@ -276,6 +280,8 @@ namespace Lynx2DEngine
             if (editing == -1) return;
             if (x < maps[editing].x || y < maps[editing].y)
             {
+                Engine.ExecuteScript("lx.StopMouse(2);");
+
                 MessageBox.Show("Tilemaps do not support negative values (yet). Try changing the position of the tilemap.", "Lynx2D Engine - Exception");
                 return;
             }

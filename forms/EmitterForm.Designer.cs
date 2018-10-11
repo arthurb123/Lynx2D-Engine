@@ -53,6 +53,8 @@
             this.visible = new System.Windows.Forms.CheckBox();
             this.layer = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
+            this.sprite = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.duration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).BeginInit();
@@ -79,7 +81,7 @@
             // 
             // duration
             // 
-            this.duration.Location = new System.Drawing.Point(84, 189);
+            this.duration.Location = new System.Drawing.Point(84, 207);
             this.duration.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -93,7 +95,7 @@
             // 
             // amount
             // 
-            this.amount.Location = new System.Drawing.Point(14, 189);
+            this.amount.Location = new System.Drawing.Point(14, 207);
             this.amount.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -108,7 +110,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 173);
+            this.label1.Location = new System.Drawing.Point(22, 191);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
             this.label1.TabIndex = 51;
@@ -144,7 +146,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(91, 173);
+            this.label3.Location = new System.Drawing.Point(91, 191);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 13);
             this.label3.TabIndex = 55;
@@ -236,7 +238,7 @@
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel2.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel2.Location = new System.Drawing.Point(5, 234);
+            this.linkLabel2.Location = new System.Drawing.Point(7, 244);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(47, 13);
             this.linkLabel2.TabIndex = 66;
@@ -250,7 +252,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Red;
-            this.linkLabel1.Location = new System.Drawing.Point(50, 234);
+            this.linkLabel1.Location = new System.Drawing.Point(52, 244);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(38, 13);
             this.linkLabel1.TabIndex = 65;
@@ -262,7 +264,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(166, 173);
+            this.label8.Location = new System.Drawing.Point(166, 191);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(38, 13);
             this.label8.TabIndex = 68;
@@ -270,7 +272,7 @@
             // 
             // speed
             // 
-            this.speed.Location = new System.Drawing.Point(154, 189);
+            this.speed.Location = new System.Drawing.Point(154, 207);
             this.speed.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -287,7 +289,7 @@
             this.visible.AutoSize = true;
             this.visible.Checked = true;
             this.visible.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.visible.Location = new System.Drawing.Point(148, 140);
+            this.visible.Location = new System.Drawing.Point(154, 165);
             this.visible.Name = "visible";
             this.visible.Size = new System.Drawing.Size(56, 17);
             this.visible.TabIndex = 69;
@@ -297,7 +299,7 @@
             // 
             // layer
             // 
-            this.layer.Location = new System.Drawing.Point(67, 137);
+            this.layer.Location = new System.Drawing.Point(67, 162);
             this.layer.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -312,17 +314,38 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(4, 139);
+            this.label9.Location = new System.Drawing.Point(4, 164);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(33, 13);
             this.label9.TabIndex = 70;
             this.label9.Text = "Layer";
             // 
+            // sprite
+            // 
+            this.sprite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sprite.FormattingEnabled = true;
+            this.sprite.Location = new System.Drawing.Point(67, 137);
+            this.sprite.Name = "sprite";
+            this.sprite.Size = new System.Drawing.Size(151, 21);
+            this.sprite.TabIndex = 73;
+            this.sprite.SelectedIndexChanged += new System.EventHandler(this.sprite_SelectedIndexChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(4, 140);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(34, 13);
+            this.label10.TabIndex = 72;
+            this.label10.Text = "Sprite";
+            // 
             // EmitterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 256);
+            this.ClientSize = new System.Drawing.Size(234, 266);
+            this.Controls.Add(this.sprite);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.layer);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.visible);
@@ -349,8 +372,8 @@
             this.Controls.Add(this.label2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(250, 295);
-            this.MinimumSize = new System.Drawing.Size(250, 295);
+            this.MaximumSize = new System.Drawing.Size(250, 305);
+            this.MinimumSize = new System.Drawing.Size(250, 305);
             this.Name = "EmitterForm";
             this.Text = "EmitterForm";
             this.TopMost = true;
@@ -398,5 +421,7 @@
         private System.Windows.Forms.CheckBox visible;
         private System.Windows.Forms.NumericUpDown layer;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox sprite;
+        private System.Windows.Forms.Label label10;
     }
 }

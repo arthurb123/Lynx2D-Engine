@@ -44,6 +44,8 @@ namespace Lynx2DEngine.forms
             speed.Value = (decimal)obj.speed;
             layer.Value = obj.layer;
 
+            updateSpriteSelection();
+
             System.Threading.Thread.Sleep(10);
 
             canDetect = true;
@@ -77,6 +79,20 @@ namespace Lynx2DEngine.forms
             maxSize.Maximum = Decimal.MaxValue;
             minSize.Minimum = -Decimal.MaxValue;
             maxSize.Minimum = -Decimal.MaxValue;
+        }
+
+        private void updateSpriteSelection()
+        {
+            if (sprite.Items.Count == 0)
+                foreach (EngineObject o in Engine.GetEngineObjectsWithType(EngineObjectType.Sprite))
+                {
+                    if (o == null)
+                        continue;
+
+                    sprite.Items.Add(o);
+                }
+
+            sprite.Text = obj.sprite;
         }
 
         private void SetPosition()
@@ -192,6 +208,13 @@ namespace Lynx2DEngine.forms
             Engine.SetEngineObjectSpeed(engineId, (float)speed.Value);
 
             Engine.ExecuteScript(obj.Variable() + ".Speed(" + speed.Value + ");");
+        }
+
+        private void sprite_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Engine.SetEngineObjectSprite(engineId, sprite.Text);
+
+            Engine.ExecuteScript(obj.Variable() + ".SPRITE = " + sprite.Text + ";");
         }
     }
 }
