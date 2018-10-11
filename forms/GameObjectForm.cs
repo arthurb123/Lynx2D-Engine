@@ -207,11 +207,11 @@ namespace Lynx2DEngine
         {
             if (!canDetect) return;
 
-            EngineObject coll = Engine.GetEngineObjectWithVarName(Engine.objects[engineId].collider);
+            EngineObject coll = Engine.GetEngineObjectWithVarName(Engine.GetEngineObject(engineId).collider);
             if (coll == null)
                 return;
 
-            Engine.ExecuteScript(obj.Variable() + ".COLLIDER = undefined; " + Engine.objects[engineId].collider + ".Position(" + coll.x + ", " + coll.y + ");");
+            Engine.ExecuteScript(obj.Variable() + ".COLLIDER = undefined; " + Engine.GetEngineObject(engineId).collider + ".Position(" + coll.x + ", " + coll.y + ");");
 
             Engine.RemoveEngineObjectCollider(engineId);
         }

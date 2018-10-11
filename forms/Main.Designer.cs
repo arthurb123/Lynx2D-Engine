@@ -67,6 +67,8 @@
             this.browserContainer = new System.Windows.Forms.Panel();
             this.hierarchy = new System.Windows.Forms.TreeView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.hierarchyScenes = new System.Windows.Forms.Button();
+            this.hierarchyObjects = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -103,14 +105,14 @@
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.newProjectToolStripMenuItem.Text = "New Project";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // loadProjectToolStripMenuItem
             // 
             this.loadProjectToolStripMenuItem.Name = "loadProjectToolStripMenuItem";
-            this.loadProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.loadProjectToolStripMenuItem.Text = "Load Project";
             this.loadProjectToolStripMenuItem.Click += new System.EventHandler(this.loadProjectToolStripMenuItem_Click);
             // 
@@ -118,7 +120,7 @@
             // 
             this.saveProjectToolStripMenuItem.Enabled = false;
             this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
-            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.saveProjectToolStripMenuItem.Text = "Save Project";
             this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.saveProjectToolStripMenuItem_Click);
             // 
@@ -126,7 +128,7 @@
             // 
             this.showProjectToolStripMenuItem.Enabled = false;
             this.showProjectToolStripMenuItem.Name = "showProjectToolStripMenuItem";
-            this.showProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.showProjectToolStripMenuItem.Text = "Show Project";
             this.showProjectToolStripMenuItem.Click += new System.EventHandler(this.showProjectToolStripMenuItem_Click);
             // 
@@ -389,22 +391,56 @@
             this.hierarchy.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hierarchy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hierarchy.LabelEdit = true;
-            this.hierarchy.Location = new System.Drawing.Point(0, 0);
+            this.hierarchy.Location = new System.Drawing.Point(0, 26);
             this.hierarchy.Margin = new System.Windows.Forms.Padding(10);
             this.hierarchy.Name = "hierarchy";
-            this.hierarchy.Size = new System.Drawing.Size(140, 537);
+            this.hierarchy.Size = new System.Drawing.Size(140, 511);
             this.hierarchy.TabIndex = 0;
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panel1.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.panel1.Controls.Add(this.hierarchyScenes);
+            this.panel1.Controls.Add(this.hierarchyObjects);
             this.panel1.Controls.Add(this.hierarchy);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(644, 24);
             this.panel1.Margin = new System.Windows.Forms.Padding(10);
             this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(0, 26, 0, 0);
             this.panel1.Size = new System.Drawing.Size(140, 537);
             this.panel1.TabIndex = 2;
+            // 
+            // hierarchyScenes
+            // 
+            this.hierarchyScenes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.hierarchyScenes.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.hierarchyScenes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.hierarchyScenes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hierarchyScenes.Location = new System.Drawing.Point(70, 0);
+            this.hierarchyScenes.Margin = new System.Windows.Forms.Padding(0);
+            this.hierarchyScenes.Name = "hierarchyScenes";
+            this.hierarchyScenes.Size = new System.Drawing.Size(70, 23);
+            this.hierarchyScenes.TabIndex = 2;
+            this.hierarchyScenes.Text = "Scenes";
+            this.hierarchyScenes.UseVisualStyleBackColor = false;
+            this.hierarchyScenes.Visible = false;
+            this.hierarchyScenes.Click += new System.EventHandler(this.hierachyScenes_Click);
+            // 
+            // hierarchyObjects
+            // 
+            this.hierarchyObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.hierarchyObjects.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.hierarchyObjects.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.hierarchyObjects.Location = new System.Drawing.Point(0, 0);
+            this.hierarchyObjects.Margin = new System.Windows.Forms.Padding(0);
+            this.hierarchyObjects.Name = "hierarchyObjects";
+            this.hierarchyObjects.Size = new System.Drawing.Size(70, 23);
+            this.hierarchyObjects.TabIndex = 1;
+            this.hierarchyObjects.Text = "Objects";
+            this.hierarchyObjects.UseVisualStyleBackColor = false;
+            this.hierarchyObjects.Visible = false;
+            this.hierarchyObjects.Click += new System.EventHandler(this.hierarchyObjects_Click);
             // 
             // Main
             // 
@@ -469,6 +505,8 @@
         private System.Windows.Forms.ToolStripMenuItem addEmitterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reloadStandardResourcesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addTilemapToolStripMenuItem;
+        private System.Windows.Forms.Button hierarchyScenes;
+        private System.Windows.Forms.Button hierarchyObjects;
     }
 }
 

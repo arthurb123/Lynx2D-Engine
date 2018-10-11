@@ -12,19 +12,49 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        public static EngineObject[] objects = new EngineObject[0];
+        public static Scene[] scenes = new Scene[0];
         public static BuildSettings bSettings = new BuildSettings();
         public static EngineSettings eSettings = new EngineSettings();
 
+        public static void LoadScene(int id)
+        {
+            if (id == -1 || eSettings.currentScene == -1)
+                CreateScene(false);
+            else
+                eSettings.currentScene = id;
+
+            form.UpdateHierarchy();
+        }
+
+        public static void CreateScene(bool loads)
+        {
+            for (int i = 0; i < scenes.Length + 1; i++)
+            {
+                if (i == scenes.Length) Array.Resize(ref scenes, scenes.Length + 1);
+
+                if (scenes[i] == null || i == scenes.Length)
+                {
+                    scenes[i] = new Scene(i);
+
+                    if (loads)
+                        LoadScene(i);
+                    else
+                        eSettings.currentScene = i;
+
+                    break;
+                }
+            }
+        }
+
         public static int AddEngineObject(EngineObjectType type, string code, int child, int parent)
         {
-            for (int i = 0; i < objects.Length + 1; i++)
+            for (int i = 0; i < scenes[eSettings.currentScene].objects.Length + 1; i++)
             {
-                if (i == objects.Length) Array.Resize(ref objects, objects.Length + 1);
+                if (i == scenes[eSettings.currentScene].objects.Length) Array.Resize(ref scenes[eSettings.currentScene].objects, scenes[eSettings.currentScene].objects.Length + 1);
 
-                if (objects[i] == null || i == objects.Length)
+                if (scenes[eSettings.currentScene].objects[i] == null || i == scenes[eSettings.currentScene].objects.Length)
                 {
-                    objects[i] = new EngineObject(i, type, code, child, parent);
+                    scenes[eSettings.currentScene].objects[i] = new EngineObject(i, type, code, child, parent);
 
                     return i;
                 }
@@ -35,15 +65,15 @@ namespace Lynx2DEngine
 
         public static void RemoveEngineObject(int id, bool refreshes)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            if (objects[id].child != -1) RemoveEngineObject(objects[id].child, false);
-            if (objects[id].parent != -1) objects[objects[id].parent].child = -1;
+            if (scenes[eSettings.currentScene].objects[id].child != -1) RemoveEngineObject(scenes[eSettings.currentScene].objects[id].child, false);
+            if (scenes[eSettings.currentScene].objects[id].parent != -1) scenes[eSettings.currentScene].objects[scenes[eSettings.currentScene].objects[id].parent].child = -1;
 
-            if (objects[id].type == EngineObjectType.Tilemap)
-                Tilemapper.RemoveMap(objects[id].tileMap);
+            if (scenes[eSettings.currentScene].objects[id].type == EngineObjectType.Tilemap)
+                Tilemapper.RemoveMap(scenes[eSettings.currentScene].objects[id].tileMap);
 
-            objects[id] = null;
+            scenes[eSettings.currentScene].objects[id] = null;
 
             if (refreshes)
             {
@@ -57,9 +87,9 @@ namespace Lynx2DEngine
         {
             int[] temp = new int[0];
 
-            for (int i = 0; i < objects.Length; i++)
+            for (int i = 0; i < scenes[eSettings.currentScene].objects.Length; i++)
             {
-                if (objects[i] == null)
+                if (scenes[eSettings.currentScene].objects[i] == null)
                 {
                     Array.Resize(ref temp, temp.Length + 1);
                     temp[temp.Length - 1] = i;
@@ -67,77 +97,77 @@ namespace Lynx2DEngine
             }
 
             Array.Resize(ref temp, temp.Length + 1);
-            temp[temp.Length - 1] = objects.Length;
+            temp[temp.Length - 1] = scenes[eSettings.currentScene].objects.Length;
 
             return temp;
         }
 
-        private static void GenerateEngineObjectCode(int id)
+        private static void GenerateEngineObjectCode(int scene, int id)
         {
             string lineBreaks = new string('\n', bSettings.lineBreaks);
             if (bSettings.obfuscates)
                 lineBreaks = "";
 
-            string variable = lineBreaks + objects[id].Variable();
+            string variable = lineBreaks + scenes[scene].objects[id].Variable();
 
-            form.SetStatus("Building '" + objects[id].Variable() + "'", Main.StatusType.Message);
+            form.SetStatus("Building '" + scenes[scene].objects[id].Variable() + "'", Main.StatusType.Message);
 
-            if (objects[id].type == EngineObjectType.GameObject)
+            if (scenes[scene].objects[id].type == EngineObjectType.GameObject)
             {
-                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.GameObject(" + objects[id].sprite + ", " + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + "); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.GameObject(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + "); ";
 
-                if (objects[id].collider != string.Empty)
-                    objects[id].buildCode += variable + ".ApplyCollider(" + objects[id].collider + "); ";
+                if (scenes[scene].objects[id].collider != string.Empty)
+                    scenes[scene].objects[id].buildCode += variable + ".ApplyCollider(" + scenes[scene].objects[id].collider + "); ";
 
-                if (objects[id].visible)
-                    objects[id].buildCode += variable + ".Show(" + objects[id].layer + "); ";
+                if (scenes[scene].objects[id].visible)
+                    scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
             }
-            else if (objects[id].type == EngineObjectType.Sprite)
+            else if (scenes[scene].objects[id].type == EngineObjectType.Sprite)
             {
-                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Sprite('" + objects[id].source + "'); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "'); ";
 
-                if (objects[id].rotation > 0 && objects[id].rotation < 360)
-                    objects[id].buildCode += variable + ".Rotation(" + (objects[id].rotation * Math.PI / 180) + "); ";
+                if (scenes[scene].objects[id].rotation > 0 && scenes[scene].objects[id].rotation < 360)
+                    scenes[scene].objects[id].buildCode += variable + ".Rotation(" + (scenes[scene].objects[id].rotation * Math.PI / 180) + "); ";
 
-                if (objects[id].clipped)
-                    objects[id].buildCode += variable + ".Clip(" + objects[id].cx + ", " + objects[id].cy + ", " + objects[id].cw + ", " + objects[id].ch + "); ";
+                if (scenes[scene].objects[id].clipped)
+                    scenes[scene].objects[id].buildCode += variable + ".Clip(" + scenes[scene].objects[id].cx + ", " + scenes[scene].objects[id].cy + ", " + scenes[scene].objects[id].cw + ", " + scenes[scene].objects[id].ch + "); ";
             }
-            else if (objects[id].type == EngineObjectType.Collider)
+            else if (scenes[scene].objects[id].type == EngineObjectType.Collider)
             {
                 string callback = "";
-                if (objects[id].child != -1) callback = ", function(data) {" + objects[objects[id].child].code + "}";
+                if (scenes[scene].objects[id].child != -1) callback = ", function(data) {" + scenes[scene].objects[scenes[scene].objects[id].child].code + "}";
 
-                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Collider(" + objects[id].x + ", " + objects[id].y + ", " + objects[id].w + ", " + objects[id].h + ", " + objects[id].isStatic.ToString().ToLower() + callback + ");";
-                objects[id].buildCode += variable + ".Solid(" + objects[id].isSolid.ToString().ToLower() + "); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Collider(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + ", " + scenes[scene].objects[id].isStatic.ToString().ToLower() + callback + ");";
+                scenes[scene].objects[id].buildCode += variable + ".Solid(" + scenes[scene].objects[id].isSolid.ToString().ToLower() + "); ";
 
-                if (objects[id].visible)
-                    objects[id].buildCode += variable + ".Enable(); ";
+                if (scenes[scene].objects[id].visible)
+                    scenes[scene].objects[id].buildCode += variable + ".Enable(); ";
                 else
-                    objects[id].buildCode += variable + ".Disable(); ";
+                    scenes[scene].objects[id].buildCode += variable + ".Disable(); ";
             }
-            else if (objects[id].type == EngineObjectType.Emitter)
+            else if (scenes[scene].objects[id].type == EngineObjectType.Emitter)
             {
-                objects[id].buildCode = lineBreaks + "var " + objects[id].Variable() + " = new lx.Emitter(" + objects[id].sprite + ", " + objects[id].x + ", " + objects[id].y + ", " + objects[id].amount + ", " + objects[id].duration + "); ";
-                objects[id].buildCode += variable + ".Setup(" + objects[id].minvx + ", " + objects[id].maxvx + ", " + objects[id].minvy + ", " + objects[id].maxvy + ", " + objects[id].minSize + ", " + objects[id].maxSize + "); ";
-                objects[id].buildCode += variable + ".Speed(" + objects[id].speed + "); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Emitter(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].amount + ", " + scenes[scene].objects[id].duration + "); ";
+                scenes[scene].objects[id].buildCode += variable + ".Setup(" + scenes[scene].objects[id].minvx + ", " + scenes[scene].objects[id].maxvx + ", " + scenes[scene].objects[id].minvy + ", " + scenes[scene].objects[id].maxvy + ", " + scenes[scene].objects[id].minSize + ", " + scenes[scene].objects[id].maxSize + "); ";
+                scenes[scene].objects[id].buildCode += variable + ".Speed(" + scenes[scene].objects[id].speed + "); ";
 
-                if (objects[id].visible)
-                    objects[id].buildCode += variable + ".Show(" + objects[id].layer + "); ";
+                if (scenes[scene].objects[id].visible)
+                    scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
                 else
-                    objects[id].buildCode += variable + ".Hide(); ";
+                    scenes[scene].objects[id].buildCode += variable + ".Hide(); ";
             }
-            else if (objects[id].type == EngineObjectType.Script) objects[id].buildCode = lineBreaks + objects[id].code;
-            else if (objects[id].type == EngineObjectType.Tilemap) objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(objects[id].Variable(), objects[id].tileMap);
+            else if (scenes[scene].objects[id].type == EngineObjectType.Script) scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code;
+            else if (scenes[scene].objects[id].type == EngineObjectType.Tilemap) scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), scenes[scene].objects[id].tileMap);
         }
 
         public static EngineObject GetEngineObject(int id)
         {
-            return objects[id];
+            return scenes[eSettings.currentScene].objects[id];
         }
 
         public static EngineObject GetEngineObjectWithVarName(string variableName)
         {
-            foreach (EngineObject obj in objects)
+            foreach (EngineObject obj in scenes[eSettings.currentScene].objects)
                 if (obj != null && obj.Variable() == variableName) return obj;
 
             return null;
@@ -145,14 +175,14 @@ namespace Lynx2DEngine
 
         public static EngineObject[] GetEngineObjects()
         {
-            return objects;
+            return scenes[eSettings.currentScene].objects;
         }
 
         public static EngineObject[] GetEngineObjectsWithType(EngineObjectType type)
         {
             List<EngineObject> results = new List<EngineObject>();
 
-            foreach (EngineObject obj in objects)
+            foreach (EngineObject obj in scenes[eSettings.currentScene].objects)
                 if (obj != null && obj.type == type) results.Add(obj);
 
             return results.ToArray();
@@ -165,7 +195,7 @@ namespace Lynx2DEngine
                 Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.OpenOrCreate);
                 BinaryFormatter bf = new BinaryFormatter();
 
-                bf.Serialize(stream, new EngineState(objects, bSettings, eSettings, Tilemapper.maps));
+                bf.Serialize(stream, new EngineState(scenes, bSettings, eSettings, Tilemapper.maps));
                 stream.Close();
             }
             catch (Exception e)
@@ -180,35 +210,20 @@ namespace Lynx2DEngine
             try
             {
                 string buildSettings = "";
-                string scripts = "";
-                string colliders = "";
-                string emitters = "";
-                string gameobjects = "";
-                string sprites = "";
-                string tilemaps = "";
+                string buildScenes = "";
+                string standardScene = "";
 
-                //Build engine objects
-                for (int i = 0; i < objects.Length; i++)
-                {
-                    if (objects[i] == null) continue;
-
-                    GenerateEngineObjectCode(i);
-
-                    if (objects[i].type == EngineObjectType.Sprite) sprites += objects[i].buildCode;
-                    else if (objects[i].type == EngineObjectType.GameObject) gameobjects += objects[i].buildCode;
-                    else if (objects[i].type == EngineObjectType.Script && objects[i].parent == -1) scripts += objects[i].buildCode;
-                    else if (objects[i].type == EngineObjectType.Collider) colliders += objects[i].buildCode;
-                    else if (objects[i].type == EngineObjectType.Emitter) emitters += objects[i].buildCode;
-                    else if (objects[i].type == EngineObjectType.Tilemap) tilemaps += objects[i].buildCode;
-
-                    objects[i].buildCode = "";
-                }
+                //Build engine scenes
+                for (int i = 0; i < scenes.Length; i++)
+                    buildScenes += BuildEngineScene(i);
 
                 //Load build settings
                 if (bSettings.hasIcon)
                     buildSettings += "document.getElementById('icon').href='" + bSettings.iconLocation + "';";
 
-                Project.AddGameCode(buildSettings + sprites + tilemaps + colliders + gameobjects + emitters + scripts);
+                standardScene = "lx.LoadScene(" + scenes[bSettings.standardScene].Variable() + ");";
+
+                Project.AddGameCode(buildSettings + buildScenes + standardScene);
             }
             catch (Exception e)
             {
@@ -217,23 +232,60 @@ namespace Lynx2DEngine
             }
         }
 
-        public static void LoadEngineState()
+        public static string BuildEngineScene(int id)
         {
-            objects = new EngineObject[0];
+            string scripts = "";
+            string colliders = "";
+            string emitters = "";
+            string gameobjects = "";
+            string sprites = "";
+            string tilemaps = "";
+            
+            for (int i = 0; i < scenes[id].objects.Length; i++)
+            {
+                if (scenes[id].objects[i] == null) continue;
+
+                GenerateEngineObjectCode(id, i);
+
+                if (scenes[id].objects[i].type == EngineObjectType.Sprite) sprites += scenes[id].objects[i].buildCode;
+                else if (scenes[id].objects[i].type == EngineObjectType.GameObject) gameobjects += scenes[id].objects[i].buildCode;
+                else if (scenes[id].objects[i].type == EngineObjectType.Script && scenes[id].objects[i].parent == -1) scripts += scenes[eSettings.currentScene].objects[i].buildCode;
+                else if (scenes[id].objects[i].type == EngineObjectType.Collider) colliders += scenes[id].objects[i].buildCode;
+                else if (scenes[id].objects[i].type == EngineObjectType.Emitter) emitters += scenes[id].objects[i].buildCode;
+                else if (scenes[id].objects[i].type == EngineObjectType.Tilemap) tilemaps += scenes[id].objects[i].buildCode;
+
+                scenes[id].objects[i].buildCode = "";
+            }
+
+            return ("var " + scenes[id].Variable() + " = new lx.Scene(function() {" + sprites + tilemaps + colliders + gameobjects + emitters + scripts + "});");
+        }
+
+        public static bool LoadEngineState()
+        {
+            scenes = new Scene[0];
             bSettings = new BuildSettings();
             eSettings = new EngineSettings();
             Tilemapper.Clear();
 
             try
             {
-                if (!File.Exists("projects/" + Project.Name() + "/state.bin")) return;
+                if (!File.Exists("projects/" + Project.Name() + "/state.bin"))
+                    return false;
 
                 Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.Open);
                 BinaryFormatter bf = new BinaryFormatter();
 
                 EngineState temp = ((EngineState)bf.Deserialize(stream));
 
-                if (temp.objects != null) objects = temp.objects;
+                if (temp.scenes != null) scenes = temp.scenes;
+                else
+                {
+                    //Running pre-scene projects (running v0.3.3-alpha or earlier)
+                    MessageBox.Show("This project does not support scenes. Please open this project using version 0.3.3-alpha or earlier.", "Lynx2D Engine - Incompatible");
+
+                    return false;
+                }
+
                 if (temp.bSettings != null) bSettings = temp.bSettings;
                 if (temp.eSettings != null) eSettings = temp.eSettings;
                 if (temp.eTileMaps != null) Tilemapper.LoadFromEngineState(temp.eTileMaps);
@@ -245,11 +297,15 @@ namespace Lynx2DEngine
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
                 form.SetStatus("Exception occurred while loading engine state.", Main.StatusType.Warning);
             }
+
+            LoadScene(eSettings.currentScene);
+
+            return true;
         }
 
         public static void ClearEngine()
         {
-            objects = new EngineObject[0];
+            scenes = new Scene[0];
             bSettings = new BuildSettings();
             eSettings = new EngineSettings();
             Tilemapper.Clear();
@@ -281,75 +337,75 @@ namespace Lynx2DEngine
         public static void SetEngineObject(int id, EngineObject obj)
         {
             obj.id = id;
-            objects[id] = obj;
+            scenes[eSettings.currentScene].objects[id] = obj;
         }
 
         public static void SetEngineObjectPosition(int id, int x, int y)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].x = x;
-            objects[id].y = y;
+            scenes[eSettings.currentScene].objects[id].x = x;
+            scenes[eSettings.currentScene].objects[id].y = y;
         }
 
         public static void SetEngineObjectSize(int id, int x, int y)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].w = x;
-            objects[id].h = y;
+            scenes[eSettings.currentScene].objects[id].w = x;
+            scenes[eSettings.currentScene].objects[id].h = y;
         }
 
         public static void SetEngineObjectLayer(int id, int layer)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].layer = layer;
+            scenes[eSettings.currentScene].objects[id].layer = layer;
         }
 
         public static void SetEngineObjectSource(int id, string src)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].source = src;
+            scenes[eSettings.currentScene].objects[id].source = src;
         }
 
         public static void SetEngineObjectVisible(int id, bool visible)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].visible = visible;
+            scenes[eSettings.currentScene].objects[id].visible = visible;
         }
 
         public static void SetEngineObjectClipped(int id, bool clipped)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].clipped = clipped;
+            scenes[eSettings.currentScene].objects[id].clipped = clipped;
         }
 
         public static void SetEngineObjectClip(int id, int cx, int cy, int cw, int ch)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].cx = cx;
-            objects[id].cy = cy;
-            objects[id].cw = cw;
-            objects[id].ch = ch;
+            scenes[eSettings.currentScene].objects[id].cx = cx;
+            scenes[eSettings.currentScene].objects[id].cy = cy;
+            scenes[eSettings.currentScene].objects[id].cw = cw;
+            scenes[eSettings.currentScene].objects[id].ch = ch;
         }
 
         public static void SetEngineObjectRotation(int id, int angle)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].rotation = angle;
+            scenes[eSettings.currentScene].objects[id].rotation = angle;
         }
 
         public static void SetEngineObjectScript(int id, string script)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].code = script;
+            scenes[eSettings.currentScene].objects[id].code = script;
 
             Project.Build(true);
 
@@ -358,7 +414,7 @@ namespace Lynx2DEngine
 
         public static void SetEngineObjectSprite(int id, string sprite)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
             if (sprite == string.Empty)
             {
@@ -366,19 +422,19 @@ namespace Lynx2DEngine
 
                 if (filler.Length == 0)
                 {
-                    MessageBox.Show(objects[id].Variable() + " could not be assigned a existing sprite. Please refer to a existing sprite.", "Lynx2D Engine - Exception");
+                    MessageBox.Show(scenes[eSettings.currentScene].objects[id].Variable() + " could not be assigned a existing sprite. Please refer to a existing sprite.", "Lynx2D Engine - Exception");
                     return;
                 }
 
                 sprite = filler[0].Variable();
             }
 
-            objects[id].sprite = sprite;
+            scenes[eSettings.currentScene].objects[id].sprite = sprite;
         }
 
         public static void SetEngineObjectCollider(int id, string collider)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
             if (collider == string.Empty)
             {
@@ -386,80 +442,80 @@ namespace Lynx2DEngine
 
                 if (filler.Length == 0)
                 {
-                    MessageBox.Show(objects[id].Variable() + " could not be assigned a existing collider. Please refer to a existing collider.", "Lynx2D Engine - Exception");
+                    MessageBox.Show(scenes[eSettings.currentScene].objects[id].Variable() + " could not be assigned a existing collider. Please refer to a existing collider.", "Lynx2D Engine - Exception");
                     return;
                 }
 
                 collider = filler[0].Variable();
             }
 
-            objects[GetEngineObjectWithVarName(collider).id].applied = true;
-            objects[GetEngineObjectWithVarName(collider).id].visible = true;
+            scenes[eSettings.currentScene].objects[GetEngineObjectWithVarName(collider).id].applied = true;
+            scenes[eSettings.currentScene].objects[GetEngineObjectWithVarName(collider).id].visible = true;
 
-            objects[id].collider = collider;
+            scenes[eSettings.currentScene].objects[id].collider = collider;
         }
 
         public static void RemoveEngineObjectCollider(int id)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
             
-            objects[GetEngineObjectWithVarName(objects[id].collider).id].applied = false;
+            scenes[eSettings.currentScene].objects[GetEngineObjectWithVarName(scenes[eSettings.currentScene].objects[id].collider).id].applied = false;
 
-            objects[id].collider = string.Empty;
+            scenes[eSettings.currentScene].objects[id].collider = string.Empty;
         }
 
         public static void SetEngineObjectStatic(int id, bool isStatic)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].isStatic = isStatic;
+            scenes[eSettings.currentScene].objects[id].isStatic = isStatic;
         }
 
         public static void SetEngineObjectSolid(int id, bool isSolid)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].isSolid = isSolid;
+            scenes[eSettings.currentScene].objects[id].isSolid = isSolid;
         }
 
         public static void SetEngineObjectSetup(int id, float minX, float maxX, float minY, float maxY, int minS, int maxS)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].minvx = minX;
-            objects[id].maxvx = maxX;
-            objects[id].minvy = minY;
-            objects[id].maxvy = maxY;
-            objects[id].minSize = minS;
-            objects[id].maxSize = maxS;
+            scenes[eSettings.currentScene].objects[id].minvx = minX;
+            scenes[eSettings.currentScene].objects[id].maxvx = maxX;
+            scenes[eSettings.currentScene].objects[id].minvy = minY;
+            scenes[eSettings.currentScene].objects[id].maxvy = maxY;
+            scenes[eSettings.currentScene].objects[id].minSize = minS;
+            scenes[eSettings.currentScene].objects[id].maxSize = maxS;
         }
 
         public static void SetEngineObjectAmount(int id, int amount)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].amount = amount;
+            scenes[eSettings.currentScene].objects[id].amount = amount;
         }
 
         public static void SetEngineObjectDuration(int id, int duration)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].duration = duration;
+            scenes[eSettings.currentScene].objects[id].duration = duration;
         }
 
         public static void SetEngineObjectSpeed(int id, float speed)
         {
-            if (objects[id] == null) return;
+            if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            objects[id].speed = speed;
+            scenes[eSettings.currentScene].objects[id].speed = speed;
         }
 
         public static void RenameEngineObject(int id, string name)
         {
-            if (objects[id] == null || name == "HAS_BEEN_CLOSED") return;
+            if (scenes[eSettings.currentScene].objects[id] == null || name == "HAS_BEEN_CLOSED") return;
 
-            objects[id].Rename(name);
+            scenes[eSettings.currentScene].objects[id].Rename(name);
             form.UpdateHierarchy();
 
             Project.Build(true);
@@ -470,15 +526,15 @@ namespace Lynx2DEngine
     [Serializable]
     class EngineState
     {
-        public EngineState (EngineObject[] objects, BuildSettings bSettings, EngineSettings eSettings, Tilemap[] eTileMaps) 
+        public EngineState (Scene[] scenes, BuildSettings bSettings, EngineSettings eSettings, Tilemap[] eTileMaps) 
         {
-            this.objects = objects;
+            this.scenes = scenes;
             this.bSettings = bSettings;
             this.eSettings = eSettings;
             this.eTileMaps = eTileMaps;
         }
 
-        public EngineObject[] objects;
+        public Scene[] scenes;
         public BuildSettings bSettings;
         public EngineSettings eSettings;
         public Tilemap[] eTileMaps;
@@ -689,6 +745,7 @@ namespace Lynx2DEngine
     {
         public bool hasIcon;
         public string iconLocation;
+        public int standardScene = 0;
 
         public int lineBreaks = 0;
         public bool obfuscates;
@@ -712,6 +769,40 @@ namespace Lynx2DEngine
         public int gridOffX = -8;
         public int gridOffY = -8;
         public string gridColor = "white";
+
+        public int currentScene = -1;
+    }
+
+    [Serializable]
+    public class Scene
+    {
+        public Scene(int id)
+        {
+            this.id = id;
+            objects = new EngineObject[0];
+            name = "Scene";
+        }
+
+        public void Rename(string name)
+        {
+            if (string.IsNullOrEmpty(name) || name == "")
+                unique = string.Empty;
+
+            unique = name;
+        }
+
+        public string Variable()
+        {
+            if (unique == string.Empty)
+                return name + id;
+
+            return unique;
+        }
+
+        public EngineObject[] objects;
+        public string name;
+        public string unique = string.Empty;
+        public int id;
     }
 
     public enum EngineObjectType

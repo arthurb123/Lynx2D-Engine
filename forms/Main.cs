@@ -17,6 +17,7 @@ namespace Lynx2DEngine
 
         public ConsoleForm console;
         private bool consoleVisible;
+        private HierarchyState hierarchyView;
 
         private EngineObject copied = null;
 
@@ -42,13 +43,16 @@ namespace Lynx2DEngine
             Feed.form = this;
 
             Feed.CheckVersion(false);
+            
+            CefSettings settings = new CefSettings();
+            Cef.Initialize(settings);
         }
 
         private void Form1_FormClosing(object sender, CancelEventArgs e)
         {
-            Cef.Shutdown();
-
             Project.RequestSave();
+
+            Cef.Shutdown();
         }
 
         public void SetGameAvailability(bool available)
@@ -61,6 +65,9 @@ namespace Lynx2DEngine
             buildToolStripMenuItem.Enabled = available;
             reloadFrameworkToolStripMenuItem.Enabled = available;
             reloadStandardResourcesToolStripMenuItem.Enabled = available;
+
+            hierarchyObjects.Visible = available;
+            hierarchyScenes.Visible = available;
         }
         #endregion
 
@@ -101,34 +108,42 @@ namespace Lynx2DEngine
         #endregion
 
         #region "Hierarchy Stuff"
+        public void SwitchHierarchyView(HierarchyState state)
+        {
+            if (hierarchyView == state)
+                return;
+
+            switch (state)
+            {
+                case HierarchyState.Objects:
+                    hierarchyObjects.BackColor = Color.FromKnownColor(KnownColor.MenuBar);
+                    hierarchyScenes.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+                    break;
+                case HierarchyState.Scenes:
+                    hierarchyObjects.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+                    hierarchyScenes.BackColor = Color.FromKnownColor(KnownColor.MenuBar);
+                    break;
+            }
+
+            hierarchyView = state;
+
+            UpdateHierarchy();
+        }
+
         public void UpdateHierarchy()
         {
             try
             {
                 hierarchy.Nodes.Clear();
 
-                EngineObject[] objects = Engine.GetEngineObjects();
-
-                for (int i = 0; i < objects.Length; i++)
+                switch (hierarchyView)
                 {
-                    if (objects[i] == null) continue;
-
-                    if (objects[i].parent == -1)
-                    {
-                        TreeNode[] children = new TreeNode[0];
-
-                        if (objects[i].child != -1)
-                        {
-                            Array.Resize(ref children, 1);
-                            children[0] = new TreeNode(objects[objects[i].child].Variable());
-                            children[0].Tag = objects[i].child;
-                        }
-
-                        TreeNode node = new TreeNode(objects[i].Variable(), children);
-                        node.Tag = i;
-
-                        hierarchy.Nodes.Add(node);
-                    }
+                    case HierarchyState.Objects:
+                        UpdateHierarchyWithObjects();
+                        break;
+                    case HierarchyState.Scenes:
+                        UpdateHierarchyWithScenes();
+                        break;
                 }
 
                 hierarchy.Refresh();
@@ -140,11 +155,60 @@ namespace Lynx2DEngine
             }
         }
 
+        private void UpdateHierarchyWithObjects()
+        {
+            EngineObject[] objects = Engine.GetEngineObjects();
+
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (objects[i] == null) continue;
+
+                if (objects[i].parent == -1)
+                {
+                    TreeNode[] children = new TreeNode[0];
+
+                    if (objects[i].child != -1)
+                    {
+                        Array.Resize(ref children, 1);
+                        children[0] = new TreeNode(objects[objects[i].child].Variable());
+                        children[0].Tag = objects[i].child;
+                    }
+
+                    TreeNode node = new TreeNode(objects[i].Variable(), children);
+                    node.Tag = i;
+
+                    hierarchy.Nodes.Add(node);
+                }
+            }
+        }
+
+        private void UpdateHierarchyWithScenes()
+        {
+            Scene[] scenes = Engine.scenes;
+
+            for (int i = 0; i < scenes.Length; i++)
+            {
+                if (scenes[i] == null) continue;
+
+                TreeNode node = new TreeNode((Engine.eSettings.currentScene == i ? "● " : "") + scenes[i].Variable());
+                node.Tag = i;
+
+                hierarchy.Nodes.Add(node);
+            }
+        }
+
         private void hierarchy_MouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (Engine.bSettings.obfuscates)
             {
                 MessageBox.Show("Project editing is disabled when using obfuscated build code.", "Lynx2D Engine - Error");
+                return;
+            }
+
+            if (hierarchyView == HierarchyState.Scenes)
+            {
+                Engine.LoadScene((int)e.Node.Tag);
+
                 return;
             }
 
@@ -293,6 +357,16 @@ namespace Lynx2DEngine
                 SetStatus("Exception occurred while renaming item", StatusType.Warning);
             }
 
+        }
+
+        private void hierarchyObjects_Click(object sender, EventArgs e)
+        {
+            SwitchHierarchyView(HierarchyState.Objects);
+        }
+
+        private void hierachyScenes_Click(object sender, EventArgs e)
+        {
+            SwitchHierarchyView(HierarchyState.Scenes);
         }
         #endregion
 
@@ -703,11 +777,6 @@ namespace Lynx2DEngine
 
         public void createBrowser()
         {
-            if (Cef.IsInitialized) return;
-
-            CefSettings settings = new CefSettings();
-            Cef.Initialize(settings);
-
             browser = new ChromiumWebBrowser("about:blank");
             browser.BrowserSettings = new BrowserSettings()
             {
@@ -805,6 +874,12 @@ namespace Lynx2DEngine
         }
         #endregion
     }
+}
+
+public enum HierarchyState
+{
+    Objects = 0,
+    Scenes
 }
 
 public class CustomMenuHandler : CefSharp.IContextMenuHandler

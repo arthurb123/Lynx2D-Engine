@@ -26,7 +26,7 @@ namespace Lynx2DEngine
                 return;
             }
 
-            if (cur != string.Empty)
+            if (needsName && cur != string.Empty)
                 RequestSave();
 
             if (needsName) cur = Input.Prompt("Enter the name of the existing project", "Lynx2D - Load Project");
@@ -49,9 +49,13 @@ namespace Lynx2DEngine
             {
                 gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(false); lx.Start(60);";
 
-                form.createBrowser();
+                if (!Engine.LoadEngineState())
+                {
+                    cur = string.Empty;
+                    return;
+                }
 
-                Engine.LoadEngineState();
+                form.createBrowser();
 
                 form.LoadEngineSettings();
                 form.UpdateHierarchy();
@@ -216,6 +220,7 @@ namespace Lynx2DEngine
                 InstallResources(false);
 
                 Engine.ClearEngine();
+                Engine.SaveEngineState();
 
                 Load(false);
             }
