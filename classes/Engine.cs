@@ -21,9 +21,39 @@ namespace Lynx2DEngine
             if (id == -1 || eSettings.currentScene == -1)
                 CreateScene(false);
             else
+            {
                 eSettings.currentScene = id;
 
+                form.refreshBrowser();
+            }
+
             form.UpdateHierarchy();
+        }
+
+        public static void RemoveScene()
+        {
+            if (!Input.YesNo("Are you sure you want to delete the scene '" + scenes[eSettings.currentScene].Variable() + "'?", "Lynx2D Engine - Question"))
+                return;
+
+            if (eSettings.currentScene == bSettings.standardScene)
+            {
+                MessageBox.Show("Could not remove '" + scenes[eSettings.currentScene].Variable() + "', as this is the standard scene of the project.", "Lynx2D Engine - Exception");
+                return;
+            }
+
+            scenes[eSettings.currentScene] = null;
+            
+            for (int i = 0; i < scenes.Length; i++)
+            {
+                if (scenes[i] != null)
+                {
+                    LoadScene(i);
+
+                    return;
+                }
+            }
+
+            LoadScene(-1);
         }
 
         public static void CreateScene(bool loads)
@@ -44,6 +74,13 @@ namespace Lynx2DEngine
                     break;
                 }
             }
+        }
+
+        public static void RenameScene(int id, string name)
+        {
+            if (scenes[id] == null) return;
+
+            scenes[id].Rename(name);
         }
 
         public static int AddEngineObject(EngineObjectType type, string code, int child, int parent)
@@ -77,9 +114,9 @@ namespace Lynx2DEngine
 
             if (refreshes)
             {
-                Project.Build(true);
-
                 form.UpdateHierarchy();
+
+                form.refreshBrowser();
             }
         }
 
@@ -205,7 +242,7 @@ namespace Lynx2DEngine
             }
         }
 
-        public static void BuildEngineCode()
+        public static string BuildEngineCode(bool stacks)
         {
             try
             {
@@ -213,9 +250,20 @@ namespace Lynx2DEngine
                 string buildScenes = "";
                 string standardScene = "";
 
+                string currentScene = "";
+
                 //Build engine scenes
                 for (int i = 0; i < scenes.Length; i++)
-                    buildScenes += BuildEngineScene(i);
+                    if (scenes[i] != null) {
+                        if (!stacks && i == eSettings.currentScene)
+                            currentScene = BuildEngineScene(i, true);
+                        else
+                            buildScenes += BuildEngineScene(i, false);
+                    }
+
+                //Check if build or export
+                if (!stacks)
+                    return buildScenes + currentScene;
 
                 //Load build settings
                 if (bSettings.hasIcon)
@@ -224,16 +272,23 @@ namespace Lynx2DEngine
                 standardScene = "lx.LoadScene(" + scenes[bSettings.standardScene].Variable() + ");";
 
                 Project.AddGameCode(buildSettings + buildScenes + standardScene);
+
+                form.SetStatus("'" + Project.cur + "' has been build.", Main.StatusType.Alert);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
                 form.SetStatus("Could not build project code.", Main.StatusType.Alert);
             }
+
+            return string.Empty;
         }
 
-        public static string BuildEngineScene(int id)
+        public static string BuildEngineScene(int id, bool globalScope)
         {
+            if (scenes[id] == null)
+                return "";
+
             string scripts = "";
             string colliders = "";
             string emitters = "";
@@ -257,7 +312,10 @@ namespace Lynx2DEngine
                 scenes[id].objects[i].buildCode = "";
             }
 
-            return ("var " + scenes[id].Variable() + " = new lx.Scene(function() {" + sprites + tilemaps + colliders + gameobjects + emitters + scripts + "});");
+            if (!globalScope)
+                return ("var " + scenes[id].Variable() + " = new lx.Scene(function() {" + sprites + tilemaps + colliders + gameobjects + emitters + scripts + "});");
+            else
+                return (sprites + tilemaps + colliders + gameobjects + emitters + scripts);
         }
 
         public static bool LoadEngineState()
@@ -407,8 +465,6 @@ namespace Lynx2DEngine
 
             scenes[eSettings.currentScene].objects[id].code = script;
 
-            Project.Build(true);
-
             form.refreshBrowser();
         }
 
@@ -518,7 +574,7 @@ namespace Lynx2DEngine
             scenes[eSettings.currentScene].objects[id].Rename(name);
             form.UpdateHierarchy();
 
-            Project.Build(true);
+            form.refreshBrowser();
         }
         #endregion
     }
@@ -797,6 +853,11 @@ namespace Lynx2DEngine
                 return name + id;
 
             return unique;
+        }
+
+        public override string ToString()
+        {
+            return Variable();
         }
 
         public EngineObject[] objects;

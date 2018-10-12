@@ -1,6 +1,6 @@
 ﻿namespace Lynx2DEngine.forms
 {
-    partial class BuildSettingsForm
+    partial class ExportSettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuildSettingsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExportSettingsForm));
             this.label1 = new System.Windows.Forms.Label();
             this.lineBreaks = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -38,6 +38,8 @@
             this.iconLocation = new System.Windows.Forms.TextBox();
             this.iconImage = new System.Windows.Forms.PictureBox();
             this.iconMessage = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.standardScene = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.lineBreaks)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconImage)).BeginInit();
             this.SuspendLayout();
@@ -45,7 +47,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 116);
+            this.label1.Location = new System.Drawing.Point(11, 124);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 13);
             this.label1.TabIndex = 0;
@@ -53,7 +55,7 @@
             // 
             // lineBreaks
             // 
-            this.lineBreaks.Location = new System.Drawing.Point(87, 114);
+            this.lineBreaks.Location = new System.Drawing.Point(86, 122);
             this.lineBreaks.Maximum = new decimal(new int[] {
             10,
             0,
@@ -69,7 +71,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 87);
+            this.label2.Location = new System.Drawing.Point(11, 95);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(126, 16);
             this.label2.TabIndex = 2;
@@ -78,7 +80,7 @@
             // obfuscates
             // 
             this.obfuscates.AutoSize = true;
-            this.obfuscates.Location = new System.Drawing.Point(160, 116);
+            this.obfuscates.Location = new System.Drawing.Point(159, 124);
             this.obfuscates.Name = "obfuscates";
             this.obfuscates.Size = new System.Drawing.Size(159, 17);
             this.obfuscates.TabIndex = 3;
@@ -110,9 +112,9 @@
             // iconLocation
             // 
             this.iconLocation.Enabled = false;
-            this.iconLocation.Location = new System.Drawing.Point(87, 32);
+            this.iconLocation.Location = new System.Drawing.Point(102, 32);
             this.iconLocation.Name = "iconLocation";
-            this.iconLocation.Size = new System.Drawing.Size(209, 20);
+            this.iconLocation.Size = new System.Drawing.Size(194, 20);
             this.iconLocation.TabIndex = 6;
             this.iconLocation.TextChanged += new System.EventHandler(this.iconLocation_TextChanged);
             // 
@@ -129,18 +131,39 @@
             // iconMessage
             // 
             this.iconMessage.AutoSize = true;
-            this.iconMessage.Location = new System.Drawing.Point(84, 55);
+            this.iconMessage.Location = new System.Drawing.Point(99, 16);
             this.iconMessage.Name = "iconMessage";
             this.iconMessage.Size = new System.Drawing.Size(148, 13);
             this.iconMessage.TabIndex = 8;
             this.iconMessage.Text = "Uh oh something went wrong!";
             this.iconMessage.Visible = false;
             // 
-            // BuildSettingsForm
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 62);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(87, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Standard Scene:";
+            // 
+            // standardScene
+            // 
+            this.standardScene.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.standardScene.FormattingEnabled = true;
+            this.standardScene.Location = new System.Drawing.Point(102, 58);
+            this.standardScene.Name = "standardScene";
+            this.standardScene.Size = new System.Drawing.Size(121, 21);
+            this.standardScene.TabIndex = 10;
+            this.standardScene.SelectedIndexChanged += new System.EventHandler(this.standardScene_SelectedIndexChanged);
+            // 
+            // ExportSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 151);
+            this.Controls.Add(this.standardScene);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.iconMessage);
             this.Controls.Add(this.iconImage);
             this.Controls.Add(this.iconLocation);
@@ -154,10 +177,10 @@
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(360, 190);
             this.MinimumSize = new System.Drawing.Size(360, 190);
-            this.Name = "BuildSettingsForm";
+            this.Name = "ExportSettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Lynx2D Engine - Build Settings";
-            this.Load += new System.EventHandler(this.BuildSettingsForm_Load);
+            this.Text = "Lynx2D Engine - Export Settings";
+            this.Load += new System.EventHandler(this.ExportSettingsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.lineBreaks)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconImage)).EndInit();
             this.ResumeLayout(false);
@@ -176,5 +199,7 @@
         private System.Windows.Forms.TextBox iconLocation;
         private System.Windows.Forms.PictureBox iconImage;
         private System.Windows.Forms.Label iconMessage;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox standardScene;
     }
 }

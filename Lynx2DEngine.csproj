@@ -121,11 +121,11 @@
     <Compile Include="forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\BuildSettingsForm.cs">
+    <Compile Include="forms\ExportSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\BuildSettingsForm.Designer.cs">
-      <DependentUpon>BuildSettingsForm.cs</DependentUpon>
+    <Compile Include="forms\ExportSettingsForm.Designer.cs">
+      <DependentUpon>ExportSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\ColliderForm.cs">
       <SubType>Form</SubType>
@@ -202,8 +202,8 @@
     <EmbeddedResource Include="forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\BuildSettingsForm.resx">
-      <DependentUpon>BuildSettingsForm.cs</DependentUpon>
+    <EmbeddedResource Include="forms\ExportSettingsForm.resx">
+      <DependentUpon>ExportSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\ColliderForm.resx">
       <DependentUpon>ColliderForm.cs</DependentUpon>

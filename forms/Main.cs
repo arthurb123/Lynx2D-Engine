@@ -13,11 +13,11 @@ namespace Lynx2DEngine
 {
     public partial class Main : Form
     {
-        public ChromiumWebBrowser browser;
+        public ChromiumWebBrowser browser = null;
 
         public ConsoleForm console;
         private bool consoleVisible;
-        private HierarchyState hierarchyView;
+        private HierarchyState hierarchyView = HierarchyState.Objects;
 
         private EngineObject copied = null;
 
@@ -43,7 +43,7 @@ namespace Lynx2DEngine
             Feed.form = this;
 
             Feed.CheckVersion(false);
-            
+
             CefSettings settings = new CefSettings();
             Cef.Initialize(settings);
         }
@@ -65,6 +65,8 @@ namespace Lynx2DEngine
             buildToolStripMenuItem.Enabled = available;
             reloadFrameworkToolStripMenuItem.Enabled = available;
             reloadStandardResourcesToolStripMenuItem.Enabled = available;
+            sceneToolStripMenuItem.Enabled = available;
+            exportToolStripMenuItem.Enabled = available;
 
             hierarchyObjects.Visible = available;
             hierarchyScenes.Visible = available;
@@ -74,23 +76,30 @@ namespace Lynx2DEngine
         #region "Status Stuff"
         public void SetStatus(string text, StatusType type)
         {
-            switch (type)
+            try
             {
-                case StatusType.Message:
-                    statusLabel.ForeColor = Color.Black;
-                    break;
-                case StatusType.Warning:
-                    statusLabel.ForeColor = Color.DarkOrange;
-                    break;
-                case StatusType.Alert:
-                    statusLabel.ForeColor = Color.DarkRed;
-                    break;
+                switch (type)
+                {
+                    case StatusType.Message:
+                        statusLabel.ForeColor = Color.Black;
+                        break;
+                    case StatusType.Warning:
+                        statusLabel.ForeColor = Color.DarkOrange;
+                        break;
+                    case StatusType.Alert:
+                        statusLabel.ForeColor = Color.DarkRed;
+                        break;
+                }
+
+                statusLabel.Visible = true;
+                statusLabel.Text = text;
+
+                timer1.Enabled = true;
             }
-
-            statusLabel.Visible = true;
-            statusLabel.Text = text;
-
-            timer1.Enabled = true;
+            catch (Exception e)
+            {
+                //...
+            }
         }
 
         public enum StatusType
@@ -190,7 +199,11 @@ namespace Lynx2DEngine
             {
                 if (scenes[i] == null) continue;
 
-                TreeNode node = new TreeNode((Engine.eSettings.currentScene == i ? "● " : "") + scenes[i].Variable());
+                TreeNode node = new TreeNode(scenes[i].Variable());
+
+                if (Engine.eSettings.currentScene == i)
+                    node.NodeFont = new Font(hierarchy.Font, FontStyle.Underline);
+
                 node.Tag = i;
 
                 hierarchy.Nodes.Add(node);
@@ -199,12 +212,6 @@ namespace Lynx2DEngine
 
         private void hierarchy_MouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (Engine.bSettings.obfuscates)
-            {
-                MessageBox.Show("Project editing is disabled when using obfuscated build code.", "Lynx2D Engine - Error");
-                return;
-            }
-
             if (hierarchyView == HierarchyState.Scenes)
             {
                 Engine.LoadScene((int)e.Node.Tag);
@@ -280,6 +287,9 @@ namespace Lynx2DEngine
 
         private void hierarchy_KeyDown(object sender, KeyEventArgs e)
         {
+            if (hierarchyView == HierarchyState.Scenes)
+                return;
+
             if (e.Control && e.KeyCode == Keys.C) copied = Engine.GetEngineObjects()[(int)hierarchy.SelectedNode.Tag];
 
             if (e.Control && e.KeyCode == Keys.V)
@@ -349,7 +359,10 @@ namespace Lynx2DEngine
 
             try
             {
-                Engine.RenameEngineObject((int)e.Node.Tag, e.Label);
+                if (hierarchyView == HierarchyState.Objects)
+                    Engine.RenameEngineObject((int)e.Node.Tag, e.Label);
+                else if (hierarchyView == HierarchyState.Scenes)
+                    Engine.RenameScene((int)e.Node.Tag, e.Label);
             }
             catch (Exception exc)
             {
@@ -357,6 +370,7 @@ namespace Lynx2DEngine
                 SetStatus("Exception occurred while renaming item", StatusType.Warning);
             }
 
+            UpdateHierarchy();
         }
 
         private void hierarchyObjects_Click(object sender, EventArgs e)
@@ -398,7 +412,21 @@ namespace Lynx2DEngine
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
                 SetStatus("Exception occurred trying to open project.", StatusType.Warning);
             }
-        } 
+        }
+        #endregion
+
+        #region "Scene Toolstrip Stuff"
+        private void addSceneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Engine.CreateScene(true);
+
+            SwitchHierarchyView(HierarchyState.Scenes);
+        }
+
+        private void removeSceneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Engine.RemoveScene();
+        }
         #endregion
 
         #region "Game Toolstrip Stuff"
@@ -625,19 +653,21 @@ namespace Lynx2DEngine
         #endregion
 
         #region "Build Toolstrip Stuff"
-        private void buildToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void buildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Project.Build(false);
+            refreshBrowser();
+        }
+        #endregion
+
+        #region "Export Toolstrip Stuff"
+        private void exportProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Project.Export();
         }
 
-        private void buildRefreshToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exportSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Project.Build(true);
-        }
-
-        private void buildSettingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            BuildSettingsForm temp = new BuildSettingsForm();
+            ExportSettingsForm temp = new ExportSettingsForm();
             temp.Show();
         }
         #endregion
@@ -694,11 +724,6 @@ namespace Lynx2DEngine
             Engine.eSettings.drawColliders = drawCollidersToolStripMenuItem.Checked;
 
             Engine.ExecuteScript("lx.GAME.DRAW_COLLIDERS=" + drawCollidersToolStripMenuItem.Checked.ToString().ToLower() + ";");
-        }
-
-        private void refreshGameToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            refreshBrowser();
         }
         #endregion
 
@@ -766,7 +791,7 @@ namespace Lynx2DEngine
                 Obfuscater.Remove();
                 Tilemapper.RemoveAll();
 
-                browser.Load(Project.WorkDirectory() + "/index.html");
+                browser.Load(Project.WorkDirectory() + "/engine.html");
             }
             catch (Exception e)
             {
@@ -777,6 +802,9 @@ namespace Lynx2DEngine
 
         public void createBrowser()
         {
+            if (browser != null || !Cef.IsInitialized)
+                return;
+
             browser = new ChromiumWebBrowser("about:blank");
             browser.BrowserSettings = new BrowserSettings()
             {
@@ -795,6 +823,8 @@ namespace Lynx2DEngine
         {
             if (!args.IsLoading && Project.Name() != string.Empty)
             {
+                Project.Build();
+
                 checkCameraInjection(sender, args);
                 checkGridInjection(sender, args);
 

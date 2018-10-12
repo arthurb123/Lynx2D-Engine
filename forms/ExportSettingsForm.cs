@@ -11,16 +11,16 @@ using System.Windows.Forms;
 
 namespace Lynx2DEngine.forms
 {
-    public partial class BuildSettingsForm : Form
+    public partial class ExportSettingsForm : Form
     {
-        public BuildSettingsForm()
+        public ExportSettingsForm()
         {
             InitializeComponent();
         }
 
-        private void BuildSettingsForm_Load(object sender, EventArgs e)
+        private void ExportSettingsForm_Load(object sender, EventArgs e)
         {
-            FormClosing += BuildSettingsForm_Closing;
+            FormClosing += ExportSettingsForm_Closing;
 
             hasIcon.Checked = Engine.bSettings.hasIcon;
             hasIcon_CheckedChanged(sender, e);
@@ -29,6 +29,23 @@ namespace Lynx2DEngine.forms
             obfuscates.Checked = Engine.bSettings.obfuscates;
 
             ReloadIconImage();
+            UpdateScenesCollection();
+        }
+
+        private void UpdateScenesCollection()
+        {
+            if (standardScene.Items.Count == 0)
+            {
+                foreach (Scene s in Engine.scenes)
+                {
+                    if (s == null)
+                        continue;
+
+                    standardScene.Items.Add(s);
+                }
+            }
+
+            standardScene.Text = Engine.scenes[Engine.bSettings.standardScene].Variable();
         }
 
         private void hasIcon_CheckedChanged(object sender, EventArgs e)
@@ -90,12 +107,24 @@ namespace Lynx2DEngine.forms
             }
         }
 
-        private void BuildSettingsForm_Closing(object sender, EventArgs e)
+        private void ExportSettingsForm_Closing(object sender, EventArgs e)
         {
             if (iconLocation.Text.Length > 0 && !iconLocation.Text.Contains(".ico"))
                 MessageBox.Show("Not a valid icon (.ico file) specified, the specified icon will probably not display upon build.", "Lynx2D Engine - Warning");
 
             Project.Save();
+        }
+
+        private void standardScene_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Engine.scenes.Length; i++)
+            {
+                if (Engine.scenes[i] != null && Engine.scenes[i].Variable() == standardScene.Text)
+                {
+                    Engine.bSettings.standardScene = i;
+                    break;
+                }
+            }
         }
     }
 }

@@ -58,7 +58,6 @@ namespace Lynx2DEngine
                 form.createBrowser();
 
                 form.LoadEngineSettings();
-                form.UpdateHierarchy();
 
                 form.Text = "Lynx2D Engine - " + cur;
                 form.SetStatus("'" + cur + "' has been loaded.", Main.StatusType.Message);
@@ -121,16 +120,16 @@ namespace Lynx2DEngine
             form.SetStatus("'" + cur + "' has been saved.", Main.StatusType.Message);
         }
 
-        public static async void Build(bool refreshes)
+        public static async void Export()
         {
             if (cur == string.Empty || cur == "HAS_BEEN_CLOSED") return;
 
             bool obfuscated = false;
-            form.SetStatus("Started building project.", Main.StatusType.Message);
+            form.SetStatus("Started exporting project.", Main.StatusType.Message);
 
             Save();
 
-            Engine.BuildEngineCode();
+            Engine.BuildEngineCode(true);
 
             using (FileStream fs = new FileStream("projects/" + cur + "/data/game.js", FileMode.Create))
             {
@@ -139,10 +138,10 @@ namespace Lynx2DEngine
                     if (Engine.bSettings.obfuscates)
                     {
                         if (!Feed.CheckOnline())
-                            form.SetStatus("Build obfuscation requires a internet connection.", Main.StatusType.Warning);
+                            form.SetStatus("Game obfuscation requires a internet connection.", Main.StatusType.Warning);
                         else
                         {
-                            form.SetStatus("Obfuscating build code.", Main.StatusType.Message);
+                            form.SetStatus("Obfuscating game code.", Main.StatusType.Message);
 
                             try
                             {
@@ -153,7 +152,7 @@ namespace Lynx2DEngine
                             }
                             catch (Exception e)
                             {
-                                form.SetStatus("Could not obfuscate build code.", Main.StatusType.Warning);
+                                form.SetStatus("Could not obfuscate game code.", Main.StatusType.Warning);
                             }
                         }
                     }
@@ -166,10 +165,20 @@ namespace Lynx2DEngine
             }
 
             gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(false); lx.Start(60);";
-            if (obfuscated || !Engine.bSettings.obfuscates)
-                form.SetStatus("'" + cur + "' has been build.", Main.StatusType.Message);
 
-            if (refreshes) form.refreshBrowser();
+            if (obfuscated || !Engine.bSettings.obfuscates)
+                form.SetStatus("'" + cur + "' has been exported.", Main.StatusType.Message);
+        }
+
+        public static void Build()
+        {
+            if (cur == string.Empty || cur == "HAS_BEEN_CLOSED") return;
+
+            Save();
+
+            Engine.ExecuteScript(gameCode + Engine.BuildEngineCode(false));
+
+            form.SetStatus("'" + cur + "' has been build.", Main.StatusType.Message);
         }
 
         public static string WorkDirectory()
@@ -201,6 +210,16 @@ namespace Lynx2DEngine
                     using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
                     {
                         w.Write("<html>\n<head>\n  <link id='icon' type='image / ico' rel='shortcut icon'/>\n  <meta charset='utf-8'/>\n</head>\n<body>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  <script type='text/javascript' src='data/game.js'></script>\n</body>\n</html>");
+                        w.Dispose();
+                        fs.Dispose();
+                    }
+                }
+
+                using (FileStream fs = new FileStream("projects/" + cur + "/engine.html", FileMode.Create))
+                {
+                    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                    {
+                        w.Write("<html>\n<head>\n  <meta charset='utf-8'/>\n</head>\n<body>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  </body>\n</html>");
                         w.Dispose();
                         fs.Dispose();
                     }
