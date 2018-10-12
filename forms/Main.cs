@@ -41,6 +41,7 @@ namespace Lynx2DEngine
             Project.form = this;
             Engine.form = this;
             Feed.form = this;
+            Tilemapper.form = this;
 
             Feed.CheckVersion(false);
 

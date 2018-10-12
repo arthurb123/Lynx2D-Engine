@@ -660,7 +660,7 @@ namespace Lynx2DEngine
                     break;
                 case EngineObjectType.Tilemap:
                     name = "Tilemap";
-                    tileMap = Tilemapper.AddMap(new Tilemap(10, 10), true);
+                    tileMap = Tilemapper.AddMap(new Tilemap(10, 10));
 
                     break;
             }
@@ -705,7 +705,7 @@ namespace Lynx2DEngine
                     break;
                 case EngineObjectType.Tilemap:
                     name = "Tilemap";
-                    tileMap = Tilemapper.AddMap(new Tilemap(10, 10), true);
+                    tileMap = Tilemapper.AddMap(new Tilemap(10, 10));
 
                     break;
             }

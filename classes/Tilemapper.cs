@@ -11,6 +11,7 @@ namespace Lynx2DEngine
         public static Tile selected = null;
         private static int editing = -1;
         private static int selectedLayer = 0;
+        public static Main form;
 
         public static void LoadFromScene(int id)
         {
@@ -64,7 +65,7 @@ namespace Lynx2DEngine
                 if (maps[i] != null) InjectMap(i);
         }
 
-        public static int AddMap(Tilemap tm, bool injects)
+        public static int AddMap(Tilemap tm)
         {
             for (int i = 0; i < maps.Length + 1; i++)
             {
@@ -79,10 +80,9 @@ namespace Lynx2DEngine
                     maps[i] = tm;
                     maps[i].id = i;
 
-                    if (injects)
-                        InjectMap(i);
-
                     SaveMapsToCurrentScene();
+
+                    InjectMap(i);
 
                     return i;
                 }
@@ -95,10 +95,10 @@ namespace Lynx2DEngine
         {
             if (injected[map]) return;
 
-            Engine.ExecuteScript("var engineTileMap" + map + "RenderID;");
+            Engine.ExecuteScript("if (lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] == undefined) lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] = [];" +
+                                 "var engineTileMap" + map + "RenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + maps[map].layer + ", function(gfx) {});");
             injected[map] = true;
-
-            AdjustLayer(map, maps[map].layer);
+            
             ConvertAndSetMap(maps[map]);
         }
 
@@ -106,8 +106,7 @@ namespace Lynx2DEngine
         {
             if (!injected[map]) return;
 
-            Engine.ExecuteScript("if (lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] == undefined) lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] = [];" +
-                                 "lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "][engineTileMap" + map + "RenderID] = undefined;" +
+            Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "][engineTileMap" + map + "RenderID] = undefined;" +
                                  "engineTileMap" + map + "RenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + layer +", function(gfx) {});");
 
             maps[map].layer = layer;
