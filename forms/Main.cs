@@ -682,7 +682,8 @@ namespace Lynx2DEngine
 
         private void checkCameraInjection(object sender, EventArgs e)
         {
-            if (cameraToolStripMenuItem.Checked) Camera.Inject();
+            if (cameraToolStripMenuItem.Checked)
+                Camera.Inject();
         }
 
         private void gridToolStripMenuItem_Click(object sender, EventArgs e)
@@ -709,7 +710,7 @@ namespace Lynx2DEngine
         {
             Engine.eSettings.imageSmoothing = imageSmoothingToolStripMenuItem.Checked;
 
-            Engine.ExecuteScript("lx.Smoothing(" + imageSmoothingToolStripMenuItem.Checked.ToString().ToLower() + ");");
+            Engine.ExecuteScript("lx.Smoothing(" + Engine.eSettings.imageSmoothing.ToString().ToLower() + ");");
         }
 
         private void debugToolStripMenuItem_Click(object sender, EventArgs e)
@@ -783,20 +784,23 @@ namespace Lynx2DEngine
 
         public void refreshBrowser()
         {
+            if (browser == null || !Cef.IsInitialized)
+                return;
+
             try
             {
                 Camera.Remove();
                 Pointer.Remove();
                 Grid.Remove();
                 Obfuscater.Remove();
-                Tilemapper.RemoveAll();
+                Tilemapper.StopEditing();
 
                 browser.Load(Project.WorkDirectory() + "/engine.html");
             }
             catch (Exception e)
             {
+                SetStatus("Exception occurred during game refresh.", StatusType.Warning);
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred during game refresh.", Main.StatusType.Warning);
             }
         }
 

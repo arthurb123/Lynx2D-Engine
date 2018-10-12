@@ -23,6 +23,7 @@ namespace Lynx2DEngine
             else
             {
                 eSettings.currentScene = id;
+                Tilemapper.LoadFromScene(eSettings.currentScene);
 
                 form.refreshBrowser();
             }
@@ -62,7 +63,7 @@ namespace Lynx2DEngine
             {
                 if (i == scenes.Length) Array.Resize(ref scenes, scenes.Length + 1);
 
-                if (scenes[i] == null || i == scenes.Length)
+                if (scenes[i] == null)
                 {
                     scenes[i] = new Scene(i);
 
@@ -81,6 +82,8 @@ namespace Lynx2DEngine
             if (scenes[id] == null) return;
 
             scenes[id].Rename(name);
+
+            form.refreshBrowser();
         }
 
         public static int AddEngineObject(EngineObjectType type, string code, int child, int parent)
@@ -193,8 +196,15 @@ namespace Lynx2DEngine
                 else
                     scenes[scene].objects[id].buildCode += variable + ".Hide(); ";
             }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Script) scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code;
-            else if (scenes[scene].objects[id].type == EngineObjectType.Tilemap) scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), scenes[scene].objects[id].tileMap);
+            else if (scenes[scene].objects[id].type == EngineObjectType.Tilemap)
+            {
+                if (scene != eSettings.currentScene)
+                    scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), scenes[scene].tilemaps[scenes[scene].objects[id].tileMap]);
+                else
+                    scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), Tilemapper.maps[scenes[scene].objects[id].tileMap]);
+            }
+            else if (scenes[scene].objects[id].type == EngineObjectType.Script)
+                scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code;
         }
 
         public static EngineObject GetEngineObject(int id)
@@ -232,7 +242,7 @@ namespace Lynx2DEngine
                 Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.OpenOrCreate);
                 BinaryFormatter bf = new BinaryFormatter();
 
-                bf.Serialize(stream, new EngineState(scenes, bSettings, eSettings, Tilemapper.maps));
+                bf.Serialize(stream, new EngineState(scenes, bSettings, eSettings));
                 stream.Close();
             }
             catch (Exception e)
@@ -304,7 +314,7 @@ namespace Lynx2DEngine
 
                 if (scenes[id].objects[i].type == EngineObjectType.Sprite) sprites += scenes[id].objects[i].buildCode;
                 else if (scenes[id].objects[i].type == EngineObjectType.GameObject) gameobjects += scenes[id].objects[i].buildCode;
-                else if (scenes[id].objects[i].type == EngineObjectType.Script && scenes[id].objects[i].parent == -1) scripts += scenes[eSettings.currentScene].objects[i].buildCode;
+                else if (scenes[id].objects[i].type == EngineObjectType.Script && scenes[id].objects[i].parent == -1) scripts += scenes[id].objects[i].buildCode;
                 else if (scenes[id].objects[i].type == EngineObjectType.Collider) colliders += scenes[id].objects[i].buildCode;
                 else if (scenes[id].objects[i].type == EngineObjectType.Emitter) emitters += scenes[id].objects[i].buildCode;
                 else if (scenes[id].objects[i].type == EngineObjectType.Tilemap) tilemaps += scenes[id].objects[i].buildCode;
@@ -323,7 +333,6 @@ namespace Lynx2DEngine
             scenes = new Scene[0];
             bSettings = new BuildSettings();
             eSettings = new EngineSettings();
-            Tilemapper.Clear();
 
             try
             {
@@ -335,18 +344,32 @@ namespace Lynx2DEngine
 
                 EngineState temp = ((EngineState)bf.Deserialize(stream));
 
-                if (temp.scenes != null) scenes = temp.scenes;
+                if (temp != null)
+                {
+                    if (temp.scenes != null) scenes = temp.scenes;
+                    else
+                    {
+                        //Running pre-scene projects (running v0.3.3-alpha or earlier)
+                        MessageBox.Show("This project does not support scenes. Please open this project using version 0.3.3-alpha or earlier.", "Lynx2D Engine - Incompatible");
+
+                        return false;
+                    }
+
+                    if (temp.bSettings != null)
+                        bSettings = temp.bSettings;
+
+                    if (temp.eSettings != null)
+                    {
+                        eSettings = temp.eSettings;
+
+                        LoadScene(eSettings.currentScene);
+                    }
+                }
                 else
                 {
-                    //Running pre-scene projects (running v0.3.3-alpha or earlier)
-                    MessageBox.Show("This project does not support scenes. Please open this project using version 0.3.3-alpha or earlier.", "Lynx2D Engine - Incompatible");
-
+                    MessageBox.Show("Project could not be loaded, the engine state has been corrupted.", "Lynx2D Engine - Error");
                     return false;
                 }
-
-                if (temp.bSettings != null) bSettings = temp.bSettings;
-                if (temp.eSettings != null) eSettings = temp.eSettings;
-                if (temp.eTileMaps != null) Tilemapper.LoadFromEngineState(temp.eTileMaps);
 
                 stream.Close();
             }
@@ -355,8 +378,6 @@ namespace Lynx2DEngine
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
                 form.SetStatus("Exception occurred while loading engine state.", Main.StatusType.Warning);
             }
-
-            LoadScene(eSettings.currentScene);
 
             return true;
         }
@@ -582,18 +603,16 @@ namespace Lynx2DEngine
     [Serializable]
     class EngineState
     {
-        public EngineState (Scene[] scenes, BuildSettings bSettings, EngineSettings eSettings, Tilemap[] eTileMaps) 
+        public EngineState(Scene[] scenes, BuildSettings bSettings, EngineSettings eSettings)
         {
             this.scenes = scenes;
             this.bSettings = bSettings;
             this.eSettings = eSettings;
-            this.eTileMaps = eTileMaps;
         }
 
         public Scene[] scenes;
         public BuildSettings bSettings;
         public EngineSettings eSettings;
-        public Tilemap[] eTileMaps;
     }
 
     [Serializable]
@@ -799,12 +818,12 @@ namespace Lynx2DEngine
     [Serializable]
     public class BuildSettings
     {
-        public bool hasIcon;
-        public string iconLocation;
+        public bool hasIcon = false;
+        public string iconLocation = string.Empty;
         public int standardScene = 0;
 
         public int lineBreaks = 0;
-        public bool obfuscates;
+        public bool obfuscates = false;
     }
 
     [Serializable]
@@ -836,6 +855,7 @@ namespace Lynx2DEngine
         {
             this.id = id;
             objects = new EngineObject[0];
+            tilemaps = new Tilemap[0];
             name = "Scene";
         }
 
@@ -861,6 +881,7 @@ namespace Lynx2DEngine
         }
 
         public EngineObject[] objects;
+        public Tilemap[] tilemaps;
         public string name;
         public string unique = string.Empty;
         public int id;

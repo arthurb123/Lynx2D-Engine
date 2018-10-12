@@ -12,19 +12,27 @@ namespace Lynx2DEngine
         private static int editing = -1;
         private static int selectedLayer = 0;
 
-        public static void LoadFromEngineState(Tilemap[] tms)
+        public static void LoadFromScene(int id)
         {
             Clear();
-            if (tms.Length == 0) return;
 
-            maps = tms;
-            Array.Resize(ref injected, maps.Length);
+            maps = Engine.scenes[id].tilemaps;
+            injected = new bool[maps.Length];
+
+            for (int i = 0; i < injected.Length; i++)
+                injected[i] = false;
         }
 
-        public static string ToBuildCode(string var, int map)
+        public static void SaveMapsToCurrentScene()
         {
-            Tilemap tm = maps[map];
+            if (Engine.eSettings.currentScene == -1)
+                return;
 
+            Engine.scenes[Engine.eSettings.currentScene].tilemaps = maps;
+        }
+
+        public static string ToBuildCode(string var, Tilemap tm)
+        {
             string r = "var " + var + " = lx.GAME.ADD_LAYER_DRAW_EVENT(" + tm.layer + ", function(gfx) {";
 
             for (int i = 0; i < tm.map.GetLength(0); i++)
@@ -43,7 +51,7 @@ namespace Lynx2DEngine
 
         public static void Clear()
         {
-            RemoveAll();
+            StopEditing();
 
             injected = new bool[0];
             maps = new Tilemap[0];
@@ -52,19 +60,8 @@ namespace Lynx2DEngine
 
         public static void InjectAll()
         {
-            if (Engine.bSettings.obfuscates)
-                return;
-
             for (int i = 0; i < maps.Length; i++)
                 if (maps[i] != null) InjectMap(i);
-        }
-
-        public static void RemoveAll()
-        {
-            StopEditing();
-
-            for (int i = 0; i < injected.Length; i++)
-                injected[i] = false;
         }
 
         public static int AddMap(Tilemap tm, bool injects)
@@ -85,6 +82,8 @@ namespace Lynx2DEngine
                     if (injects)
                         InjectMap(i);
 
+                    SaveMapsToCurrentScene();
+
                     return i;
                 }
             }
@@ -95,14 +94,6 @@ namespace Lynx2DEngine
         public static void InjectMap(int map)
         {
             if (injected[map]) return;
-
-            foreach (EngineObject eo in Engine.GetEngineObjectsWithType(EngineObjectType.Tilemap))
-                if (eo.tileMap == map)
-                    Engine.ExecuteScript("if (" + eo.Variable() + " != undefined) {" +
-                                            "if (lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] == undefined || lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "][" + eo.Variable() + "] == undefined) {" +
-                                                "console.log('Could not remove build-in tilemap! Certain properties have been changed in the game data outside of the client.');" +
-                                            "} else lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "][" + eo.Variable() + "] = undefined;" +
-                                         "}");
 
             Engine.ExecuteScript("var engineTileMap" + map + "RenderID;");
             injected[map] = true;
@@ -159,7 +150,6 @@ namespace Lynx2DEngine
             maps[map] = null;
             Project.Save();
 
-            Clear();
             Engine.LoadEngineState();
         }
 
@@ -230,6 +220,7 @@ namespace Lynx2DEngine
 
             Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + selectedLayer + "][engineTileMapperRenderID] = function(gfx) {" +
                                     "gfx.save();" +
+                                    "gfx.imageSmoothing = lx.GAME.SETTINGS.AA;" +
                                     "gfx.lineWidth = 2;" +
                                     "gfx.strokeStyle = 'purple';" +
                                     "var tPos = { X: " + (maps[editing].x * maps[editing].tilesize) + ", Y: " + (maps[editing].y * maps[editing].tilesize) + " };" +

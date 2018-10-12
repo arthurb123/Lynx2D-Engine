@@ -115,6 +115,8 @@ namespace Lynx2DEngine
         {
             if (cur == string.Empty || cur == "HAS_BEEN_CLOSED") return;
 
+            Tilemapper.SaveMapsToCurrentScene();
+
             Engine.SaveEngineState();
 
             form.SetStatus("'" + cur + "' has been saved.", Main.StatusType.Message);

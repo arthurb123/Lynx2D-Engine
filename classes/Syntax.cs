@@ -12,7 +12,7 @@ namespace Lynx2DEngine
                                         @".DrawSprite|.OnLayerDraw|.Loops|.CreateCollider|.Show|.Hide|.Focus|.Setup|.Text|.Color|" +
                                         @".Position|.Size|.Draws|.Rotation|.Clip|.MaxVelocity|.AddVelocity|.Alignment|.Movement|" +
                                         @".MovementDecelerates|.SetTopDownController|.SetSideWaysController|.ApplyCollider|.ClearCollider|" +
-                                        @".Follows|.StopFollowing|.Emit|.Speed|.Solid|.Static|.Enable|.Disable|.Identifier|.Play)\b";
+                                        @".Follows|.StopFollowing|.Emit|.Speed|.Solid|.Static|.Enable|.Disable|.Identifier|.Play|.LoadScene|.Save|.Restore)\b";
         private static string lxTypes = @"\b(lx.GameObject|lx.Sprite|lx.Collider|lx.Emitter|lx.Animation|lx.Scene|lx.Audio|lx.UIText|lx.UIRichText|lx.UITexture)\b";
         private static string types = @"\b(Math|Array|Object|Date|Function|Boolean|Symbol|JSON)\b";
         private static string comments = @"(\/\/.+?$|\/\*.+?\*\/)";
