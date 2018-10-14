@@ -683,7 +683,7 @@ namespace Lynx2DEngine
 
         private void checkCameraInjection(object sender, EventArgs e)
         {
-            if (cameraToolStripMenuItem.Checked)
+            if (Engine.eSettings.camera)
                 Camera.Inject();
         }
 

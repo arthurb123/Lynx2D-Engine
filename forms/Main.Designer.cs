@@ -48,8 +48,8 @@
             this.addTilemapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -234,19 +234,19 @@
             this.exportToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.exportToolStripMenuItem.Text = "Export";
             // 
-            // exportProjectToolStripMenuItem
-            // 
-            this.exportProjectToolStripMenuItem.Name = "exportProjectToolStripMenuItem";
-            this.exportProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exportProjectToolStripMenuItem.Text = "Export Project";
-            this.exportProjectToolStripMenuItem.Click += new System.EventHandler(this.exportProjectToolStripMenuItem_Click);
-            // 
             // exportSettingsToolStripMenuItem
             // 
             this.exportSettingsToolStripMenuItem.Name = "exportSettingsToolStripMenuItem";
-            this.exportSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportSettingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exportSettingsToolStripMenuItem.Text = "Export Settings";
             this.exportSettingsToolStripMenuItem.Click += new System.EventHandler(this.exportSettingsToolStripMenuItem_Click);
+            // 
+            // exportProjectToolStripMenuItem
+            // 
+            this.exportProjectToolStripMenuItem.Name = "exportProjectToolStripMenuItem";
+            this.exportProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportProjectToolStripMenuItem.Text = "Export Project";
+            this.exportProjectToolStripMenuItem.Click += new System.EventHandler(this.exportProjectToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -435,6 +435,7 @@
             // 
             this.hierarchyScenes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.hierarchyScenes.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.hierarchyScenes.FlatAppearance.BorderSize = 0;
             this.hierarchyScenes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.hierarchyScenes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hierarchyScenes.Location = new System.Drawing.Point(70, 0);
@@ -443,7 +444,7 @@
             this.hierarchyScenes.Size = new System.Drawing.Size(70, 23);
             this.hierarchyScenes.TabIndex = 2;
             this.hierarchyScenes.Text = "Scenes";
-            this.hierarchyScenes.UseVisualStyleBackColor = false;
+            this.hierarchyScenes.UseVisualStyleBackColor = true;
             this.hierarchyScenes.Visible = false;
             this.hierarchyScenes.Click += new System.EventHandler(this.hierachyScenes_Click);
             // 
@@ -451,6 +452,7 @@
             // 
             this.hierarchyObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.hierarchyObjects.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.hierarchyObjects.FlatAppearance.BorderSize = 0;
             this.hierarchyObjects.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.hierarchyObjects.Location = new System.Drawing.Point(0, 0);
             this.hierarchyObjects.Margin = new System.Windows.Forms.Padding(0);
@@ -458,7 +460,7 @@
             this.hierarchyObjects.Size = new System.Drawing.Size(70, 23);
             this.hierarchyObjects.TabIndex = 1;
             this.hierarchyObjects.Text = "Objects";
-            this.hierarchyObjects.UseVisualStyleBackColor = false;
+            this.hierarchyObjects.UseVisualStyleBackColor = true;
             this.hierarchyObjects.Visible = false;
             this.hierarchyObjects.Click += new System.EventHandler(this.hierarchyObjects_Click);
             // 

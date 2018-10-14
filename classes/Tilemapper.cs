@@ -145,16 +145,21 @@ namespace Lynx2DEngine
 
         public static void RemoveMap(int map)
         {
-            //Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + tm.layer + "][engineTileMap" + tm.id + "RenderID] = undefined; engineTileMap" + tm.id + "RenderID = undefined;");
             maps[map] = null;
-            Project.Save();
 
-            Engine.LoadEngineState();
+            SaveMapsToCurrentScene();
+
+            //Project.Save();
+
+            //Engine.LoadEngineState();
         }
 
         public static void BeginEditing(int map)
         {
             if (editing != -1) return;
+
+            if (!injected[map])
+                InjectMap(map);
 
             selectedLayer = maps[map].layer + 1;
 

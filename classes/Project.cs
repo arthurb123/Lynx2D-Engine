@@ -176,8 +176,6 @@ namespace Lynx2DEngine
         {
             if (cur == string.Empty || cur == "HAS_BEEN_CLOSED") return;
 
-            Save();
-
             Engine.ExecuteScript(gameCode + Engine.BuildEngineCode(false));
 
             form.SetStatus("'" + cur + "' has been build.", Main.StatusType.Message);
