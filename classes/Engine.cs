@@ -267,8 +267,8 @@ namespace Lynx2DEngine
                     if (scenes[i] != null) {
                         if (!stacks && i == eSettings.currentScene)
                             currentScene = BuildEngineScene(i, true);
-                        else
-                            buildScenes += BuildEngineScene(i, false);
+
+                        buildScenes += BuildEngineScene(i, false);
                     }
 
                 //Check if build or export
