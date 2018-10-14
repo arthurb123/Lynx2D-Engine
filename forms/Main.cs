@@ -215,6 +215,7 @@ namespace Lynx2DEngine
         {
             if (hierarchyView == HierarchyState.Scenes)
             {
+                killChildren();
                 Engine.LoadScene((int)e.Node.Tag);
 
                 return;
@@ -402,7 +403,7 @@ namespace Lynx2DEngine
         }
 
 
-        private void showProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        public void showProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {

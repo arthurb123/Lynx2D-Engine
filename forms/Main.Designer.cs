@@ -227,8 +227,8 @@
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportSettingsToolStripMenuItem,
-            this.exportProjectToolStripMenuItem});
+            this.exportProjectToolStripMenuItem,
+            this.exportSettingsToolStripMenuItem});
             this.exportToolStripMenuItem.Enabled = false;
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
             this.exportToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
@@ -237,14 +237,14 @@
             // exportSettingsToolStripMenuItem
             // 
             this.exportSettingsToolStripMenuItem.Name = "exportSettingsToolStripMenuItem";
-            this.exportSettingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exportSettingsToolStripMenuItem.Text = "Export Settings";
             this.exportSettingsToolStripMenuItem.Click += new System.EventHandler(this.exportSettingsToolStripMenuItem_Click);
             // 
             // exportProjectToolStripMenuItem
             // 
             this.exportProjectToolStripMenuItem.Name = "exportProjectToolStripMenuItem";
-            this.exportProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exportProjectToolStripMenuItem.Text = "Export Project";
             this.exportProjectToolStripMenuItem.Click += new System.EventHandler(this.exportProjectToolStripMenuItem_Click);
             // 

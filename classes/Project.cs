@@ -169,7 +169,11 @@ namespace Lynx2DEngine
             gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(false); lx.Start(60);";
 
             if (obfuscated || !Engine.bSettings.obfuscates)
+            {
                 form.SetStatus("'" + cur + "' has been exported.", Main.StatusType.Message);
+
+                form.showProjectToolStripMenuItem_Click(form, new EventArgs());
+            }
         }
 
         public static void Build()
@@ -209,7 +213,7 @@ namespace Lynx2DEngine
                 {
                     using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
                     {
-                        w.Write("<html>\n<head>\n  <link id='icon' type='image / ico' rel='shortcut icon'/>\n  <meta charset='utf-8'/>\n</head>\n<body>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  <script type='text/javascript' src='data/game.js'></script>\n</body>\n</html>");
+                        w.Write("<html>\n<head>\n  <link id='icon' type='image / ico' rel='shortcut icon'/>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='black'>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  <script type='text/javascript' src='data/game.js'></script>\n</body>\n</html>");
                         w.Dispose();
                         fs.Dispose();
                     }
@@ -219,7 +223,7 @@ namespace Lynx2DEngine
                 {
                     using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
                     {
-                        w.Write("<html>\n<head>\n  <meta charset='utf-8'/>\n</head>\n<body>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  </body>\n</html>");
+                        w.Write("<html>\n<head>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='black'>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  </body>\n</html>");
                         w.Dispose();
                         fs.Dispose();
                     }

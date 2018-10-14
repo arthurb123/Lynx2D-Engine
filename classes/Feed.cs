@@ -57,7 +57,7 @@ namespace Lynx2DEngine
                 if (setsStatus) form.SetStatus("Could not get online version.", Main.StatusType.Warning);
             }
 
-            if (onlineVersion != string.Empty && onlineVersion != Version())
+            if (onlineVersion != string.Empty && !string.IsNullOrWhiteSpace(onlineVersion) && onlineVersion != Version())
             {
                 if (Input.YesNo("A new version (" + onlineVersion + ") is available. Do you want to download this update?", "Lynx2D Engine - Update"))
                 {

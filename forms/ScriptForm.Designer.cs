@@ -42,7 +42,6 @@
             // scriptCode
             // 
             this.scriptCode.AcceptsTab = true;
-            this.scriptCode.AutoWordSelection = true;
             this.scriptCode.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.scriptCode.Cursor = System.Windows.Forms.Cursors.Default;
             this.scriptCode.Dock = System.Windows.Forms.DockStyle.Fill;
