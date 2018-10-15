@@ -56,6 +56,7 @@
             this.MinimumSize = new System.Drawing.Size(430, 250);
             this.Name = "ConsoleForm";
             this.Text = "Engine Output";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.ConsoleForm_Load);
             this.ResumeLayout(false);
 

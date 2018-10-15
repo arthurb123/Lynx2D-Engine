@@ -91,7 +91,8 @@ lx.Loops(function() {
 lx.OnKey("w", function() { Player.Clip().X = 64; });
 lx.OnKey("s", function() { Player.Clip().X = 0; });
 lx.OnKey("a", function() { Player.Clip().X = 128; });
-lx.OnKey("d", function() { Player.Clip().X = 192; });//We want the fire emitter to follow our
+lx.OnKey("d", function() { Player.Clip().X = 192; });
+//We want the fire emitter to follow our
 //Firewood when being moved around.
 FireEmitter.Follows(Firewood);
 
@@ -107,6 +108,7 @@ new lx.Collider(-68, 132, 60, 108, true);
 new lx.Collider(0, -256, 256, 128, true);
 new lx.Collider(0, -128, 64, 48, true);
 new lx.Collider(128, -128, 128, 48, true);
+
 
 
 });var Scene1 = new lx.Scene(function() {var Tileset0 = new lx.Sprite('res/tileset0.png'); var Tileset1 = new lx.Sprite('res/tileset1.png'); var FireSprite = new lx.Sprite('res/fire.png'); var PlayerSprite = new lx.Sprite('res/player.png'); PlayerSprite.Clip(64, 0, 64, 64); var ChairSprite = new lx.Sprite('res/tileset1.png'); ChairSprite.Clip(512, 512, 64, 64); var Ground = lx.GAME.ADD_LAYER_DRAW_EVENT(0, function(gfx) {lx.DrawSprite(Tileset1.Rotation(0).Clip(448, 128, 64, 64),-128, -192, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),-128, -128, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),-128, -64, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),-128, 0, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(448, 128, 64, 64),-64, -192, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),-64, -128, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),-64, -64, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),-64, 0, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(448, 0, 64, 64),-64, 64, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(448, 128, 64, 64),0, -192, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),0, -128, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),0, -64, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),0, 0, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(448, 128, 64, 64),64, -192, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),64, -128, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),64, -64, 64, 64);lx.DrawSprite(Tileset1.Rotation(0).Clip(384, 256, 64, 64),64, 0, 64, 64);});
@@ -170,7 +172,8 @@ lx.Loops(function() {
 lx.OnKey("w", function() { Player.Clip().X = 64; });
 lx.OnKey("s", function() { Player.Clip().X = 0; });
 lx.OnKey("a", function() { Player.Clip().X = 128; });
-lx.OnKey("d", function() { Player.Clip().X = 192; });//We want to make sure any colliding
+lx.OnKey("d", function() { Player.Clip().X = 192; });
+//We want to make sure any colliding
 //GameObject doesn't leave the scene.
 //A.K.A world colliders!
 
@@ -183,4 +186,5 @@ new lx.Collider(128, -192, 64, 256, true);
 
 //Bottom colliders
 new lx.Collider(-128, 50, 64, 64, true);
-new lx.Collider(0, 50, 128, 64, true);});lx.LoadScene(Scene0);
+new lx.Collider(0, 50, 128, 64, true);
+});lx.LoadScene(Scene0);

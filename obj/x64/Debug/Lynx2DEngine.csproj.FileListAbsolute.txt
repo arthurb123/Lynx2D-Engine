@@ -545,3 +545,11 @@ C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.TilemapForm.resources
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ExportSettingsForm.resources
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ExportSettingsForm.resources
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\folder.png
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\go.png
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\image.png
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\collider.png
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\emitter.png
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\scene.png
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\script.png
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\tilemap.png

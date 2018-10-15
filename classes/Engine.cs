@@ -28,6 +28,18 @@ namespace Lynx2DEngine
                 form.refreshBrowser();
             }
 
+            //We want to make sure a hierarchy exists (migrating from 0.4.0-beta)
+            if (scenes[eSettings.currentScene].hierarchy == null)
+            {
+                scenes[eSettings.currentScene].hierarchy = new Hierarchy();
+
+                for (int i = 0; i < scenes[eSettings.currentScene].objects.Length; i++)
+                {
+                    if (scenes[eSettings.currentScene].objects[i] != null)
+                        scenes[eSettings.currentScene].hierarchy.AddItem(i);
+                }
+            }
+
             form.UpdateHierarchy();
         }
 
@@ -94,7 +106,11 @@ namespace Lynx2DEngine
 
                 if (scenes[eSettings.currentScene].objects[i] == null || i == scenes[eSettings.currentScene].objects.Length)
                 {
+                    //Add new engine object
                     scenes[eSettings.currentScene].objects[i] = new EngineObject(i, type, code, child, parent);
+
+                    //Add new hierarchy entry
+                    scenes[eSettings.currentScene].hierarchy.AddItem(i);
 
                     return i;
                 }
@@ -114,6 +130,7 @@ namespace Lynx2DEngine
                 Tilemapper.RemoveMap(scenes[eSettings.currentScene].objects[id].tileMap);
 
             scenes[eSettings.currentScene].objects[id] = null;
+            scenes[eSettings.currentScene].hierarchy.RemoveItem(id);
 
             if (refreshes)
             {
@@ -204,7 +221,7 @@ namespace Lynx2DEngine
                     scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), Tilemapper.maps[scenes[scene].objects[id].tileMap]);
             }
             else if (scenes[scene].objects[id].type == EngineObjectType.Script)
-                scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code;
+                scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code + "\n";
         }
 
         public static EngineObject GetEngineObject(int id)
@@ -346,7 +363,8 @@ namespace Lynx2DEngine
 
                 if (temp != null)
                 {
-                    if (temp.scenes != null) scenes = temp.scenes;
+                    if (temp.scenes != null)
+                        scenes = temp.scenes;
                     else
                     {
                         //Running pre-scene projects (running v0.3.3-alpha or earlier)
@@ -354,7 +372,7 @@ namespace Lynx2DEngine
 
                         return false;
                     }
-
+                    
                     if (temp.bSettings != null)
                         bSettings = temp.bSettings;
 
@@ -856,6 +874,7 @@ namespace Lynx2DEngine
             this.id = id;
             objects = new EngineObject[0];
             tilemaps = new Tilemap[0];
+            hierarchy = new Hierarchy();
             name = "Scene";
         }
 
@@ -881,6 +900,7 @@ namespace Lynx2DEngine
         }
 
         public EngineObject[] objects;
+        public Hierarchy hierarchy;
         public Tilemap[] tilemaps;
         public string name;
         public string unique = string.Empty;

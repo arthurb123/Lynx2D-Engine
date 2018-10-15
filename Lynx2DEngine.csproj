@@ -110,6 +110,7 @@
     <Compile Include="classes\Camera.cs" />
     <Compile Include="classes\Feed.cs" />
     <Compile Include="classes\Grid.cs" />
+    <Compile Include="classes\Hierarchy.cs" />
     <Compile Include="classes\Obfuscater.cs" />
     <Compile Include="classes\Pointer.cs" />
     <Compile Include="classes\Syntax.cs" />
@@ -265,6 +266,30 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="resources\collider.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\emitter.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\go.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\scene.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\script.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\tilemap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="resources\particle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -59,6 +59,12 @@ namespace Lynx2DEngine
             selected = null;
         }
 
+        public static void ResetInjections()
+        {
+            for (int i = 0; i < injected.Length; i++)
+                injected[i] = false;
+        }
+
         public static void InjectAll()
         {
             for (int i = 0; i < maps.Length; i++)
@@ -79,6 +85,7 @@ namespace Lynx2DEngine
                 {
                     maps[i] = tm;
                     maps[i].id = i;
+                    injected[i] = false;
 
                     SaveMapsToCurrentScene();
 
