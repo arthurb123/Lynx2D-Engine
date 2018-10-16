@@ -58,14 +58,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lynx2DEngine.exe" size="1680832">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lynx2DEngine.exe" size="1681344">
       <assemblyIdentity name="Lynx2DEngine" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>dczoYCkDcoEkzrbEleno11WgLSaN33aA9SRS6xo31pY=</dsig:DigestValue>
+        <dsig:DigestValue>14yMPGALoxPXsrx5xoVKTZftNPaqGRRbDeIMbOX4A6Y=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -141,13 +141,13 @@
       <dsig:DigestValue>qygO2WN3ZtDMLwCxFKwwyqVx5xZtqKx068dBZSUCj2s=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="resources\script.png" size="19456">
+  <file name="resources\script.png" size="19915">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>TcS8zdO4pf+Erx/I5yPVvy1odrWRPEgKIfeqZ62w+Mw=</dsig:DigestValue>
+      <dsig:DigestValue>BqRWfpepfIss54be5W0MLof9cKgoDWZC17ypyR6ziLc=</dsig:DigestValue>
     </hash>
   </file>
   <file name="resources\tilemap.png" size="19921">

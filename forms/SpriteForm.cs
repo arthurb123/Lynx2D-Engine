@@ -186,6 +186,7 @@ namespace Lynx2DEngine
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Engine.RemoveEngineObject(engineId, true);
+
             Close();
         }
 

@@ -20,8 +20,20 @@ namespace Lynx2DEngine
             folders.Add(new HierarchyFolder("New Folder"));
         }
 
-        public void RemoveItem(int engineId)
+        public void RemoveItem(int engineId, bool checkFolders)
         {
+            bool removed = false;
+
+            if (checkFolders)
+            for (int i = 0; i < folders.Count; i++)
+                if (folders[i].RemoveItem(engineId))
+                {
+                    removed = true;
+
+                    break;
+                }
+
+            if (!removed || !checkFolders)
             for (int i = 0; i < items.Count; i++)
                 if (items[i].engineId == engineId)
                 {
@@ -29,17 +41,18 @@ namespace Lynx2DEngine
 
                     break;
                 }
+
+            Engine.form.UpdateHierarchy();
         }
 
         public void RemoveFolderWithIdentifier(int id)
         {
             if (Input.YesNo("Do you also want to delete all the contained objects of this folder?", "Lynx2D Engine - Question"))
             {
-                foreach (HierarchyItem hi in folders[id].content)
-                {
-                    Engine.RemoveEngineObject(hi.engineId, false);
-                    RemoveItem(hi.engineId);
-                }
+                HierarchyItem[] items = folders[id].content.ToArray();
+
+                foreach (HierarchyItem i in items)
+                    Engine.RemoveEngineObject(i.engineId, false);
 
                 Engine.form.refreshBrowser();
             }
@@ -48,7 +61,7 @@ namespace Lynx2DEngine
                 {
                     int i = hi.engineId;
 
-                    RemoveItem(hi.engineId);
+                    RemoveItem(hi.engineId, true);
                     AddItem(i);
                 }
 
@@ -145,15 +158,17 @@ namespace Lynx2DEngine
             content.Add(item);
         }
 
-        public void RemoveItem(int engineId)
+        public bool RemoveItem(int engineId)
         {
             for (int i = 0; i < content.Count; i++)
                 if (content[i].engineId == engineId)
                 {
                     content.RemoveAt(i);
 
-                    break;
+                    return true;
                 }
+
+            return false;
         }
 
         public void Rename(string name)

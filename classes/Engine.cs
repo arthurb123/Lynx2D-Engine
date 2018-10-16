@@ -43,18 +43,18 @@ namespace Lynx2DEngine
             form.UpdateHierarchy();
         }
 
-        public static void RemoveScene()
+        public static void RemoveScene(int id)
         {
-            if (!Input.YesNo("Are you sure you want to delete the scene '" + scenes[eSettings.currentScene].Variable() + "'?", "Lynx2D Engine - Question"))
+            if (!Input.YesNo("Are you sure you want to delete the scene '" + scenes[id].Variable() + "'?", "Lynx2D Engine - Question"))
                 return;
 
-            if (eSettings.currentScene == bSettings.standardScene)
+            if (id == bSettings.standardScene)
             {
-                MessageBox.Show("Could not remove '" + scenes[eSettings.currentScene].Variable() + "', as this is the standard scene of the project.", "Lynx2D Engine - Exception");
+                MessageBox.Show("Could not remove '" + scenes[id].Variable() + "', as this is the standard scene of the project.", "Lynx2D Engine - Exception");
                 return;
             }
 
-            scenes[eSettings.currentScene] = null;
+            scenes[id] = null;
             
             for (int i = 0; i < scenes.Length; i++)
             {
@@ -124,20 +124,22 @@ namespace Lynx2DEngine
             if (scenes[eSettings.currentScene].objects[id] == null) return;
 
             if (scenes[eSettings.currentScene].objects[id].child != -1) RemoveEngineObject(scenes[eSettings.currentScene].objects[id].child, false);
-            if (scenes[eSettings.currentScene].objects[id].parent != -1) scenes[eSettings.currentScene].objects[scenes[eSettings.currentScene].objects[id].parent].child = -1;
+            if (scenes[eSettings.currentScene].objects[id].parent != -1)
+            {
+                scenes[eSettings.currentScene].objects[scenes[eSettings.currentScene].objects[id].parent].child = -1;
+
+                if (scenes[eSettings.currentScene].objects[id].type == EngineObjectType.Sprite)
+                    scenes[eSettings.currentScene].objects[scenes[eSettings.currentScene].objects[id].parent].sprite = "undefined";
+            }
 
             if (scenes[eSettings.currentScene].objects[id].type == EngineObjectType.Tilemap)
                 Tilemapper.RemoveMap(scenes[eSettings.currentScene].objects[id].tileMap);
 
             scenes[eSettings.currentScene].objects[id] = null;
-            scenes[eSettings.currentScene].hierarchy.RemoveItem(id);
+            scenes[eSettings.currentScene].hierarchy.RemoveItem(id, true);
 
             if (refreshes)
-            {
-                form.UpdateHierarchy();
-
                 form.refreshBrowser();
-            }
         }
 
         public static int[] GetEmptyEnginePositions()

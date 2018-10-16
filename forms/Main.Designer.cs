@@ -454,7 +454,7 @@
             this.hierarchyScenes.Location = new System.Drawing.Point(75, 0);
             this.hierarchyScenes.Margin = new System.Windows.Forms.Padding(0);
             this.hierarchyScenes.Name = "hierarchyScenes";
-            this.hierarchyScenes.Size = new System.Drawing.Size(75, 23);
+            this.hierarchyScenes.Size = new System.Drawing.Size(75, 22);
             this.hierarchyScenes.TabIndex = 2;
             this.hierarchyScenes.Text = "Scenes";
             this.hierarchyScenes.UseVisualStyleBackColor = true;
@@ -470,7 +470,7 @@
             this.hierarchyObjects.Location = new System.Drawing.Point(0, 0);
             this.hierarchyObjects.Margin = new System.Windows.Forms.Padding(0);
             this.hierarchyObjects.Name = "hierarchyObjects";
-            this.hierarchyObjects.Size = new System.Drawing.Size(75, 23);
+            this.hierarchyObjects.Size = new System.Drawing.Size(75, 22);
             this.hierarchyObjects.TabIndex = 1;
             this.hierarchyObjects.Text = "Objects";
             this.hierarchyObjects.UseVisualStyleBackColor = true;

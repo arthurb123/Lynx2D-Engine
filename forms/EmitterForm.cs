@@ -43,6 +43,7 @@ namespace Lynx2DEngine.forms
             duration.Value = obj.duration;
             speed.Value = (decimal)obj.speed;
             layer.Value = obj.layer;
+            visible.Checked = obj.visible;
 
             updateSpriteSelection();
 

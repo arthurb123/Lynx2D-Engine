@@ -75,6 +75,11 @@ namespace Lynx2DEngine
             Cef.Shutdown();
         }
 
+        public void SetTitle()
+        {
+            Text = "Lynx2D Engine - " + Project.Name() + " (" + Engine.scenes[Engine.eSettings.currentScene].Variable() + ")";
+        }
+
         public void SetGameAvailability(bool available)
         {
             gameToolStripMenuItem.Enabled = available;
@@ -198,12 +203,12 @@ namespace Lynx2DEngine
                 {
                     EngineObject obj = Engine.GetEngineObject(i.engineId);
 
-                    if (obj.parent == -1)
+                    if (obj != null && obj.parent == -1)
                     {
                         List<TreeNode> children = new List<TreeNode>();
 
                         if (obj.child != -1)
-                        {
+                        { 
                             EngineObject childEO = Engine.GetEngineObject(obj.child);
 
                             TreeNode child = new TreeNode(childEO.Variable());
@@ -211,6 +216,8 @@ namespace Lynx2DEngine
 
                             if (childEO.type == EngineObjectType.Sprite)
                                 child.ImageIndex = 3;
+                            if (childEO.type == EngineObjectType.Script)
+                                child.ImageIndex = 6;
 
                             child.SelectedImageIndex = child.ImageIndex;
                             children.Add(child);
@@ -250,7 +257,7 @@ namespace Lynx2DEngine
             {
                 EngineObject obj = Engine.GetEngineObject(i.engineId);
 
-                if (obj.parent == -1)
+                if (obj != null && obj.parent == -1)
                 {
                     List<TreeNode> children = new List<TreeNode>();
 
@@ -339,15 +346,13 @@ namespace Lynx2DEngine
                 if (item.X == -1)
                 {
                     Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[(int)targetNode.Tag].AddItem(Engine.scenes[Engine.eSettings.currentScene].hierarchy.items[item.Y]);
-                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.RemoveItem((int)draggedNode.Tag);
+                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.RemoveItem((int)draggedNode.Tag, false);
                 }
                 else
                 {
                     Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[(int)targetNode.Tag].AddItem(Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[item.X].content[item.Y]);
                     Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[item.X].RemoveItem((int)draggedNode.Tag);
                 }
-
-                UpdateHierarchy();
             }
         }
 
@@ -357,6 +362,8 @@ namespace Lynx2DEngine
             {
                 killChildren();
                 Engine.LoadScene((int)e.Node.Tag);
+
+                SetTitle();
 
                 return;
             }
@@ -432,10 +439,16 @@ namespace Lynx2DEngine
 
         private void hierarchy_KeyDown(object sender, KeyEventArgs e)
         {
-            if (hierarchyView == HierarchyState.Scenes)
-                return;
 
-            if (e.KeyCode == Keys.Delete && Input.YesNo("Are you sure you want to delete '" + hierarchy.SelectedNode.Text + "'?", "Lynx2D Engine - Question"))
+            if (hierarchyView == HierarchyState.Scenes && hierarchy.SelectedNode != null)
+            {
+                if (e.KeyCode == Keys.Delete)
+                    Engine.RemoveScene((int)hierarchy.SelectedNode.Tag);
+
+                return;
+            }
+
+            if (e.KeyCode == Keys.Delete && hierarchy.SelectedNode != null && Input.YesNo("Are you sure you want to delete '" + hierarchy.SelectedNode.Text + "'?", "Lynx2D Engine - Question"))
             {
                 if (hierarchy.SelectedNode.ImageIndex == 1)
                     Engine.scenes[Engine.eSettings.currentScene].hierarchy.RemoveFolderWithIdentifier((int)hierarchy.SelectedNode.Tag);
@@ -443,7 +456,7 @@ namespace Lynx2DEngine
                     Engine.RemoveEngineObject((int)hierarchy.SelectedNode.Tag, true);
             }
 
-            if (e.Control && e.KeyCode == Keys.C) copied = Engine.GetEngineObjects()[(int)hierarchy.SelectedNode.Tag];
+            if (e.Control && e.KeyCode == Keys.C && hierarchy.SelectedNode != null) copied = Engine.GetEngineObjects()[(int)hierarchy.SelectedNode.Tag];
 
             if (e.Control && e.KeyCode == Keys.V)
             {
@@ -578,12 +591,14 @@ namespace Lynx2DEngine
         {
             Engine.CreateScene(true);
 
+            SetTitle();
+
             SwitchHierarchyView(HierarchyState.Scenes);
         }
 
         private void removeSceneToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Engine.RemoveScene();
+            Engine.RemoveScene(Engine.eSettings.currentScene);
         }
         #endregion
 
@@ -600,6 +615,8 @@ namespace Lynx2DEngine
             try
             {
                 AddGameObject();
+
+                SwitchHierarchyView(HierarchyState.Objects);
             }
             catch (Exception exc)
             {
@@ -614,6 +631,8 @@ namespace Lynx2DEngine
             try
             {
                 AddSprite();
+
+                SwitchHierarchyView(HierarchyState.Objects);
             }
             catch (Exception exc)
             {
@@ -627,6 +646,8 @@ namespace Lynx2DEngine
             try
             {
                 AddScript();
+
+                SwitchHierarchyView(HierarchyState.Objects);
             }
             catch (Exception exc)
             {
@@ -641,6 +662,8 @@ namespace Lynx2DEngine
             try
             {
                 AddCollider();
+
+                SwitchHierarchyView(HierarchyState.Objects);
             }
             catch (Exception exc)
             {
@@ -654,6 +677,8 @@ namespace Lynx2DEngine
             try
             {
                 AddEmitter();
+
+                SwitchHierarchyView(HierarchyState.Objects);
             }
             catch (Exception exc)
             {
@@ -667,6 +692,8 @@ namespace Lynx2DEngine
             try
             {
                 AddTilemap();
+
+                SwitchHierarchyView(HierarchyState.Objects);
             }
             catch (Exception exc)
             {

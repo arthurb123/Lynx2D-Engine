@@ -59,7 +59,7 @@ namespace Lynx2DEngine
 
                 form.LoadEngineSettings();
 
-                form.Text = "Lynx2D Engine - " + cur;
+                form.SetTitle();
                 form.SetStatus("'" + cur + "' has been loaded.", Main.StatusType.Message);
 
                 form.SetGameAvailability(true);
@@ -218,12 +218,12 @@ namespace Lynx2DEngine
                         fs.Dispose();
                     }
                 }
-
+                
                 using (FileStream fs = new FileStream("projects/" + cur + "/engine.html", FileMode.Create))
                 {
                     using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
                     {
-                        w.Write("<html>\n<head>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='black'>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  </body>\n</html>");
+                        w.Write("<html>\n<head>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='#282828'>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  </body>\n</html>");
                         w.Dispose();
                         fs.Dispose();
                     }
