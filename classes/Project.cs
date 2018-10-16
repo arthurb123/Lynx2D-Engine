@@ -20,16 +20,21 @@ namespace Lynx2DEngine
             form.killChildren();
             string old_cur = cur;
 
-            if (!Manager.CheckDirectory("projects", false))
+            if (!Manager.CheckDirectory("projects", false) || Directory.GetDirectories("projects/").Length == 0)
             {
-                MessageBox.Show("No projects folder could be found. Please create a project first.", "Lynx2D Engine - Error");
+                MessageBox.Show("No projects could be found. Please create a project first.", "Lynx2D Engine - Error");
                 return;
             }
 
             if (needsName && cur != string.Empty)
                 RequestSave();
 
-            if (needsName) cur = Input.Prompt("Enter the name of the existing project", "Lynx2D - Load Project");
+            string[] projects = Directory.GetDirectories("projects/");
+            for (int i = 0; i < projects.Length; i++)
+                projects[i] = projects[i].Substring(9, projects[i].Length-9);
+
+            if (needsName) cur = Input.Selection("Choose an existing project", "Load Project", projects);
+
             if (cur == "HAS_BEEN_CLOSED")
             {
                 cur = old_cur;
@@ -82,7 +87,7 @@ namespace Lynx2DEngine
 
             CheckProjectsExistence();
 
-            cur = Input.Prompt("Enter the name of the new project", "Lynx2D - New Project");
+            cur = Input.Prompt("Enter the name of the new project", "Create New Project");
             if (cur == "HAS_BEEN_CLOSED") return;
 
             if (Manager.CheckDirectory("projects/" + cur, false))

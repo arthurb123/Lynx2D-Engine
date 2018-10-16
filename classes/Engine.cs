@@ -613,6 +613,13 @@ namespace Lynx2DEngine
             if (scenes[eSettings.currentScene].objects[id] == null || name == "HAS_BEEN_CLOSED") return;
 
             scenes[eSettings.currentScene].objects[id].Rename(name);
+
+            if (scenes[eSettings.currentScene].objects[id].parent != -1)
+            {
+                if (scenes[eSettings.currentScene].objects[id].type == EngineObjectType.Sprite)
+                    scenes[eSettings.currentScene].objects[scenes[eSettings.currentScene].objects[id].parent].sprite = name;
+            }
+
             form.UpdateHierarchy();
 
             form.refreshBrowser();

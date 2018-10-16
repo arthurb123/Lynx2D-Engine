@@ -83,6 +83,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "YesNo Caption";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.YesNoForm_Load);
             this.ResumeLayout(false);
 
         }

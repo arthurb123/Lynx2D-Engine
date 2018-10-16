@@ -258,8 +258,8 @@ function Lynx2D() {
         TRANSLATE_FROM_FOCUS: function(POS) {
             if (this.FOCUS == undefined) return POS;
             else return {
-                X: Math.floor(Math.round(POS.X)-Math.round(this.FOCUS.Position().X)+lx.GetDimensions().width/2-this.FOCUS.Size().W/2),
-                Y: Math.floor(Math.round(POS.Y)-Math.round(this.FOCUS.Position().Y)+lx.GetDimensions().height/2-this.FOCUS.Size().H/2)
+                X: Math.round(POS.X-this.FOCUS.Position().X+lx.GetDimensions().width/2-this.FOCUS.Size().W/2),
+                Y: Math.round(POS.Y-this.FOCUS.Position().Y+lx.GetDimensions().height/2-this.FOCUS.Size().H/2)
             };
         },
         ON_SCREEN: function(POS, SIZE) {

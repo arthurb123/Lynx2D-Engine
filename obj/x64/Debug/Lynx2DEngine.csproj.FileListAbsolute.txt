@@ -553,3 +553,4 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\emitter.png
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\scene.png
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\script.png
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\resources\tilemap.png
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.SelectionForm.resources

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Lynx2DEngine
 {
@@ -14,6 +9,16 @@ namespace Lynx2DEngine
             PromptForm temp = new PromptForm();
             temp.SetTitle(text);
             temp.SetCaption(caption);
+
+            return temp.ShowDialog() == DialogResult.OK ? temp.Value() : "HAS_BEEN_CLOSED";
+        }
+
+        public static string Selection(string text, string caption, string[] content)
+        {
+            SelectionForm temp = new SelectionForm();
+            temp.SetTitle(text);
+            temp.SetCaption(caption);
+            temp.SetSelectionContent(content);
 
             return temp.ShowDialog() == DialogResult.OK ? temp.Value() : "HAS_BEEN_CLOSED";
         }
