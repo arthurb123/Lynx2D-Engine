@@ -59,7 +59,7 @@
             // 
             this.selection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selection.FormattingEnabled = true;
-            this.selection.Location = new System.Drawing.Point(53, 38);
+            this.selection.Location = new System.Drawing.Point(54, 34);
             this.selection.Name = "selection";
             this.selection.Size = new System.Drawing.Size(170, 21);
             this.selection.TabIndex = 5;
@@ -78,6 +78,7 @@
             this.MaximumSize = new System.Drawing.Size(290, 135);
             this.MinimumSize = new System.Drawing.Size(290, 135);
             this.Name = "SelectionForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SelectionForm";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.SelectionForm_Load);

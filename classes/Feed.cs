@@ -41,7 +41,7 @@ namespace Lynx2DEngine
 
             try
             {
-                WebRequest webRequest = WebRequest.Create(@"http://www.lythumn.com/lynx2d/engine/version.txt");
+                WebRequest webRequest = WebRequest.Create(@"http://www.lynx2d.com/engine/version.txt");
 
                 using (WebResponse response = webRequest.GetResponse())
                     using (Stream content = response.GetResponseStream())
@@ -78,7 +78,7 @@ namespace Lynx2DEngine
 
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateVersionProgressChanged);
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(UpdateVersionCompleted);
-                client.DownloadFileAsync(new Uri("http://www.lythumn.com/lynx2d/engine/" + version + ".zip"), "downloads/" + version + ".zip");
+                client.DownloadFileAsync(new Uri("http://www.lynx2d.com/engine/" + version + ".zip"), "downloads/" + version + ".zip");
             }
             catch (Exception e)
             {

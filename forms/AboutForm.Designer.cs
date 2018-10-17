@@ -59,22 +59,22 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(72, 68);
+            this.linkLabel1.Location = new System.Drawing.Point(87, 68);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(159, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(118, 13);
             this.linkLabel1.TabIndex = 2;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://www.lythumn.com/lynx2d";
+            this.linkLabel1.Text = "http://www.lynx2d.com";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(54, 86);
+            this.label3.Location = new System.Drawing.Point(62, 88);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(193, 26);
+            this.label3.Size = new System.Drawing.Size(172, 26);
             this.label3.TabIndex = 3;
-            this.label3.Text = "This tool and the framework \r\nis free for personal and professional use";
+            this.label3.Text = "This tool and the framework is free \r\nfor personal and professional use";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // versionText

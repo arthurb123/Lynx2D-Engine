@@ -275,7 +275,7 @@ namespace Lynx2DEngine
                     {
                         WebClient client = new WebClient();
 
-                        w.Write(client.DownloadString(new Uri("http://www.lythumn.com/lynx2d/res/lynx2d.js")));
+                        w.Write(client.DownloadString(new Uri("http://www.lynx2d.com/res/lynx2d.js")));
 
                         client.Dispose();
                         w.Dispose();

@@ -193,6 +193,8 @@ namespace Lynx2DEngine
         {
             Hierarchy h = Engine.scenes[Engine.eSettings.currentScene].hierarchy;
 
+            List<TreeNode> newHierarchy = new List<TreeNode>();
+
             //First add the folders
             for (int e = 0; e < h.folders.Count; e++)
             {
@@ -249,7 +251,7 @@ namespace Lynx2DEngine
                 ftn.ImageIndex = 1;
 
                 ftn.SelectedImageIndex = ftn.ImageIndex;
-                hierarchy.Nodes.Add(ftn);
+                newHierarchy.Add(ftn);
             }
 
             //Then add the engine objects
@@ -294,9 +296,11 @@ namespace Lynx2DEngine
                         node.ImageIndex = 7;
                     
                     node.SelectedImageIndex = node.ImageIndex;
-                    hierarchy.Nodes.Add(node);
+                    newHierarchy.Add(node);
                 }
             }
+
+            hierarchy.Nodes.AddRange(newHierarchy.ToArray());
         }
 
         private void UpdateHierarchyWithScenes()
@@ -927,7 +931,7 @@ namespace Lynx2DEngine
         {
             try
             {
-                Process.Start("http://www.lythumn.com/lynx2d/documentation");
+                Process.Start("http://www.lynx2d.com/documentation");
             }
             catch (Exception exc)
             {
