@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Lynx2DEngine
+﻿namespace Lynx2DEngine
 {
     class Camera
     {
@@ -16,7 +8,7 @@ namespace Lynx2DEngine
         {
             if (injected)
             {
-                Engine.ExecuteScript("engineCamera.Focus();");
+                Engine.ExecuteScript("if (window['engineCamera'] != undefined) engineCamera.Focus();");
                 return;
             }
 

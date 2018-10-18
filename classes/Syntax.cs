@@ -7,12 +7,12 @@ namespace Lynx2DEngine
         private static string keywords = @"\b(function|var|for|while|let|const|else|if|new|in|end|return|break|true|false|" +
                                          @"undefined|null|NaN|Infinity|eval|uneval|isFinity|isNaN|parseFloat|parseInt)\b";
         private static string methods = @"\b(.Initialize|.Start|.Smoothing|.Framerate|.GetDimensions|.OnKey|.OnMouse|.StopKey|.StopMouse|.MouseMove|" +
-                                        @".ClearMouse|.RemoveMouse|.ParticleLimit|.ClearLoops|.ClearLayerDraw|.ResetCentering|.ResetLayerDraw|.ChannelVolume" +
+                                        @".ClearMouse|.RemoveMouse|.ParticleLimit|.ClearLoops|.ClearLayerDraw|.ResetCentering|.ResetLayerDraw|.ChannelVolume|" +
                                         @".FindGameObjectWithIdentifier|.FindGameObjectsWithIdentifier|.FindGameObjectWithCollider|" +
                                         @".DrawSprite|.OnLayerDraw|.Loops|.CreateCollider|.Show|.Hide|.Focus|.Setup|.Text|.Color|" +
                                         @".Position|.Size|.Draws|.Rotation|.Clip|.MaxVelocity|.AddVelocity|.Alignment|.Movement|.ShowAnimation|.ClearAnimation|" +
                                         @".MovementDecelerates|.SetTopDownController|.SetSideWaysController|.ApplyCollider|.ClearCollider|" +
-                                        @".Follows|.StopFollowing|.Emit|.Speed|.Solid|.Static|.Enable|.Disable|.Identifier|.Play|.LoadScene|.Save|.Restore)\b";
+                                        @".Follows|.StopFollowing|.Emit|.Speed|.Solid|.Static|.Enable|.Disable|.Identifier|.Play|.PlaySpatial|.LoadScene|.Save|.Restore)\b";
         private static string lxTypes = @"\b(lx.GameObject|lx.Sprite|lx.Collider|lx.Emitter|lx.Animation|lx.Scene|lx.Audio|lx.UIText|lx.UIRichText|lx.UITexture)\b";
         private static string types = @"\b(Math|Array|Object|Date|Function|Boolean|Symbol|JSON)\b";
         private static string comments = @"(\/\/.+?$|\/\*.+?\*\/)";

@@ -222,6 +222,11 @@ namespace Lynx2DEngine
                 else
                     scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), Tilemapper.maps[scenes[scene].objects[id].tileMap]);
             }
+            else if (scenes[scene].objects[id].type == EngineObjectType.Sound)
+            {
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sound('" + scenes[scene].objects[id].source + "', " + scenes[scene].objects[id].layer + "); ";
+                scenes[scene].objects[id].buildCode += variable + ".Position(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ");";
+            }
             else if (scenes[scene].objects[id].type == EngineObjectType.Script)
                 scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code + "\n";
         }
@@ -324,6 +329,7 @@ namespace Lynx2DEngine
             string gameobjects = "";
             string sprites = "";
             string tilemaps = "";
+            string sounds = "";
             
             for (int i = 0; i < scenes[id].objects.Length; i++)
             {
@@ -337,14 +343,15 @@ namespace Lynx2DEngine
                 else if (scenes[id].objects[i].type == EngineObjectType.Collider) colliders += scenes[id].objects[i].buildCode;
                 else if (scenes[id].objects[i].type == EngineObjectType.Emitter) emitters += scenes[id].objects[i].buildCode;
                 else if (scenes[id].objects[i].type == EngineObjectType.Tilemap) tilemaps += scenes[id].objects[i].buildCode;
+                else if (scenes[id].objects[i].type == EngineObjectType.Sound) sounds += scenes[id].objects[i].buildCode;
 
                 scenes[id].objects[i].buildCode = "";
             }
 
             if (!globalScope)
-                return ("var " + scenes[id].Variable() + " = new lx.Scene(function() {" + sprites + tilemaps + colliders + gameobjects + emitters + scripts + "});");
+                return ("var " + scenes[id].Variable() + " = new lx.Scene(function() {" + sprites + tilemaps + colliders + gameobjects + sounds + emitters + scripts + "});");
             else
-                return (sprites + tilemaps + colliders + gameobjects + emitters + scripts);
+                return (sprites + tilemaps + colliders + gameobjects + sounds + emitters + scripts);
         }
 
         public static bool LoadEngineState()
@@ -690,6 +697,10 @@ namespace Lynx2DEngine
                     tileMap = Tilemapper.AddMap(new Tilemap(10, 10));
 
                     break;
+                case EngineObjectType.Sound:
+                    name = "Sound";
+
+                    break;
             }
         }
 
@@ -733,6 +744,10 @@ namespace Lynx2DEngine
                 case EngineObjectType.Tilemap:
                     name = "Tilemap";
                     tileMap = Tilemapper.AddMap(new Tilemap(10, 10));
+
+                    break;
+                case EngineObjectType.Sound:
+                    name = "Sound";
 
                     break;
             }
@@ -923,6 +938,7 @@ namespace Lynx2DEngine
         Script,
         Collider,
         Emitter,
-        Tilemap
+        Tilemap,
+        Sound
     }
 }

@@ -94,9 +94,9 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(83, 119);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(132, 13);
+            this.label4.Size = new System.Drawing.Size(129, 13);
             this.label4.TabIndex = 5;
-            this.label4.Text = "lythumn@vps.transip.email";
+            this.label4.Text = "arthurbaars@outlook.com";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // AboutForm

@@ -55,7 +55,7 @@ namespace Lynx2DEngine
         {
             obj = Engine.GetEngineObjects()[engineId];
 
-            Text = "Sprite (" + obj.Variable() + ")";
+            Text = obj.Variable();
         }
 
         private async void GetSpriteSize()

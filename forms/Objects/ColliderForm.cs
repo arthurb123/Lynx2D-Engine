@@ -52,7 +52,7 @@ namespace Lynx2DEngine.forms
         {
             obj = Engine.GetEngineObjects()[engineId];
 
-            Text = "Collider (" + obj.Variable() + ")";
+            Text = obj.Variable();
         }
 
         private void button1_Click(object sender, EventArgs e)

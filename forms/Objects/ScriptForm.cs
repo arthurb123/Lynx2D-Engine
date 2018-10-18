@@ -56,7 +56,7 @@ namespace Lynx2DEngine.forms
         {
             obj = Engine.GetEngineObjects()[engineId];
 
-            Text = "Script (" + obj.Variable() + ")";
+            Text = obj.Variable();
         }
 
         private void ScriptForm_Load(object sender, EventArgs e)

@@ -56,7 +56,7 @@ namespace Lynx2DEngine.forms
         {
             obj = Engine.GetEngineObjects()[engineId];
 
-            Text = "Emitter (" + obj.Variable() + ")";
+            Text = obj.Variable();
         }
 
         private void EmitterForm_Load(object sender, EventArgs e)

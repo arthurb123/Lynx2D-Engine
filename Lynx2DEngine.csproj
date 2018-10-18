@@ -122,41 +122,41 @@
     <Compile Include="forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\ExportSettingsForm.cs">
+    <Compile Include="forms\Engine\ExportSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\ExportSettingsForm.Designer.cs">
+    <Compile Include="forms\Engine\ExportSettingsForm.Designer.cs">
       <DependentUpon>ExportSettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\ColliderForm.cs">
+    <Compile Include="forms\Objects\ColliderForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\ColliderForm.Designer.cs">
+    <Compile Include="forms\Objects\ColliderForm.Designer.cs">
       <DependentUpon>ColliderForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\ConsoleForm.cs">
+    <Compile Include="forms\Engine\ConsoleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\ConsoleForm.Designer.cs">
+    <Compile Include="forms\Engine\ConsoleForm.Designer.cs">
       <DependentUpon>ConsoleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="classes\Engine.cs" />
-    <Compile Include="forms\EmitterForm.cs">
+    <Compile Include="forms\Objects\EmitterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\EmitterForm.Designer.cs">
+    <Compile Include="forms\Objects\EmitterForm.Designer.cs">
       <DependentUpon>EmitterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\GameObjectForm.cs">
+    <Compile Include="forms\Objects\GameObjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\GameObjectForm.Designer.cs">
+    <Compile Include="forms\Objects\GameObjectForm.Designer.cs">
       <DependentUpon>GameObjectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\GridForm.cs">
+    <Compile Include="forms\Tools\GridForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\GridForm.Designer.cs">
+    <Compile Include="forms\Tools\GridForm.Designer.cs">
       <DependentUpon>GridForm.cs</DependentUpon>
     </Compile>
     <Compile Include="forms\Main.cs">
@@ -169,80 +169,89 @@
     <Compile Include="classes\Manager.cs" />
     <Compile Include="classes\Program.cs" />
     <Compile Include="classes\Project.cs" />
-    <Compile Include="forms\PromptForm.cs">
+    <Compile Include="forms\Input\PromptForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\PromptForm.Designer.cs">
+    <Compile Include="forms\Input\PromptForm.Designer.cs">
       <DependentUpon>PromptForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\ScriptForm.cs">
+    <Compile Include="forms\Objects\ScriptForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\ScriptForm.Designer.cs">
+    <Compile Include="forms\Objects\ScriptForm.Designer.cs">
       <DependentUpon>ScriptForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\SelectionForm.cs">
+    <Compile Include="forms\Input\SelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\SelectionForm.Designer.cs">
+    <Compile Include="forms\Input\SelectionForm.Designer.cs">
       <DependentUpon>SelectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\TilemapForm.cs">
+    <Compile Include="forms\Objects\SoundForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\TilemapForm.Designer.cs">
+    <Compile Include="forms\Objects\SoundForm.Designer.cs">
+      <DependentUpon>SoundForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Objects\TilemapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\Objects\TilemapForm.Designer.cs">
       <DependentUpon>TilemapForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="forms\SpriteForm.cs">
+    <Compile Include="forms\Objects\SpriteForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\SpriteForm.Designer.cs">
+    <Compile Include="forms\Objects\SpriteForm.Designer.cs">
       <DependentUpon>SpriteForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\YesNoForm.cs">
+    <Compile Include="forms\Input\YesNoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\YesNoForm.Designer.cs">
+    <Compile Include="forms\Input\YesNoForm.Designer.cs">
       <DependentUpon>YesNoForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\ExportSettingsForm.resx">
+    <EmbeddedResource Include="forms\Engine\ExportSettingsForm.resx">
       <DependentUpon>ExportSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\ColliderForm.resx">
+    <EmbeddedResource Include="forms\Objects\ColliderForm.resx">
       <DependentUpon>ColliderForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\ConsoleForm.resx">
+    <EmbeddedResource Include="forms\Engine\ConsoleForm.resx">
       <DependentUpon>ConsoleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\EmitterForm.resx">
+    <EmbeddedResource Include="forms\Objects\EmitterForm.resx">
       <DependentUpon>EmitterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\GameObjectForm.resx">
+    <EmbeddedResource Include="forms\Objects\GameObjectForm.resx">
       <DependentUpon>GameObjectForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\GridForm.resx">
+    <EmbeddedResource Include="forms\Objects\SoundForm.resx">
+      <DependentUpon>SoundForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\Tools\GridForm.resx">
       <DependentUpon>GridForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\PromptForm.resx">
+    <EmbeddedResource Include="forms\Input\PromptForm.resx">
       <DependentUpon>PromptForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\ScriptForm.resx">
+    <EmbeddedResource Include="forms\Objects\ScriptForm.resx">
       <DependentUpon>ScriptForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\SelectionForm.resx">
+    <EmbeddedResource Include="forms\Input\SelectionForm.resx">
       <DependentUpon>SelectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\SpriteForm.resx">
+    <EmbeddedResource Include="forms\Objects\SpriteForm.resx">
       <DependentUpon>SpriteForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\TilemapForm.resx">
+    <EmbeddedResource Include="forms\Objects\TilemapForm.resx">
       <DependentUpon>TilemapForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -250,7 +259,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\YesNoForm.resx">
+    <EmbeddedResource Include="forms\Input\YesNoForm.resx">
       <DependentUpon>YesNoForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Lynx2DEngine_TemporaryKey.pfx" />
@@ -296,6 +305,9 @@
     <Content Include="resources\script.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\sound.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\tilemap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -321,6 +333,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

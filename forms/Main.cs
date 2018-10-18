@@ -64,6 +64,7 @@ namespace Lynx2DEngine
             hierarchyList.Images.Add(Image.FromFile(@"resources/script.png"));
             hierarchyList.Images.Add(Image.FromFile(@"resources/tilemap.png"));
             hierarchyList.Images.Add(Image.FromFile(@"resources/scene.png"));
+            hierarchyList.Images.Add(Image.FromFile(@"resources/sound.png"));
 
             hierarchy.ImageList = hierarchyList;
         }
@@ -240,6 +241,8 @@ namespace Lynx2DEngine
                             node.ImageIndex = 6;
                         if (obj.type == EngineObjectType.Tilemap)
                             node.ImageIndex = 7;
+                        if (obj.type == EngineObjectType.Sound)
+                            node.ImageIndex = 9;
 
                         node.SelectedImageIndex = node.ImageIndex;
                         nodes.Add(node);
@@ -294,7 +297,9 @@ namespace Lynx2DEngine
                         node.ImageIndex = 6;
                     if (obj.type == EngineObjectType.Tilemap)
                         node.ImageIndex = 7;
-                    
+                    if (obj.type == EngineObjectType.Sound)
+                        node.ImageIndex = 9;
+
                     node.SelectedImageIndex = node.ImageIndex;
                     newHierarchy.Add(node);
                 }
@@ -413,18 +418,30 @@ namespace Lynx2DEngine
                     case EngineObjectType.Collider:
                         ColliderForm coll = new ColliderForm();
 
+                        coll.FormClosed += new FormClosedEventHandler(checkCameraInjection);
+                        coll.FormClosed += new FormClosedEventHandler(removePointerInjection);
+
                         Engine.ExecuteScript("lx.GAME.DRAW_COLLIDERS=true;");
                         coll.FormClosed += new FormClosedEventHandler(drawCollidersToolStripMenuItem_Click);
 
                         coll.Show();
                         coll.Initialize(obj.id);
 
+                        Engine.ExecuteScript("lx.GAME.FOCUS = " + obj.Variable());
+                        Pointer.Inject(obj.Variable());
+
                         break;
                     case EngineObjectType.Emitter:
                         EmitterForm emit = new EmitterForm();
 
+                        emit.FormClosed += new FormClosedEventHandler(checkCameraInjection);
+                        emit.FormClosed += new FormClosedEventHandler(removePointerInjection);
+
                         emit.Show();
                         emit.Initialize(obj.id);
+
+                        Engine.ExecuteScript("lx.GAME.FOCUS = " + obj.Variable());
+                        Pointer.Inject(obj.Variable());
 
                         break;
                     case EngineObjectType.Tilemap:
@@ -433,6 +450,19 @@ namespace Lynx2DEngine
                         tilemap.Show();
                         tilemap.Initialize(obj.id);
                         
+                        break;
+                    case EngineObjectType.Sound:
+                        SoundForm sound = new SoundForm();
+
+                        sound.FormClosed += new FormClosedEventHandler(checkCameraInjection);
+                        sound.FormClosed += new FormClosedEventHandler(removePointerInjection);
+
+                        sound.Show();
+                        sound.Initialize(obj.id);
+
+                        Engine.ExecuteScript("lx.GAME.FOCUS = " + obj.Variable());
+                        Pointer.Inject(obj.Variable());
+
                         break;
                 }
             }
@@ -631,6 +661,21 @@ namespace Lynx2DEngine
             }
         }
 
+        private void addSoundToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                AddSound();
+
+                SwitchHierarchyView(HierarchyState.Objects);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                SetStatus("Exception occurred while adding Sound", Main.StatusType.Warning);
+            }
+        }
+
 
         private void addSpriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -757,6 +802,25 @@ namespace Lynx2DEngine
             UpdateHierarchy();
 
             return sprite;
+        }
+
+        private int AddSound()
+        {
+            int sound = Engine.GetEngineObjects().Length;
+            int[] empty = Engine.GetEmptyEnginePositions();
+
+            if (empty.Length > 0) sound = empty[0];
+
+            string code = "var Sound" + sound + " = new lx.Sound('');";
+
+            int soundR = Engine.AddEngineObject(EngineObjectType.Sound, code, -1, -1);
+
+            if (soundR != sound)
+                MessageBox.Show("Invalid id used while creating a Sound.", "Lynx2D Engine - Warning");
+
+            UpdateHierarchy();
+
+            return sound;
         }
 
         private List<int> AddCollider()

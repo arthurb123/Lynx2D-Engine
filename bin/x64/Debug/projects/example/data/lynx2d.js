@@ -257,10 +257,18 @@ function Lynx2D() {
         },
         TRANSLATE_FROM_FOCUS: function(POS) {
             if (this.FOCUS == undefined) return POS;
-            else return {
-                X: Math.floor(Math.round(POS.X)-Math.round(this.FOCUS.Position().X)+lx.GetDimensions().width/2-this.FOCUS.Size().W/2),
-                Y: Math.floor(Math.round(POS.Y)-Math.round(this.FOCUS.Position().Y)+lx.GetDimensions().height/2-this.FOCUS.Size().H/2)
-            };
+            else {
+                if (this.FOCUS.SIZE == undefined)
+                    this.FOCUS.SIZE = {
+                        W: 0,
+                        H: 0
+                    };
+                
+                return {
+                    X: Math.floor(Math.round(POS.X)-Math.round(this.FOCUS.Position().X)+lx.GetDimensions().width/2-this.FOCUS.SIZE.W/2),
+                    Y: Math.floor(Math.round(POS.Y)-Math.round(this.FOCUS.Position().Y)+lx.GetDimensions().height/2-this.FOCUS.SIZE.H/2)
+                };
+            }
         },
         ON_SCREEN: function(POS, SIZE) {
             if (this.FOCUS != undefined) {
@@ -291,6 +299,7 @@ function Lynx2D() {
             STEPS: 60 //temp
         },
         AUDIO: {
+            CAN_PLAY: false,
             SOUNDS: [],
             CHANNELS: [],
             SET_CHANNEL_VOLUME: function (CHANNEL, VOL) {
@@ -302,14 +311,40 @@ function Lynx2D() {
                 return this.CHANNELS[CHANNEL];
             },
             ADD: function (SRC, CHANNEL, DELAY) {
+                if (!this.CAN_PLAY || SRC == "") return;
+                
                 if (this.CHANNELS[CHANNEL] == undefined) this.SET_CHANNEL_VOLUME(CHANNEL, 1);
                 
                 this.SOUNDS[this.SOUNDS.length] = {
                     CUR: 0,
                     SRC: SRC,
                     CHANNEL: CHANNEL,
+                    SPATIAL: false,
                     DELAY: DELAY
                 };
+            },
+            ADD_SPATIAL: function(POS, SRC, CHANNEL, DELAY) {
+                if (!this.CAN_PLAY || SRC == "") return;
+                
+                if (this.CHANNELS[CHANNEL] == undefined) this.SET_CHANNEL_VOLUME(CHANNEL, 1);
+                
+                this.SOUNDS[this.SOUNDS.length] = {
+                    CUR: 0,
+                    POS: POS,
+                    SRC: SRC,
+                    SPATIAL: true,
+                    CHANNEL: CHANNEL,
+                    DELAY: DELAY
+                };
+            },
+            CALCULATE_SPATIAL: function(POS, CHANNEL) {
+                POS = lx.GAME.TRANSLATE_FROM_FOCUS(POS);
+                var VOL = 1-(Math.abs(POS.X - lx.GetDimensions().width/2)/lx.GetDimensions().width + Math.abs(POS.Y - lx.GetDimensions().height/2)/lx.GetDimensions().height);
+                
+                if (VOL < 0) VOL = 0;
+                else if (VOL > this.CHANNELS[CHANNEL]) VOL = this.CHANNELS[CHANNEL];
+                
+                return VOL;
             },
             UPDATE: function () {
                 for (var i = 0; i < this.SOUNDS.length; i++) {
@@ -318,7 +353,10 @@ function Lynx2D() {
                         var temp = new Audio();
                         temp.type = 'audio/mpeg';
                         temp.src = this.SOUNDS[i].SRC;
-                        temp.volume = this.CHANNELS[this.SOUNDS[i].CHANNEL];
+                        
+                        if (!this.SOUNDS[i].SPATIAL) temp.volume = this.CHANNELS[this.SOUNDS[i].CHANNEL];
+                        else temp.volume = this.CALCULATE_SPATIAL(this.SOUNDS[i].POS, this.SOUNDS[i].CHANNEL);
+                        
                         temp.play();
                         this.SOUNDS.splice(i, 1);
                     }
@@ -437,11 +475,11 @@ function Lynx2D() {
         this.GAME.EVENTS = [];
         
         //Append event listeners
-        document.addEventListener('keydown', function(EVENT) { if (lx.CONTEXT.CONTROLLER.STOPPED_KEYS[String.fromCharCode(EVENT.keyCode).toLowerCase()]) return; lx.CONTEXT.CONTROLLER.KEYS[String.fromCharCode(EVENT.keyCode).toLowerCase()] = true; });
-        document.addEventListener('keyup', function(EVENT) { lx.CONTEXT.CONTROLLER.STOPPED_KEYS[String.fromCharCode(EVENT.keyCode).toLowerCase()] = false; lx.CONTEXT.CONTROLLER.KEYS[String.fromCharCode(EVENT.keyCode).toLowerCase()] = false; });
-        document.addEventListener('mousedown', function(EVENT) { if (lx.CONTEXT.CONTROLLER.MOUSE.STOPPED_BUTTONS[EVENT.button]) return; lx.CONTEXT.CONTROLLER.MOUSE.BUTTONS[EVENT.button] = true; lx.GAME.HANDLE_MOUSE_CLICK(EVENT.button); });
-        document.addEventListener('mouseup', function(EVENT) { lx.CONTEXT.CONTROLLER.MOUSE.STOPPED_BUTTONS[EVENT.button] = false; lx.CONTEXT.CONTROLLER.MOUSE.BUTTONS[EVENT.button] = false; });
-        document.addEventListener('mousemove', function(EVENT) { lx.CONTEXT.CONTROLLER.MOUSE.POS = { X: EVENT.pageX, Y: EVENT.pageY }; if (lx.CONTEXT.CONTROLLER.MOUSE.ON_HOVER != undefined) lx.CONTEXT.CONTROLLER.MOUSE.ON_HOVER(lx.CONTEXT.CONTROLLER.MOUSE.POS); });
+        document.addEventListener('keydown', function(EVENT) { lx.GAME.AUDIO.CAN_PLAY = true; if (lx.CONTEXT.CONTROLLER.STOPPED_KEYS[String.fromCharCode(EVENT.keyCode).toLowerCase()]) return; lx.CONTEXT.CONTROLLER.KEYS[String.fromCharCode(EVENT.keyCode).toLowerCase()] = true; });
+        document.addEventListener('keyup', function(EVENT) { lx.GAME.AUDIO.CAN_PLAY = true; lx.CONTEXT.CONTROLLER.STOPPED_KEYS[String.fromCharCode(EVENT.keyCode).toLowerCase()] = false; lx.CONTEXT.CONTROLLER.KEYS[String.fromCharCode(EVENT.keyCode).toLowerCase()] = false; });
+        document.addEventListener('mousedown', function(EVENT) { lx.GAME.AUDIO.CAN_PLAY = true; if (lx.CONTEXT.CONTROLLER.MOUSE.STOPPED_BUTTONS[EVENT.button]) return; lx.CONTEXT.CONTROLLER.MOUSE.BUTTONS[EVENT.button] = true; lx.GAME.HANDLE_MOUSE_CLICK(EVENT.button); });
+        document.addEventListener('mouseup', function(EVENT) { lx.GAME.AUDIO.CAN_PLAY = true; lx.CONTEXT.CONTROLLER.MOUSE.STOPPED_BUTTONS[EVENT.button] = false; lx.CONTEXT.CONTROLLER.MOUSE.BUTTONS[EVENT.button] = false; });
+        document.addEventListener('mousemove', function(EVENT) { lx.GAME.AUDIO.CAN_PLAY = true; lx.CONTEXT.CONTROLLER.MOUSE.POS = { X: EVENT.pageX, Y: EVENT.pageY }; if (lx.CONTEXT.CONTROLLER.MOUSE.ON_HOVER != undefined) lx.CONTEXT.CONTROLLER.MOUSE.ON_HOVER(lx.CONTEXT.CONTROLLER.MOUSE.POS); });
         
         //Notify
         console.log(lx.GAME.LOG.TIMEFORMAT() + 'New controller created.');
@@ -1764,11 +1802,29 @@ function Lynx2D() {
     
     this.Sound = function (src, channel) {
         this.SRC = src;
+        this.POS = { X: 0, Y: 0 };
+        
         if (channel != undefined) this.CHANNEL = channel;
         else this.CHANNEL = 0;
         
+        this.Position = function(x, y) {
+            if (x == undefined || y == undefined) return this.POS;
+            else this.POS = {
+                X: x,
+                Y: y
+            };
+            
+            return this;
+        };
+        
         this.Play = function (delay) {
-            lx.GAME.AUDIO.ADD(src, channel, delay);
+            lx.GAME.AUDIO.ADD(this.SRC, this.CHANNEL, delay);
+            
+            return this;
+        };
+        
+        this.PlaySpatial = function(delay) {
+            lx.GAME.AUDIO.ADD_SPATIAL(this.POS, this.SRC, this.CHANNEL, delay);
             
             return this;
         };

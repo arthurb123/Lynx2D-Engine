@@ -49,7 +49,7 @@ namespace Lynx2DEngine.forms
         private void UpdateTitle()
         {
             obj = Engine.GetEngineObjects()[engineId];
-            Text = "Tilemap (" + obj.Variable() + ")";
+            Text = obj.Variable();
         }
 
         private void sprite_SelectedIndexChanged(object sender, EventArgs e)

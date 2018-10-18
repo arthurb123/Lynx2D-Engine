@@ -80,7 +80,7 @@ namespace Lynx2DEngine
         {
             obj = Engine.GetEngineObjects()[engineId];
 
-            Text = "GO (" + obj.Variable() + ")";
+            Text = obj.Variable();
         }
 
         private void x_ValueChanged(object sender, EventArgs e)
