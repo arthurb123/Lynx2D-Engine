@@ -342,7 +342,7 @@ namespace Lynx2DEngine
                 else if (scenes[id].objects[i].type == EngineObjectType.Script && scenes[id].objects[i].parent == -1) scripts += scenes[id].objects[i].buildCode;
                 else if (scenes[id].objects[i].type == EngineObjectType.Collider) colliders += scenes[id].objects[i].buildCode;
                 else if (scenes[id].objects[i].type == EngineObjectType.Emitter) emitters += scenes[id].objects[i].buildCode;
-                else if (scenes[id].objects[i].type == EngineObjectType.Tilemap) tilemaps += scenes[id].objects[i].buildCode;
+                else if (scenes[id].objects[i].type == EngineObjectType.Tilemap && !globalScope) tilemaps += scenes[id].objects[i].buildCode;
                 else if (scenes[id].objects[i].type == EngineObjectType.Sound) sounds += scenes[id].objects[i].buildCode;
 
                 scenes[id].objects[i].buildCode = "";

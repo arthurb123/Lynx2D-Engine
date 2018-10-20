@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine.forms
@@ -32,6 +33,7 @@ namespace Lynx2DEngine.forms
 
             tilesize.Value = tm.tilesize;
             layer.Value = tm.layer;
+            scale.Value = tm.scale;
             x.Value = tm.x;
             y.Value = tm.y;
             updateSpriteSelection();
@@ -100,6 +102,8 @@ namespace Lynx2DEngine.forms
 
         private void updateSpriteSelection()
         {
+            sprite.Items.Clear();
+
             if (sprite.Items.Count == 0)
                 foreach (EngineObject o in Engine.GetEngineObjectsWithType(EngineObjectType.Sprite))
                 {
@@ -126,23 +130,24 @@ namespace Lynx2DEngine.forms
             try
             {
                 Graphics g = e.Graphics;
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
 
                 g.Clear(Color.Gray);
 
                 if (cur != null)
-                    g.DrawImage(cur, tilesetOffset.X, tilesetOffset.Y, cur.Size.Width, cur.Size.Height);
+                    g.DrawImage(cur, tilesetOffset.X, tilesetOffset.Y, cur.Size.Width*tm.scale, cur.Size.Height * tm.scale);
 
                 for (int y = 0; y < (tileSelection.Height - tilesetOffset.Y) / tm.tilesize; y++)
                     for (int x = 0; x < (tileSelection.Width - tilesetOffset.X) / tm.tilesize; x++)
                     {
-                        g.DrawRectangle(Pens.Black, new Rectangle(x * tm.tilesize + tilesetOffset.X, y * tm.tilesize + tilesetOffset.Y, tm.tilesize, tm.tilesize));
+                        g.DrawRectangle(Pens.Black, new Rectangle(x * tm.scale * tm.tilesize + tilesetOffset.X, y * tm.scale * tm.tilesize + tilesetOffset.Y, tm.tilesize * tm.scale, tm.tilesize * tm.scale));
                     }
 
                 Point cursor = GetCursorTile();
-                g.DrawRectangle(Pens.Silver, new Rectangle(cursor.X * tm.tilesize + tilesetOffset.X, cursor.Y * tm.tilesize + tilesetOffset.Y, tm.tilesize, tm.tilesize));
+                g.DrawRectangle(Pens.Silver, new Rectangle(cursor.X * tm.scale * tm.tilesize + tilesetOffset.X, cursor.Y * tm.scale * tm.tilesize + tilesetOffset.Y, tm.tilesize*tm.scale, tm.tilesize*tm.scale));
 
                 if (selected != default(Point))
-                    g.DrawRectangle(Pens.WhiteSmoke, new Rectangle(selected.X * tm.tilesize + tilesetOffset.X, selected.Y * tm.tilesize + tilesetOffset.Y, tm.tilesize, tm.tilesize));
+                    g.DrawRectangle(Pens.WhiteSmoke, new Rectangle(selected.X * tm.tilesize * tm.scale + tilesetOffset.X, selected.Y * tm.tilesize * tm.scale + tilesetOffset.Y, tm.tilesize * tm.scale, tm.tilesize * tm.scale));
             }
             catch (Exception ex)
             {
@@ -155,7 +160,7 @@ namespace Lynx2DEngine.forms
         {
             Point map = tileSelection.PointToClient(MousePosition);
 
-            return new Point((map.X - tilesetOffset.X) / tm.tilesize, (map.Y - tilesetOffset.Y) / tm.tilesize);
+            return new Point((map.X - tilesetOffset.X) / (tm.tilesize * tm.scale), (map.Y - tilesetOffset.Y) / (tm.tilesize * tm.scale));
         }
 
         private void SelectTile(object sender, MouseEventArgs e)
@@ -254,6 +259,32 @@ namespace Lynx2DEngine.forms
         private void tileSelection_MouseUp(object sender, MouseEventArgs e)
         {
             dragging = false;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            updateSpriteSelection();
+        }
+
+        private void scale_ValueChanged(object sender, EventArgs e)
+        {
+            if (!canDetect) return;
+
+            tm.scale = (int)scale.Value;
+
+            if (Tilemapper.editing != -1)
+            {
+                Tilemapper.StopEditing();
+                Tilemapper.BeginEditing(tm.id);
+            }
+
+            selected = default(Point);
+            Tilemapper.ConvertAndSetMap(tm);
         }
     }
 }

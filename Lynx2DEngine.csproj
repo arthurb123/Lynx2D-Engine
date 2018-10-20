@@ -299,6 +299,10 @@
     <Content Include="resources\image.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="resources\refresh.png" />
+    <Content Include="resources\location.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\scene.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

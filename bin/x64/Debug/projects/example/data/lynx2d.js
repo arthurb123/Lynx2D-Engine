@@ -263,6 +263,11 @@ function Lynx2D() {
                         W: 0,
                         H: 0
                     };
+                else if (this.FOCUS.SIZE.W == undefined || this.FOCUS.SIZE.H == undefined)
+                {
+                    this.FOCUS.SIZE.W = 0;
+                    this.FOCUS.SIZE.H = 0;
+                }
                 
                 return {
                     X: Math.floor(Math.round(POS.X)-Math.round(this.FOCUS.Position().X)+lx.GetDimensions().width/2-this.FOCUS.SIZE.W/2),
@@ -1342,6 +1347,13 @@ function Lynx2D() {
         };
         
         this.UPDATE = function() {
+            if (this.TARGET != undefined) {
+                this.POS = {
+                    X: this.TARGET.POS.X+this.OFFSET.X,
+                    Y: this.TARGET.POS.Y+this.OFFSET.Y
+                };
+            }
+            
             for (var i = 0; i < this.PARTICLES.length; i++) {
                 if (this.PARTICLES[i].TIMER.CURRENT >= this.PARTICLES[i].TIMER.STANDARD) this.PARTICLES.splice(i, 1);
                 else {
@@ -1380,8 +1392,8 @@ function Lynx2D() {
                     
                     this.PARTICLES[id] = {
                         POS: {
-                            X: this.POS.X,
-                            Y: this.POS.Y
+                            X: this.POS.X-this.SIZE.MAX/2,
+                            Y: this.POS.Y-this.SIZE.MAX/2
                         },
                         SIZE: this.SIZE.MIN+Math.random()*(this.SIZE.MAX-this.SIZE.MIN),
                         MOVEMENT: {
@@ -1394,11 +1406,6 @@ function Lynx2D() {
                         },
                         OPACITY: 1
                     };
-                    
-                    if (this.TARGET != undefined) {
-                        this.PARTICLES[id].POS.X+=this.TARGET.POS.X;
-                        this.PARTICLES[id].POS.Y+=this.TARGET.POS.Y;
-                    }
                 }
                 
                 this.TIMER.CURRENT = 0;
@@ -1438,17 +1445,26 @@ function Lynx2D() {
         };
         
         this.Position = function(x, y) {
-            if (x != undefined && y != undefined) this.POS = {
-                X: x,
-                Y: y
-            };
+            if (x != undefined && y != undefined) {
+                if (this.OFFSET == undefined) this.POS = {
+                    X: x,
+                    Y: y
+                };
+                else this.OFFSET = {
+                    X: x,
+                    Y: y
+                };
+            }
             else return this.POS;
             
             return this;
         };
         
         this.Follows = function(target) {
-            if (target != undefined) this.TARGET = target;
+            if (target != undefined) {
+                this.TARGET = target;
+                this.OFFSET = this.POS;
+            }
             else return this.TARGET;
             
             return this;
@@ -1456,6 +1472,8 @@ function Lynx2D() {
         
         this.StopFollowing = function() {
             this.TARGET = undefined; 
+            this.POS = this.OFFSET;
+            this.OFFSET = undefined;
             
             return this;
         };

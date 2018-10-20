@@ -35,7 +35,6 @@
             this.drawTimer = new System.Windows.Forms.Timer(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.tilesize = new System.Windows.Forms.NumericUpDown();
-            this.tileSelection = new System.Windows.Forms.PictureBox();
             this.layer = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
@@ -44,11 +43,16 @@
             this.label4 = new System.Windows.Forms.Label();
             this.y = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
+            this.refresh = new System.Windows.Forms.Button();
+            this.tileSelection = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.scale = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.tilesize)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tileSelection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.x)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tileSelection)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scale)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -67,7 +71,7 @@
             this.sprite.Location = new System.Drawing.Point(50, 31);
             this.sprite.MaxDropDownItems = 100;
             this.sprite.Name = "sprite";
-            this.sprite.Size = new System.Drawing.Size(121, 21);
+            this.sprite.Size = new System.Drawing.Size(131, 21);
             this.sprite.TabIndex = 1;
             this.sprite.SelectedIndexChanged += new System.EventHandler(this.sprite_SelectedIndexChanged);
             // 
@@ -79,15 +83,16 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(189, 34);
+            this.label2.Location = new System.Drawing.Point(217, 35);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(42, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Tilesize";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // tilesize
             // 
-            this.tilesize.Location = new System.Drawing.Point(237, 31);
+            this.tilesize.Location = new System.Drawing.Point(262, 32);
             this.tilesize.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -109,18 +114,6 @@
             0});
             this.tilesize.ValueChanged += new System.EventHandler(this.tilesize_ValueChanged);
             // 
-            // tileSelection
-            // 
-            this.tileSelection.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tileSelection.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.tileSelection.Location = new System.Drawing.Point(0, 57);
-            this.tileSelection.Name = "tileSelection";
-            this.tileSelection.Size = new System.Drawing.Size(464, 265);
-            this.tileSelection.TabIndex = 2;
-            this.tileSelection.TabStop = false;
-            // 
             // layer
             // 
             this.layer.Location = new System.Drawing.Point(262, 5);
@@ -130,7 +123,7 @@
             0,
             0});
             this.layer.Name = "layer";
-            this.layer.Size = new System.Drawing.Size(45, 20);
+            this.layer.Size = new System.Drawing.Size(58, 20);
             this.layer.TabIndex = 6;
             this.layer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.layer.ValueChanged += new System.EventHandler(this.layer_ValueChanged);
@@ -138,7 +131,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(223, 7);
+            this.label3.Location = new System.Drawing.Point(219, 7);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(33, 13);
             this.label3.TabIndex = 5;
@@ -178,11 +171,6 @@
             // 
             // x
             // 
-            this.x.Increment = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
             this.x.Location = new System.Drawing.Point(36, 6);
             this.x.Name = "x";
             this.x.Size = new System.Drawing.Size(70, 20);
@@ -201,11 +189,6 @@
             // 
             // y
             // 
-            this.y.Increment = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
             this.y.Location = new System.Drawing.Point(137, 5);
             this.y.Name = "y";
             this.y.Size = new System.Drawing.Size(70, 20);
@@ -222,11 +205,77 @@
             this.label5.TabIndex = 41;
             this.label5.Text = "YT";
             // 
+            // refresh
+            // 
+            this.refresh.BackColor = System.Drawing.SystemColors.Control;
+            this.refresh.BackgroundImage = global::Lynx2DEngine.Properties.Resources.refresh;
+            this.refresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.refresh.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.refresh.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.refresh.FlatAppearance.BorderSize = 0;
+            this.refresh.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
+            this.refresh.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
+            this.refresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.refresh.Location = new System.Drawing.Point(187, 33);
+            this.refresh.Name = "refresh";
+            this.refresh.Size = new System.Drawing.Size(16, 16);
+            this.refresh.TabIndex = 43;
+            this.refresh.UseVisualStyleBackColor = false;
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
+            // 
+            // tileSelection
+            // 
+            this.tileSelection.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tileSelection.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.tileSelection.Location = new System.Drawing.Point(0, 57);
+            this.tileSelection.Name = "tileSelection";
+            this.tileSelection.Size = new System.Drawing.Size(464, 265);
+            this.tileSelection.TabIndex = 2;
+            this.tileSelection.TabStop = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(332, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(34, 13);
+            this.label6.TabIndex = 44;
+            this.label6.Text = "Scale";
+            // 
+            // scale
+            // 
+            this.scale.Location = new System.Drawing.Point(372, 5);
+            this.scale.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.scale.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.scale.Name = "scale";
+            this.scale.Size = new System.Drawing.Size(58, 20);
+            this.scale.TabIndex = 45;
+            this.scale.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.scale.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.scale.ValueChanged += new System.EventHandler(this.scale_ValueChanged);
+            // 
             // TilemapForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(464, 321);
+            this.Controls.Add(this.scale);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.refresh);
             this.Controls.Add(this.y);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.x);
@@ -249,10 +298,11 @@
             this.TopMost = true;
             this.Load += new System.EventHandler(this.TilemapForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tilesize)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tileSelection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.x)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tileSelection)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scale)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -274,5 +324,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown y;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button refresh;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown scale;
     }
 }

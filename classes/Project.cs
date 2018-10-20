@@ -313,6 +313,11 @@ namespace Lynx2DEngine
                     File.Copy(@"resources/particle.png", "projects/" + cur + "/res/lynx2d/particle.png");
                     installed++;
                 }
+                if (!File.Exists("projects/" + cur + "/res/lynx2d/location.png"))
+                {
+                    File.Copy(@"resources/location.png", "projects/" + cur + "/res/lynx2d/location.png");
+                    installed++;
+                }
 
                 if (setsStatus) form.SetStatus(installed + " Lynx2D resource(s) reloaded.", Main.StatusType.Message);
             }

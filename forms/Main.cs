@@ -469,7 +469,7 @@ namespace Lynx2DEngine
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while opening engine object.", Main.StatusType.Warning);
+                SetStatus("Exception occurred while opening engine object.", StatusType.Warning);
             }
         }
 

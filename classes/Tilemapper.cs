@@ -9,7 +9,7 @@ namespace Lynx2DEngine
         private static bool[] injected = new bool[0];
         public static Tilemap[] maps = new Tilemap[0];
         public static Tile selected = null;
-        private static int editing = -1;
+        public static int editing = -1;
         private static int selectedLayer = 0;
         public static Main form;
 
@@ -105,7 +105,7 @@ namespace Lynx2DEngine
             Engine.ExecuteScript("if (lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] == undefined) lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] = [];" +
                                  "var engineTileMap" + map + "RenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + maps[map].layer + ", function(gfx) {});");
             injected[map] = true;
-            
+
             ConvertAndSetMap(maps[map]);
         }
 
@@ -129,7 +129,6 @@ namespace Lynx2DEngine
 
             string r = "";
 
-
             for (int i = 0; i < tm.map.GetLength(0); i++)
                 for (int j = 0; j < tm.map.GetLength(1); j++)
                 {
@@ -146,8 +145,10 @@ namespace Lynx2DEngine
 
         public static string BuildTile(int i, int j, Tilemap tm, Tile el)
         {
+            if (tm.scale == 0) tm.scale = 1;
+
             return "lx.DrawSprite(" + el.sprite + ".Rotation(" + el.r + ").Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + ")," +
-                                (i + tm.x) * tm.tilesize + ", " + (j + tm.y) * tm.tilesize + ", " + el.cW + ", " + el.cH + ");";
+                                (i + tm.x) * tm.scale * tm.tilesize + ", " + (j + tm.y) * tm.scale * tm.tilesize + ", " + (el.cW * tm.scale) + ", " + (el.cH * tm.scale) + ");";
         }
 
         public static void RemoveMap(int map)
@@ -171,7 +172,7 @@ namespace Lynx2DEngine
             selectedLayer = maps[map].layer + 1;
 
             Engine.ExecuteScript("var engineTileMapperRenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + selectedLayer + ", function(gfx) {});" +
-                                 "var engineTileMapperTileSize = " + maps[map].tilesize + ";" +
+                                 "var engineTileMapperTileSize = " + maps[map].tilesize*maps[map].scale + ";" +
                                  "var engineTileSelectionRotation = 0; " +
                                  "var engineTileSelectionRotationEvent = lx.GAME.ADD_EVENT('mousebutton', 1, function() { " +
                                     "engineTileSelectionRotation += 90; " +
@@ -184,7 +185,7 @@ namespace Lynx2DEngine
                                     "var rotation = '';" +
                                     "if (lx.GAME.FOCUS != undefined) center = lx.GAME.FOCUS.POS;" +
                                     "if (key == 'PLACE_TILE') rotation = 'R' + (engineTileSelectionRotation*Math.PI/180);" +
-                                    "console.log('ENGINE_INTERACTION_' + key + '(X' + (Math.floor((center.X-lx.GetDimensions().width/2)/engineTileMapperTileSize) + Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.X/engineTileMapperTileSize)) + 'Y' + (Math.floor((center.Y-lx.GetDimensions().height/2)/engineTileMapperTileSize)+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.Y/engineTileMapperTileSize)) + rotation +')');" +
+                                    "console.log('ENGINE_INTERACTION_' + key + '(X' + (Math.floor((center.X-lx.GetDimensions().width/2-engineTileMapperTileSize/2)/engineTileMapperTileSize) + Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.X/engineTileMapperTileSize)) + 'Y' + (Math.floor((center.Y-lx.GetDimensions().height/2-engineTileMapperTileSize/2)/engineTileMapperTileSize)+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.Y/engineTileMapperTileSize)) + rotation +')');" +
                                  "};" +
                                  "var engineTileMapperEventIDL = lx.GAME.ADD_EVENT('mousebutton', 0, function() {" +
                                     "engineTileMapperPostMouse('PLACE_TILE');" +
@@ -220,6 +221,7 @@ namespace Lynx2DEngine
                 "engineTileMapperPostMouse = undefined; " +
                 "engineTileMapperTileSize = undefined;" +
                 "engineTileSelectionRotation = undefined;");
+
             selected = null;
 
             editing = -1;
@@ -234,15 +236,15 @@ namespace Lynx2DEngine
                                     "gfx.imageSmoothing = lx.GAME.SETTINGS.AA;" +
                                     "gfx.lineWidth = 2;" +
                                     "gfx.strokeStyle = 'purple';" +
-                                    "var tPos = { X: " + (maps[editing].x * maps[editing].tilesize) + ", Y: " + (maps[editing].y * maps[editing].tilesize) + " };" +
+                                    "var tPos = { X: " + (maps[editing].x * maps[editing].tilesize * maps[editing].scale) + ", Y: " + (maps[editing].y * maps[editing].tilesize * maps[editing].scale) + " };" +
                                     "if (lx.GAME.FOCUS != undefined) " +
                                         "tPos = lx.GAME.TRANSLATE_FROM_FOCUS(tPos);" +
-                                    "gfx.strokeRect(tPos.X, tPos.Y, " + (maps[editing].map.GetLength(0)*maps[editing].tilesize) + ", " + (maps[editing].map.GetLength(1) * maps[editing].tilesize) + ");" +
+                                    "gfx.strokeRect(tPos.X, tPos.Y, " + (maps[editing].map.GetLength(0)*maps[editing].tilesize*maps[editing].scale) + ", " + (maps[editing].map.GetLength(1) * maps[editing].tilesize * maps[editing].scale) + ");" +
                                     "tPos = { X: lx.GetDimensions().width/2, Y: lx.GetDimensions().height/2 };" +
                                     "if (lx.GAME.FOCUS != undefined) tPos = lx.GAME.FOCUS.POS;" +
                                     "tPos = {" +
-                                        "X: Math.floor((tPos.X - lx.GetDimensions().width / 2) / " + maps[editing].tilesize + ") * " + maps[editing].tilesize + "+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.X / " + maps[editing].tilesize + ") * " + maps[editing].tilesize + ", " +
-                                        "Y: Math.floor((tPos.Y-lx.GetDimensions().height/2)/" + maps[editing].tilesize + ")*" + maps[editing].tilesize + "+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.Y/" + maps[editing].tilesize + ")*" + maps[editing].tilesize +
+                                        "X: Math.floor((tPos.X - lx.GetDimensions().width / 2-" + maps[editing].tilesize * maps[editing].scale + "/2) / " + maps[editing].tilesize * maps[editing].scale + ") * " + maps[editing].tilesize * maps[editing].scale + "+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.X / " + maps[editing].tilesize * maps[editing].scale + ") * " + maps[editing].tilesize * maps[editing].scale + ", " +
+                                        "Y: Math.floor((tPos.Y-lx.GetDimensions().height/2-" + maps[editing].tilesize * maps[editing].scale + "/2)/" + maps[editing].tilesize * maps[editing].scale + ")*" + maps[editing].tilesize * maps[editing].scale + "+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.Y/" + maps[editing].tilesize * maps[editing].scale + ")*" + maps[editing].tilesize * maps[editing].scale +
                                     "};" +
                                     "lx.DrawSprite(" + selected.sprite + ".Rotation(engineTileSelectionRotation*Math.PI/180).Clip(" +
                                         selected.cX + ", " +
@@ -251,12 +253,12 @@ namespace Lynx2DEngine
                                         selected.cH + "), " +
                                         "tPos.X, " +
                                         "tPos.Y, " +
-                                        selected.cW + ", " +
-                                        selected.cH + ");" +
+                                        selected.cW * maps[editing].scale + ", " +
+                                        selected.cH * maps[editing].scale + ");" +
                                   "gfx.strokeStyle = 'ghostwhite';" +
                                   "if (lx.GAME.FOCUS != undefined) " +
                                         "tPos = lx.GAME.TRANSLATE_FROM_FOCUS(tPos);" +
-                                  "gfx.strokeRect(tPos.X, tPos.Y, " + selected.cW + ", " + selected.cH + ");" +
+                                  "gfx.strokeRect(tPos.X, tPos.Y, " + selected.cW * maps[editing].scale + ", " + selected.cH * maps[editing].scale + ");" +
                                   "gfx.restore();" +
                                 "};");
         }

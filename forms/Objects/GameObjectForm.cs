@@ -43,6 +43,8 @@ namespace Lynx2DEngine
 
         private void updateSpriteSelection()
         {
+            sprite.Items.Clear();
+
             if (sprite.Items.Count == 0)
                 foreach (EngineObject o in Engine.GetEngineObjectsWithType(EngineObjectType.Sprite))
                 {
@@ -57,6 +59,8 @@ namespace Lynx2DEngine
 
         private void updateColliderSelection()
         {
+            collider.Items.Clear();
+
             if (collider.Items.Count == 0)
             {
                 collider.Items.Add("<None>");
@@ -217,9 +221,14 @@ namespace Lynx2DEngine
             Engine.RemoveEngineObjectCollider(engineId);
         }
 
-        private void label4_Click(object sender, EventArgs e)
+        private void refresh_Click(object sender, EventArgs e)
         {
+            updateSpriteSelection();
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            updateColliderSelection();
         }
     }
 }

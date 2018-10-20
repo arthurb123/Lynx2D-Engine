@@ -45,6 +45,8 @@
             this.sprite = new System.Windows.Forms.ComboBox();
             this.collider = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.refresh = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.layer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.x)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).BeginInit();
@@ -177,7 +179,6 @@
             this.label4.Size = new System.Drawing.Size(34, 13);
             this.label4.TabIndex = 33;
             this.label4.Text = "Sprite";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // linkLabel2
             // 
@@ -199,7 +200,7 @@
             this.sprite.FormattingEnabled = true;
             this.sprite.Location = new System.Drawing.Point(70, 124);
             this.sprite.Name = "sprite";
-            this.sprite.Size = new System.Drawing.Size(151, 21);
+            this.sprite.Size = new System.Drawing.Size(132, 21);
             this.sprite.TabIndex = 37;
             this.sprite.SelectedIndexChanged += new System.EventHandler(this.sprite_SelectedIndexChanged);
             // 
@@ -209,7 +210,7 @@
             this.collider.FormattingEnabled = true;
             this.collider.Location = new System.Drawing.Point(69, 156);
             this.collider.Name = "collider";
-            this.collider.Size = new System.Drawing.Size(152, 21);
+            this.collider.Size = new System.Drawing.Size(133, 21);
             this.collider.TabIndex = 39;
             this.collider.SelectedIndexChanged += new System.EventHandler(this.collider_SelectedIndexChanged);
             // 
@@ -222,11 +223,49 @@
             this.label6.TabIndex = 38;
             this.label6.Text = "Collider";
             // 
+            // refresh
+            // 
+            this.refresh.BackColor = System.Drawing.SystemColors.Control;
+            this.refresh.BackgroundImage = global::Lynx2DEngine.Properties.Resources.refresh;
+            this.refresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.refresh.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.refresh.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.refresh.FlatAppearance.BorderSize = 0;
+            this.refresh.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
+            this.refresh.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
+            this.refresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.refresh.Location = new System.Drawing.Point(206, 126);
+            this.refresh.Name = "refresh";
+            this.refresh.Size = new System.Drawing.Size(16, 16);
+            this.refresh.TabIndex = 44;
+            this.refresh.UseVisualStyleBackColor = false;
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.Control;
+            this.button1.BackgroundImage = global::Lynx2DEngine.Properties.Resources.refresh;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(206, 158);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(16, 16);
+            this.button1.TabIndex = 45;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // GameObjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(234, 281);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.refresh);
             this.Controls.Add(this.collider);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.sprite);
@@ -279,5 +318,7 @@
         private System.Windows.Forms.ComboBox sprite;
         private System.Windows.Forms.ComboBox collider;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button refresh;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -84,6 +84,8 @@ namespace Lynx2DEngine.forms
 
         private void updateSpriteSelection()
         {
+            sprite.Items.Clear();
+
             if (sprite.Items.Count == 0)
                 foreach (EngineObject o in Engine.GetEngineObjectsWithType(EngineObjectType.Sprite))
                 {
@@ -216,6 +218,11 @@ namespace Lynx2DEngine.forms
             Engine.SetEngineObjectSprite(engineId, sprite.Text);
 
             Engine.ExecuteScript(obj.Variable() + ".SPRITE = " + sprite.Text + ";");
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            updateSpriteSelection();
         }
     }
 }

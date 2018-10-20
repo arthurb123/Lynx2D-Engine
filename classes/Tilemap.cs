@@ -12,6 +12,7 @@ namespace Lynx2DEngine
         public int tilesize = 64;
         public int x = 0,
                    y = 0;
+        public int scale = 1;
 
         public string curSprite = string.Empty;
 
