@@ -11,7 +11,7 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static readonly string version = "0.4.4";
+        private static readonly string version = "0.4.5";
         private static readonly string stage = "beta";
 
         public static bool CheckOnline()
@@ -78,7 +78,7 @@ namespace Lynx2DEngine
 
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateVersionProgressChanged);
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(UpdateVersionCompleted);
-                client.DownloadFileAsync(new Uri("http://www.lynx2d.com/engine/" + version + ".zip"), "downloads/" + version + ".zip");
+                client.DownloadFileAsync(new Uri("http://www.lynx2d.com/engine/res/" + version + ".zip"), "downloads/" + version + ".zip");
             }
             catch (Exception e)
             {
