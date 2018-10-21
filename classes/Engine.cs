@@ -619,13 +619,26 @@ namespace Lynx2DEngine
         {
             if (scenes[eSettings.currentScene].objects[id] == null || name == "HAS_BEEN_CLOSED") return;
 
-            scenes[eSettings.currentScene].objects[id].Rename(name);
-
-            if (scenes[eSettings.currentScene].objects[id].parent != -1)
+            if (scenes[eSettings.currentScene].objects[id].type == EngineObjectType.Sprite)
             {
-                if (scenes[eSettings.currentScene].objects[id].type == EngineObjectType.Sprite)
-                    scenes[eSettings.currentScene].objects[scenes[eSettings.currentScene].objects[id].parent].sprite = name;
+                //Rename sprite usage in engine objects
+                for (int i = 0; i < scenes[eSettings.currentScene].objects.Length; i++)
+                    if (i != id && scenes[eSettings.currentScene].objects[i].sprite == scenes[eSettings.currentScene].objects[id].Variable())
+                        scenes[eSettings.currentScene].objects[i].sprite = name;
+
+                //Rename sprite usage in tilemapper maps
+                Tilemapper.RenameSpriteInTiles(scenes[eSettings.currentScene].objects[id].Variable(), name);
             }
+
+            if (scenes[eSettings.currentScene].objects[id].type == EngineObjectType.Collider)
+            {
+                //Rename collider usage in engine objects
+                for (int i = 0; i < scenes[eSettings.currentScene].objects.Length; i++)
+                    if (i != id && scenes[eSettings.currentScene].objects[i].collider == scenes[eSettings.currentScene].objects[id].Variable())
+                        scenes[eSettings.currentScene].objects[i].collider = name;
+            }
+
+            scenes[eSettings.currentScene].objects[id].Rename(name);
 
             form.UpdateHierarchy();
 

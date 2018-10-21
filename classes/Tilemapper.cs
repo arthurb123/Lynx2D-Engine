@@ -327,5 +327,14 @@ namespace Lynx2DEngine
                 RemoveTile(x, y);
             }
         }
+
+        public static void RenameSpriteInTiles(string oldSprite, string newSprite)
+        {
+            foreach (Tilemap tm in maps)
+                if (tm != null)
+                    foreach (Tile t in tm.map)
+                        if (t != null && t.build && t.sprite == oldSprite)
+                            t.sprite = newSprite;
+        }
     }
 }
