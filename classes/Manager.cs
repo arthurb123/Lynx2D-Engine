@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace Lynx2DEngine
 {
@@ -23,7 +18,7 @@ namespace Lynx2DEngine
 
         public static string Root()
         {
-            return Directory.GetCurrentDirectory();
+            return Directory.GetCurrentDirectory() + "/";
         }
     }
 }

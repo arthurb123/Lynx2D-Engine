@@ -14,6 +14,8 @@ namespace Lynx2DEngine
         private static readonly string version = "0.4.5";
         private static readonly string stage = "beta";
 
+        private static bool extract = true;
+
         public static bool CheckOnline()
         {
             try
@@ -72,11 +74,17 @@ namespace Lynx2DEngine
         {
             Manager.CheckDirectory("downloads", true);
 
+            if (File.Exists("downloads/" + version + ".zip"))
+            {
+                EvaluateUpdatedVersion();
+                return;
+            }
+
             try
             {
                 WebClient client = new WebClient();
 
-                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateVersionProgressChanged);
+                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressChanged);
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(UpdateVersionCompleted);
                 client.DownloadFileAsync(new Uri("http://www.lynx2d.com/engine/res/" + version + ".zip"), "downloads/" + version + ".zip");
             }
@@ -86,7 +94,7 @@ namespace Lynx2DEngine
             }
         }
 
-        private static void UpdateVersionProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             form.SetStatus("Downloading.. (" + e.ProgressPercentage + "%)", Main.StatusType.Message);
         }
@@ -95,14 +103,79 @@ namespace Lynx2DEngine
         {
             form.SetStatus("Download complete!", Main.StatusType.Message);
 
+            EvaluateUpdatedVersion();
+        }
+
+        private static void EvaluateUpdatedVersion()
+        {
             try
             {
-                Process.Start(@"downloads");
+                extract = Input.YesNo("Do you want the engine to install the downloaded update?", "Lynx2D Engine - Question");
+
+                if (!extract && Input.YesNo("Do you want to view the location of the downloaded update?", "Lynx2D Engine - Question")) 
+                    Process.Start(@"downloads");
+                else if (extract)
+                    GetUpdater();
             }
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
                 form.SetStatus("Exception occurred trying to open downloads.", Main.StatusType.Warning);
+            }
+        }
+
+        private static void GetUpdaterCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            form.SetStatus("Opening Lynx2D updater..", Main.StatusType.Message);
+
+            LaunchUpdater();
+        }
+
+        private static void LaunchUpdater()
+        {
+            try
+            {
+                ProcessStartInfo cmd = new ProcessStartInfo();
+                cmd.WindowStyle = ProcessWindowStyle.Hidden;
+                cmd.FileName = "CMD.exe";
+                cmd.Arguments = "/C cd downloads&start Lynx2DEngineUpdater.exe";
+                Process.Start(cmd);
+                /*
+                ProcessStartInfo startInfo = new ProcessStartInfo(Manager.Root() + "update.bat");
+                startInfo.UseShellExecute = true;
+                Process.Start(startInfo);
+                */
+
+                Application.Exit();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                form.SetStatus("Exception occurred while starting updater.", Main.StatusType.Warning);
+            }
+        }
+
+        private static void GetUpdater()
+        {
+            Manager.CheckDirectory("downloads", true);
+
+            if (File.Exists(Manager.Root() + "downloads/Lynx2DEngineUpdater.exe"))
+            {
+                LaunchUpdater();
+                return;
+            }
+
+            try
+            {
+                WebClient client = new WebClient();
+
+                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressChanged);
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(GetUpdaterCompleted);
+                client.DownloadFileAsync(new Uri("http://www.lynx2d.com/engine/res/updater/Lynx2DEngineUpdater.exe"), "downloads/Lynx2DEngineUpdater.exe");
+            }
+            catch (Exception e)
+            {
+                form.SetStatus("Could not download updater.", Main.StatusType.Message);
             }
         }
 
