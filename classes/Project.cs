@@ -52,7 +52,7 @@ namespace Lynx2DEngine
 
             try
             {
-                gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(false); lx.Start(60);";
+                gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(true); lx.Start(60);";
 
                 if (!Engine.LoadEngineState())
                 {
@@ -136,6 +136,7 @@ namespace Lynx2DEngine
 
             Save();
 
+            gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(" + Engine.bSettings.imageSmoothing.ToString().ToLower() + "); lx.Start(" + Engine.bSettings.initialFramerate + ");";
             Engine.BuildEngineCode(true);
 
             using (FileStream fs = new FileStream("projects/" + cur + "/data/game.js", FileMode.Create))
@@ -171,7 +172,7 @@ namespace Lynx2DEngine
                 }
             }
 
-            gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(false); lx.Start(60);";
+            gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(true); lx.Start(60);";
 
             if (obfuscated || !Engine.bSettings.obfuscates)
             {

@@ -302,7 +302,7 @@ namespace Lynx2DEngine
                 //Load build settings
                 if (bSettings.hasIcon)
                     buildSettings += "document.getElementById('icon').href='" + bSettings.iconLocation + "';";
-
+                
                 standardScene = "lx.LoadScene(" + scenes[bSettings.standardScene].Variable() + ");";
 
                 Project.AddGameCode(buildSettings + buildScenes + standardScene);
@@ -381,9 +381,18 @@ namespace Lynx2DEngine
 
                         return false;
                     }
-                    
+
                     if (temp.bSettings != null)
+                    {
                         bSettings = temp.bSettings;
+
+                        if (bSettings.initialFramerate == 0)
+                        {
+                            //Initial setup of graphics build settings (running v0.4.5-beta or earlier)
+                            bSettings.initialFramerate = 60;
+                            bSettings.imageSmoothing = true;
+                        }
+                    }
 
                     if (temp.eSettings != null)
                     {
@@ -876,6 +885,9 @@ namespace Lynx2DEngine
         public bool hasIcon = false;
         public string iconLocation = string.Empty;
         public int standardScene = 0;
+
+        public int initialFramerate = 60;
+        public bool imageSmoothing = true;
 
         public int lineBreaks = 0;
         public bool obfuscates = false;

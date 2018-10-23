@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine.forms
@@ -24,6 +16,9 @@ namespace Lynx2DEngine.forms
 
             hasIcon.Checked = Engine.bSettings.hasIcon;
             hasIcon_CheckedChanged(sender, e);
+
+            imageSmoothing.Checked = Engine.bSettings.imageSmoothing;
+            framerate.Value = Engine.bSettings.initialFramerate;
 
             lineBreaks.Value = Engine.bSettings.lineBreaks;
             obfuscates.Checked = Engine.bSettings.obfuscates;
@@ -125,6 +120,16 @@ namespace Lynx2DEngine.forms
                     break;
                 }
             }
+        }
+
+        private void framerate_ValueChanged(object sender, EventArgs e)
+        {
+            Engine.bSettings.initialFramerate = (int)framerate.Value;
+        }
+
+        private void imageSmoothing_CheckedChanged(object sender, EventArgs e)
+        {
+            Engine.bSettings.imageSmoothing = imageSmoothing.Checked;
         }
     }
 }

@@ -18,6 +18,7 @@ namespace Lynx2DEngine
         public ConsoleForm console;
         private bool consoleVisible;
         private HierarchyState hierarchyView = HierarchyState.Objects;
+        private ImageList hierarchyList;
 
         private EngineObject copied = null;
 
@@ -51,20 +52,20 @@ namespace Lynx2DEngine
             CefSettings settings = new CefSettings();
             Cef.Initialize(settings);
 
-            ImageList hierarchyList = new ImageList();
+            hierarchyList = new ImageList();
             hierarchyList.ImageSize = new Size(16, 16);
 
             hierarchyList.Images.Add(new Bitmap(1, 1));
 
-            hierarchyList.Images.Add(Image.FromFile(@"resources/folder.png"));
-            hierarchyList.Images.Add(Image.FromFile(@"resources/go.png"));
-            hierarchyList.Images.Add(Image.FromFile(@"resources/image.png"));
-            hierarchyList.Images.Add(Image.FromFile(@"resources/collider.png"));
-            hierarchyList.Images.Add(Image.FromFile(@"resources/emitter.png"));
-            hierarchyList.Images.Add(Image.FromFile(@"resources/script.png"));
-            hierarchyList.Images.Add(Image.FromFile(@"resources/tilemap.png"));
-            hierarchyList.Images.Add(Image.FromFile(@"resources/scene.png"));
-            hierarchyList.Images.Add(Image.FromFile(@"resources/sound.png"));
+            AddHierarchyIcon(@"resources/folder.png");
+            AddHierarchyIcon(@"resources/go.png");
+            AddHierarchyIcon(@"resources/image.png");
+            AddHierarchyIcon(@"resources/collider.png");
+            AddHierarchyIcon(@"resources/emitter.png");
+            AddHierarchyIcon(@"resources/script.png");
+            AddHierarchyIcon(@"resources/tilemap.png");
+            AddHierarchyIcon(@"resources/scene.png");
+            AddHierarchyIcon(@"resources/sound.png");
 
             hierarchy.ImageList = hierarchyList;
         }
@@ -588,6 +589,18 @@ namespace Lynx2DEngine
         private void hierachyScenes_Click(object sender, EventArgs e)
         {
             SwitchHierarchyView(HierarchyState.Scenes);
+        }
+
+        private void AddHierarchyIcon(string src)
+        {
+            try
+            {
+                hierarchyList.Images.Add(Image.FromFile(src));
+            }
+            catch (Exception e)
+            {
+                SetStatus("Resource missing '" + src + "'", StatusType.Warning);
+            }
         }
         #endregion
 
