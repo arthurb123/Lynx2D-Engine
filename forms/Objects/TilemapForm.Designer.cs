@@ -43,16 +43,17 @@
             this.label4 = new System.Windows.Forms.Label();
             this.y = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
-            this.refresh = new System.Windows.Forms.Button();
-            this.tileSelection = new System.Windows.Forms.PictureBox();
             this.label6 = new System.Windows.Forms.Label();
             this.scale = new System.Windows.Forms.NumericUpDown();
+            this.collides = new System.Windows.Forms.CheckBox();
+            this.refresh = new System.Windows.Forms.Button();
+            this.tileSelection = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.tilesize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.x)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tileSelection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scale)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tileSelection)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -144,7 +145,7 @@
             this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel2.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel2.Location = new System.Drawing.Point(369, 38);
+            this.linkLabel2.Location = new System.Drawing.Point(439, 38);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(47, 13);
             this.linkLabel2.TabIndex = 38;
@@ -160,7 +161,7 @@
             this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Red;
-            this.linkLabel1.Location = new System.Drawing.Point(414, 38);
+            this.linkLabel1.Location = new System.Drawing.Point(484, 38);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(38, 13);
             this.linkLabel1.TabIndex = 37;
@@ -205,36 +206,6 @@
             this.label5.TabIndex = 41;
             this.label5.Text = "YT";
             // 
-            // refresh
-            // 
-            this.refresh.BackColor = System.Drawing.SystemColors.Control;
-            this.refresh.BackgroundImage = global::Lynx2DEngine.Properties.Resources.refresh;
-            this.refresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.refresh.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.refresh.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.refresh.FlatAppearance.BorderSize = 0;
-            this.refresh.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
-            this.refresh.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
-            this.refresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.refresh.Location = new System.Drawing.Point(187, 33);
-            this.refresh.Name = "refresh";
-            this.refresh.Size = new System.Drawing.Size(16, 16);
-            this.refresh.TabIndex = 43;
-            this.refresh.UseVisualStyleBackColor = false;
-            this.refresh.Click += new System.EventHandler(this.refresh_Click);
-            // 
-            // tileSelection
-            // 
-            this.tileSelection.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tileSelection.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.tileSelection.Location = new System.Drawing.Point(0, 57);
-            this.tileSelection.Name = "tileSelection";
-            this.tileSelection.Size = new System.Drawing.Size(464, 265);
-            this.tileSelection.TabIndex = 2;
-            this.tileSelection.TabStop = false;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -268,11 +239,53 @@
             0});
             this.scale.ValueChanged += new System.EventHandler(this.scale_ValueChanged);
             // 
+            // collides
+            // 
+            this.collides.AutoSize = true;
+            this.collides.Location = new System.Drawing.Point(335, 34);
+            this.collides.Name = "collides";
+            this.collides.Size = new System.Drawing.Size(62, 17);
+            this.collides.TabIndex = 46;
+            this.collides.Text = "Collides";
+            this.collides.UseVisualStyleBackColor = true;
+            this.collides.CheckedChanged += new System.EventHandler(this.collides_CheckedChanged);
+            // 
+            // refresh
+            // 
+            this.refresh.BackColor = System.Drawing.SystemColors.Control;
+            this.refresh.BackgroundImage = global::Lynx2DEngine.Properties.Resources.refresh;
+            this.refresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.refresh.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.refresh.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.refresh.FlatAppearance.BorderSize = 0;
+            this.refresh.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
+            this.refresh.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
+            this.refresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.refresh.Location = new System.Drawing.Point(187, 33);
+            this.refresh.Name = "refresh";
+            this.refresh.Size = new System.Drawing.Size(16, 16);
+            this.refresh.TabIndex = 43;
+            this.refresh.UseVisualStyleBackColor = false;
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
+            // 
+            // tileSelection
+            // 
+            this.tileSelection.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tileSelection.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.tileSelection.Location = new System.Drawing.Point(0, 57);
+            this.tileSelection.Name = "tileSelection";
+            this.tileSelection.Size = new System.Drawing.Size(534, 265);
+            this.tileSelection.TabIndex = 2;
+            this.tileSelection.TabStop = false;
+            // 
             // TilemapForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(464, 321);
+            this.ClientSize = new System.Drawing.Size(534, 321);
+            this.Controls.Add(this.collides);
             this.Controls.Add(this.scale);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.refresh);
@@ -291,7 +304,7 @@
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(480, 360);
+            this.MinimumSize = new System.Drawing.Size(550, 360);
             this.Name = "TilemapForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "TilemapForm";
@@ -301,8 +314,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.x)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tileSelection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.scale)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tileSelection)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -327,5 +340,6 @@
         private System.Windows.Forms.Button refresh;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown scale;
+        private System.Windows.Forms.CheckBox collides;
     }
 }

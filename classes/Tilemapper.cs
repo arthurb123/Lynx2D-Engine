@@ -34,7 +34,8 @@ namespace Lynx2DEngine
 
         public static string ToBuildCode(string var, Tilemap tm)
         {
-            string r = "var " + var + " = lx.GAME.ADD_LAYER_DRAW_EVENT(" + tm.layer + ", function(gfx) {";
+            string r = "var " + var + " = lx.GAME.ADD_LAYER_DRAW_EVENT(" + tm.layer + ", function(gfx) {",
+                   c = "\n";
 
             for (int i = 0; i < tm.map.GetLength(0); i++)
                 for (int j = 0; j < tm.map.GetLength(1); j++)
@@ -42,12 +43,17 @@ namespace Lynx2DEngine
                     Tile el = tm.map[i, j];
 
                     if (el != null && el.build)
+                    {
                         r += BuildTile(i, j, tm, el);
+
+                        if (tm.collides)
+                            c += "new lx.Collider(" + (i + tm.x) * tm.tilesize * tm.scale + ", " + (j + tm.y) * tm.tilesize * tm.scale + ", " + tm.tilesize * tm.scale + ", " + tm.tilesize * tm.scale + ", true);";
+                    }
                 }
 
-            r += "});\n";
+            r += "});";
 
-            return r;
+            return r + c + (c.Length != 0 ? "\n" : "");
         }
 
         public static void Clear()
@@ -127,7 +133,8 @@ namespace Lynx2DEngine
                 return;
             }
 
-            string r = "";
+            string r = "",
+                   c = "";
 
             for (int i = 0; i < tm.map.GetLength(0); i++)
                 for (int j = 0; j < tm.map.GetLength(1); j++)
@@ -135,12 +142,27 @@ namespace Lynx2DEngine
                     Tile el = tm.map[i, j];
 
                     if (el != null && el.build)
+                    {
                         r += BuildTile(i, j, tm, el);
+
+                        if (tm.collides)
+                        {
+                            string tileColl = "engineTileMap" + tm.id + "TileCollider" + (j * tm.map.GetLength(1) + i);
+
+                            c += "if (window['" + tileColl + "'] != undefined) {" +
+                                    "window['" + tileColl + "'].Disable();" +
+                                    "window['" + tileColl + "'] = undefined;" +
+                                 "}" +
+                                 "var " + tileColl + " = new lx.Collider(" + (i + tm.x) * tm.tilesize * tm.scale + ", " + (j + tm.y) * tm.tilesize * tm.scale + ", " + tm.tilesize * tm.scale + ", " + tm.tilesize * tm.scale + ", true);";
+                        }
+                    }
                 }
 
-            Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + tm.layer + "][engineTileMap" + tm.id + "RenderID] = function(gfx){ " +
+            string total = "lx.GAME.LAYER_DRAW_EVENTS[" + tm.layer + "][engineTileMap" + tm.id + "RenderID] = function(gfx){ " +
                                     r +
-                                "};");
+                           "};" + (tm.collides ? c : "");
+
+            Engine.ExecuteScript(total);
         }
 
         public static string BuildTile(int i, int j, Tilemap tm, Tile el)
@@ -265,6 +287,9 @@ namespace Lynx2DEngine
 
         public static void PlaceTile(int x, int y, float r)
         {
+            if (selected == null)
+                return;
+
             if (editing == -1) return;
             if (x < maps[editing].x || y < maps[editing].y)
             {

@@ -36,6 +36,8 @@ namespace Lynx2DEngine.forms
             scale.Value = tm.scale;
             x.Value = tm.x;
             y.Value = tm.y;
+            collides.Checked = tm.collides;
+            
             updateSpriteSelection();
 
             if (tm.curSprite != string.Empty)
@@ -285,6 +287,16 @@ namespace Lynx2DEngine.forms
 
             selected = default(Point);
             Tilemapper.ConvertAndSetMap(tm);
+        }
+
+        private void collides_CheckedChanged(object sender, EventArgs e)
+        {
+            tm.collides = collides.Checked;
+
+            if (tm.collides)
+                Tilemapper.ConvertAndSetMap(tm);
+            else
+                Engine.form.refreshBrowser();
         }
     }
 }

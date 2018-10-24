@@ -13,6 +13,7 @@ namespace Lynx2DEngine
         public int x = 0,
                    y = 0;
         public int scale = 1;
+        public bool collides = false;
 
         public string curSprite = string.Empty;
 
