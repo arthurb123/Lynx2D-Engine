@@ -14,6 +14,7 @@ namespace Lynx2DEngine
                    y = 0;
         public int scale = 1;
         public bool collides = false;
+        public bool[,] colliders = new bool[0, 0];
 
         public string curSprite = string.Empty;
 

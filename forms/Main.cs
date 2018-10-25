@@ -1090,7 +1090,7 @@ namespace Lynx2DEngine
             {
                 BackgroundColor = Cef.ColorSetARGB(0, 255, 255, 255)
             };
-
+            
             browser.LoadingStateChanged += OnBrowserLoadingStateChanged;
             browser.ConsoleMessage += OnBrowserConsoleMessage;
             browser.MenuHandler = new CustomMenuHandler();

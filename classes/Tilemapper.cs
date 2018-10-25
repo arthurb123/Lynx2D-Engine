@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine
@@ -34,6 +35,8 @@ namespace Lynx2DEngine
 
         public static string ToBuildCode(string var, Tilemap tm)
         {
+            tm.colliders = new bool[tm.map.GetLength(0), tm.map.GetLength(1)];
+
             string r = "var " + var + " = lx.GAME.ADD_LAYER_DRAW_EVENT(" + tm.layer + ", function(gfx) {",
                    c = "\n";
 
@@ -46,8 +49,8 @@ namespace Lynx2DEngine
                     {
                         r += BuildTile(i, j, tm, el);
 
-                        if (tm.collides)
-                            c += "new lx.Collider(" + (i + tm.x) * tm.tilesize * tm.scale + ", " + (j + tm.y) * tm.tilesize * tm.scale + ", " + tm.tilesize * tm.scale + ", " + tm.tilesize * tm.scale + ", true);";
+                        if (tm.collides && !tm.colliders[i, j])
+                            c += GenerateCollider(tm, i, j);
                     }
                 }
 
@@ -108,6 +111,7 @@ namespace Lynx2DEngine
         {
             if (injected[map]) return;
 
+            maps[map].colliders = new bool[maps[map].map.GetLength(0), maps[map].map.GetLength(1)];
             Engine.ExecuteScript("if (lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] == undefined) lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] = [];" +
                                  "var engineTileMap" + map + "RenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + maps[map].layer + ", function(gfx) {});");
             injected[map] = true;
@@ -133,6 +137,8 @@ namespace Lynx2DEngine
                 return;
             }
 
+            tm.colliders = new bool[tm.map.GetLength(0), tm.map.GetLength(1)];
+
             string r = "",
                    c = "";
 
@@ -145,16 +151,24 @@ namespace Lynx2DEngine
                     {
                         r += BuildTile(i, j, tm, el);
 
-                        if (tm.collides)
+                        if (tm.collides && !tm.colliders[i, j])
                         {
                             string tileColl = "engineTileMap" + tm.id + "TileCollider" + (j * tm.map.GetLength(1) + i);
 
                             c += "if (window['" + tileColl + "'] != undefined) {" +
                                     "window['" + tileColl + "'].Disable();" +
                                     "window['" + tileColl + "'] = undefined;" +
-                                 "}" +
-                                 "var " + tileColl + " = new lx.Collider(" + (i + tm.x) * tm.tilesize * tm.scale + ", " + (j + tm.y) * tm.tilesize * tm.scale + ", " + tm.tilesize * tm.scale + ", " + tm.tilesize * tm.scale + ", true);";
+                                    "}" +
+                                    "var " + tileColl + " = " + GenerateCollider(tm, i, j);
                         }
+                    } else if (tm.collides)
+                    {
+                        string tileColl = "engineTileMap" + tm.id + "TileCollider" + (j * tm.map.GetLength(1) + i);
+
+                        c += "if (window['" + tileColl + "'] != undefined) {" +
+                                "window['" + tileColl + "'].Disable();" +
+                                "window['" + tileColl + "'] = undefined;" +
+                                "}";
                     }
                 }
 
@@ -167,7 +181,8 @@ namespace Lynx2DEngine
 
         public static string BuildTile(int i, int j, Tilemap tm, Tile el)
         {
-            if (tm.scale == 0) tm.scale = 1;
+            if (tm.scale == 0)
+                tm.scale = 1;
 
             return "lx.DrawSprite(" + el.sprite + ".Rotation(" + el.r + ").Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + ")," +
                                 (i + tm.x) * tm.scale * tm.tilesize + ", " + (j + tm.y) * tm.scale * tm.tilesize + ", " + (el.cW * tm.scale) + ", " + (el.cH * tm.scale) + ");";
@@ -360,6 +375,48 @@ namespace Lynx2DEngine
                     foreach (Tile t in tm.map)
                         if (t != null && t.build && t.sprite == oldSprite)
                             t.sprite = newSprite;
+        }
+
+        public static string GenerateCollider(Tilemap tm, int y, int x)
+        {
+            int w = 1, h = 0, fw = -1;
+
+            for (int j = 0; j < tm.map.GetLength(0) - y; j++)
+            {
+                if (tm.map[y + j, x] != null && tm.map[y + j, x].build && !tm.colliders[y + j, x])
+                {
+                    h++;
+                    tm.colliders[y + j, x] = true;
+                }
+                else
+                    break;
+
+                for (int i = 1; i < tm.map.GetLength(1) - x - 1; i++)
+                {
+                    if (tm.map[y + j, x + i] != null && tm.map[y + j, x + i].build && !tm.colliders[y + j, x + i])
+                    {
+                        if (fw != -1 && i > fw)
+                            break;
+
+                        w++;
+
+                        tm.colliders[y + j, x + i] = true;
+                    }
+                    else if (fw != -1 && i < fw)
+                    {
+                        h--;
+                        goto ReturnCollider;
+                    }
+                    else
+                        break;
+                }
+
+                if (fw == -1)
+                    fw = w;
+            }
+
+            ReturnCollider:
+            return "new lx.Collider(" + (y + tm.x) * tm.tilesize * tm.scale + ", " + (x + tm.y) * tm.tilesize * tm.scale + ", " + h * tm.tilesize * tm.scale + ", " + fw * tm.tilesize * tm.scale + ", true);";
         }
     }
 }
