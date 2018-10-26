@@ -78,7 +78,12 @@ namespace Lynx2DEngine
 
             try
             {
+                if (!map[x, y].build)
+                    return;
+
                 map[x, y] = new Tile();
+
+                Tilemapper.ConvertAndSetMap(this);
             }
             catch (Exception e)
             {

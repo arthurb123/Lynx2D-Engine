@@ -46,6 +46,7 @@
             this.addScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addEmitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addTilemapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addSoundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,7 +73,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.hierarchyScenes = new System.Windows.Forms.Button();
             this.hierarchyObjects = new System.Windows.Forms.Button();
-            this.addSoundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showChangelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -181,49 +182,56 @@
             // addGameObjectToolStripMenuItem
             // 
             this.addGameObjectToolStripMenuItem.Name = "addGameObjectToolStripMenuItem";
-            this.addGameObjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addGameObjectToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addGameObjectToolStripMenuItem.Text = "Add GameObject";
             this.addGameObjectToolStripMenuItem.Click += new System.EventHandler(this.addGameObjectToolStripMenuItem_Click);
             // 
             // addColliderToolStripMenuItem
             // 
             this.addColliderToolStripMenuItem.Name = "addColliderToolStripMenuItem";
-            this.addColliderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addColliderToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addColliderToolStripMenuItem.Text = "Add Collider";
             this.addColliderToolStripMenuItem.Click += new System.EventHandler(this.addColliderToolStripMenuItem_Click);
             // 
             // addSpriteToolStripMenuItem
             // 
             this.addSpriteToolStripMenuItem.Name = "addSpriteToolStripMenuItem";
-            this.addSpriteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addSpriteToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addSpriteToolStripMenuItem.Text = "Add Sprite";
             this.addSpriteToolStripMenuItem.Click += new System.EventHandler(this.addSpriteToolStripMenuItem_Click);
             // 
             // addScriptToolStripMenuItem
             // 
             this.addScriptToolStripMenuItem.Name = "addScriptToolStripMenuItem";
-            this.addScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addScriptToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addScriptToolStripMenuItem.Text = "Add Script";
             this.addScriptToolStripMenuItem.Click += new System.EventHandler(this.addScriptToolStripMenuItem_Click);
             // 
             // addEmitterToolStripMenuItem
             // 
             this.addEmitterToolStripMenuItem.Name = "addEmitterToolStripMenuItem";
-            this.addEmitterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addEmitterToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addEmitterToolStripMenuItem.Text = "Add Emitter";
             this.addEmitterToolStripMenuItem.Click += new System.EventHandler(this.addEmitterToolStripMenuItem_Click);
             // 
             // addTilemapToolStripMenuItem
             // 
             this.addTilemapToolStripMenuItem.Name = "addTilemapToolStripMenuItem";
-            this.addTilemapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addTilemapToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addTilemapToolStripMenuItem.Text = "Add Tilemap";
             this.addTilemapToolStripMenuItem.Click += new System.EventHandler(this.addTilemapToolStripMenuItem_Click);
+            // 
+            // addSoundToolStripMenuItem
+            // 
+            this.addSoundToolStripMenuItem.Name = "addSoundToolStripMenuItem";
+            this.addSoundToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.addSoundToolStripMenuItem.Text = "Add Sound";
+            this.addSoundToolStripMenuItem.Click += new System.EventHandler(this.addSoundToolStripMenuItem_Click);
             // 
             // addFolderToolStripMenuItem
             // 
             this.addFolderToolStripMenuItem.Name = "addFolderToolStripMenuItem";
-            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addFolderToolStripMenuItem.Text = "Create Folder";
             this.addFolderToolStripMenuItem.Click += new System.EventHandler(this.addFolderToolStripMenuItem_Click);
             // 
@@ -337,6 +345,7 @@
             this.showDevToolsToolStripMenuItem,
             this.reloadStandardResourcesToolStripMenuItem,
             this.reloadFrameworkToolStripMenuItem,
+            this.showChangelogToolStripMenuItem,
             this.updateToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
@@ -479,12 +488,12 @@
             this.hierarchyObjects.Visible = false;
             this.hierarchyObjects.Click += new System.EventHandler(this.hierarchyObjects_Click);
             // 
-            // addSoundToolStripMenuItem
+            // showChangelogToolStripMenuItem
             // 
-            this.addSoundToolStripMenuItem.Name = "addSoundToolStripMenuItem";
-            this.addSoundToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addSoundToolStripMenuItem.Text = "Add Sound";
-            this.addSoundToolStripMenuItem.Click += new System.EventHandler(this.addSoundToolStripMenuItem_Click);
+            this.showChangelogToolStripMenuItem.Name = "showChangelogToolStripMenuItem";
+            this.showChangelogToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.showChangelogToolStripMenuItem.Text = "Show Changelog";
+            this.showChangelogToolStripMenuItem.Click += new System.EventHandler(this.showChangelogToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -555,6 +564,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addSoundToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showChangelogToolStripMenuItem;
     }
 }
 

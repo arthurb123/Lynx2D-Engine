@@ -47,6 +47,7 @@ namespace Lynx2DEngine
             Feed.form = this;
             Tilemapper.form = this;
 
+            Feed.EvaluateFirstStartup();
             Feed.CheckVersion(false);
 
             CefSettings settings = new CefSettings();
@@ -1044,6 +1045,11 @@ namespace Lynx2DEngine
             if (!Input.YesNo("Do you want to reinstall the standard Lynx2D image resources into your project?", "Lynx2D Engine - Question")) return;
 
             Project.InstallResources(true);
+        }
+
+        private void showChangelogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Feed.ShowChangelog();
         }
         #endregion
 

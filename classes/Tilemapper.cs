@@ -331,7 +331,6 @@ namespace Lynx2DEngine
             }
 
             maps[editing].RemoveTile(x, y);
-            ConvertAndSetMap(maps[editing]);
         }
 
         public static void SelectTile(int map, int cX, int cY, int cW, int cH)

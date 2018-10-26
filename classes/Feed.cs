@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lynx2DEngine.forms;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -68,6 +69,20 @@ namespace Lynx2DEngine
                 else if (setsStatus) form.SetStatus("You are running version " + Version() + ".", Main.StatusType.Message);
             }
             else if (setsStatus) form.SetStatus("Running latest version (" + Version() + ").", Main.StatusType.Message);
+        }
+
+        public static void EvaluateFirstStartup()
+        {
+            if (!Directory.Exists("blob_storage"))
+                ShowChangelog();
+        }
+
+        public static void ShowChangelog()
+        {
+            ChangelogForm changelog = new ChangelogForm();
+            changelog.Show();
+
+            changelog.Initialize();
         }
 
         public static void UpdateVersion(string version)

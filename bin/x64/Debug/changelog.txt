@@ -1,0 +1,3 @@
++ Tilemaps now feature collision
++ Changelog at first startup
++ Overall bug fixes
