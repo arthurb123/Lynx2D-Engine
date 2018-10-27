@@ -32,7 +32,24 @@ namespace Lynx2DEngine
 
         private void YesNoForm_Load(object sender, EventArgs e)
         {
+            CheckTheme();
+        }
 
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.mainBackground;
+                ForeColor = classes.DarkTheme.font;
+
+                button1.BackColor = classes.DarkTheme.background;
+                button1.FlatStyle = FlatStyle.Flat;
+                button1.FlatAppearance.BorderColor = classes.DarkTheme.border;
+
+                button2.BackColor = classes.DarkTheme.background;
+                button2.FlatStyle = FlatStyle.Flat;
+                button2.FlatAppearance.BorderColor = classes.DarkTheme.border;
+            }
         }
     }
 }

@@ -36,6 +36,10 @@
             this.loadProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addSceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeSceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +68,7 @@
             this.showDevToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadStandardResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadFrameworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showChangelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusLabel = new System.Windows.Forms.Label();
@@ -73,7 +78,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.hierarchyScenes = new System.Windows.Forms.Button();
             this.hierarchyObjects = new System.Windows.Forms.Button();
-            this.showChangelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -104,10 +109,11 @@
             this.newProjectToolStripMenuItem,
             this.loadProjectToolStripMenuItem,
             this.saveProjectToolStripMenuItem,
-            this.showProjectToolStripMenuItem});
+            this.showProjectToolStripMenuItem,
+            this.settingsToolStripMenuItem2});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.fileToolStripMenuItem.Text = "Engine";
             // 
             // newProjectToolStripMenuItem
             // 
@@ -138,6 +144,43 @@
             this.showProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.showProjectToolStripMenuItem.Text = "Show Project";
             this.showProjectToolStripMenuItem.Click += new System.EventHandler(this.showProjectToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem2
+            // 
+            this.settingsToolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.themeToolStripMenuItem});
+            this.settingsToolStripMenuItem2.Name = "settingsToolStripMenuItem2";
+            this.settingsToolStripMenuItem2.Size = new System.Drawing.Size(143, 22);
+            this.settingsToolStripMenuItem2.Text = "Preferences";
+            // 
+            // themeToolStripMenuItem
+            // 
+            this.themeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lightToolStripMenuItem,
+            this.darkToolStripMenuItem});
+            this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
+            this.themeToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.themeToolStripMenuItem.Text = "Theme";
+            // 
+            // lightToolStripMenuItem
+            // 
+            this.lightToolStripMenuItem.Checked = true;
+            this.lightToolStripMenuItem.CheckOnClick = true;
+            this.lightToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.lightToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.lightToolStripMenuItem.Name = "lightToolStripMenuItem";
+            this.lightToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.lightToolStripMenuItem.Text = "Light";
+            this.lightToolStripMenuItem.Click += new System.EventHandler(this.lightToolStripMenuItem_Click);
+            // 
+            // darkToolStripMenuItem
+            // 
+            this.darkToolStripMenuItem.CheckOnClick = true;
+            this.darkToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
+            this.darkToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.darkToolStripMenuItem.Text = "Dark";
+            this.darkToolStripMenuItem.Click += new System.EventHandler(this.darkToolStripMenuItem_Click);
             // 
             // sceneToolStripMenuItem
             // 
@@ -383,6 +426,13 @@
             this.reloadFrameworkToolStripMenuItem.Text = "Reload Framework";
             this.reloadFrameworkToolStripMenuItem.Click += new System.EventHandler(this.reloadFrameworkToolStripMenuItem_Click);
             // 
+            // showChangelogToolStripMenuItem
+            // 
+            this.showChangelogToolStripMenuItem.Name = "showChangelogToolStripMenuItem";
+            this.showChangelogToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.showChangelogToolStripMenuItem.Text = "Show Changelog";
+            this.showChangelogToolStripMenuItem.Click += new System.EventHandler(this.showChangelogToolStripMenuItem_Click);
+            // 
             // updateToolStripMenuItem
             // 
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
@@ -402,10 +452,10 @@
             this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.statusLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statusLabel.Location = new System.Drawing.Point(376, 3);
+            this.statusLabel.Location = new System.Drawing.Point(396, 3);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.statusLabel.Size = new System.Drawing.Size(405, 18);
+            this.statusLabel.Size = new System.Drawing.Size(385, 18);
             this.statusLabel.TabIndex = 3;
             this.statusLabel.Text = "No project opened yet.";
             this.statusLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -475,7 +525,7 @@
             // hierarchyObjects
             // 
             this.hierarchyObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.hierarchyObjects.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.hierarchyObjects.BackColor = System.Drawing.SystemColors.Control;
             this.hierarchyObjects.FlatAppearance.BorderSize = 0;
             this.hierarchyObjects.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.hierarchyObjects.Location = new System.Drawing.Point(0, 0);
@@ -484,16 +534,14 @@
             this.hierarchyObjects.Size = new System.Drawing.Size(75, 22);
             this.hierarchyObjects.TabIndex = 1;
             this.hierarchyObjects.Text = "Objects";
-            this.hierarchyObjects.UseVisualStyleBackColor = true;
+            this.hierarchyObjects.UseVisualStyleBackColor = false;
             this.hierarchyObjects.Visible = false;
             this.hierarchyObjects.Click += new System.EventHandler(this.hierarchyObjects_Click);
             // 
-            // showChangelogToolStripMenuItem
+            // timer2
             // 
-            this.showChangelogToolStripMenuItem.Name = "showChangelogToolStripMenuItem";
-            this.showChangelogToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.showChangelogToolStripMenuItem.Text = "Show Changelog";
-            this.showChangelogToolStripMenuItem.Click += new System.EventHandler(this.showChangelogToolStripMenuItem_Click);
+            this.timer2.Interval = 1500;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Main
             // 
@@ -565,6 +613,11 @@
         private System.Windows.Forms.ToolStripMenuItem addFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addSoundToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showChangelogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 

@@ -78,7 +78,7 @@ namespace Lynx2DEngine
 
             try
             {
-                if (!map[x, y].build)
+                if (map[x, y] != null && !map[x, y].build)
                     return;
 
                 map[x, y] = new Tile();

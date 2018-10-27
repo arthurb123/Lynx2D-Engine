@@ -114,6 +114,7 @@
     <Compile Include="classes\Obfuscater.cs" />
     <Compile Include="classes\Pointer.cs" />
     <Compile Include="classes\Syntax.cs" />
+    <Compile Include="classes\Themes.cs" />
     <Compile Include="classes\Tilemap.cs" />
     <Compile Include="classes\Tilemapper.cs" />
     <Compile Include="forms\AboutForm.cs">

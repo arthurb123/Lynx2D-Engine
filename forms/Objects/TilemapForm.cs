@@ -95,6 +95,21 @@ namespace Lynx2DEngine.forms
             tileSelection.MouseUp += new MouseEventHandler(tileSelection_MouseUp);
             Resize += new EventHandler(ResizeTileMap);
             FormClosing += new FormClosingEventHandler(TilemapForm_Closing);
+
+            CheckTheme();
+        }
+
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.mainBackground;
+                ForeColor = classes.DarkTheme.font;
+
+                refresh.BackColor = classes.DarkTheme.background;
+                refresh.FlatStyle = FlatStyle.Flat;
+                refresh.FlatAppearance.BorderColor = classes.DarkTheme.border;
+            }
         }
 
         private void TilemapForm_Closing(object sender, FormClosingEventArgs e)
@@ -207,7 +222,7 @@ namespace Lynx2DEngine.forms
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Engine.RemoveEngineObject(engineId, true);
+            Engine.RemoveEngineObject(engineId, true, true);
             Close();
         }
 

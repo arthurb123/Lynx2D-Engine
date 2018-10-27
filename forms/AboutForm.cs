@@ -26,6 +26,17 @@ namespace Lynx2DEngine.forms
         private void AboutForm_Load(object sender, EventArgs e)
         {
             versionText.Text = "version " + Feed.Version();
+
+            CheckTheme();
+        }
+
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.background;
+                ForeColor = classes.DarkTheme.font;
+            }
         }
     }
 }

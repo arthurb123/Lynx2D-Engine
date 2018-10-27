@@ -42,6 +42,21 @@ namespace Lynx2DEngine
         private void SelectionForm_Load(object sender, EventArgs e)
         {
             AcceptButton = button1;
+
+            CheckTheme();
+        }
+
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.mainBackground;
+                ForeColor = classes.DarkTheme.font;
+
+                button1.BackColor = classes.DarkTheme.background;
+                button1.FlatStyle = FlatStyle.Flat;
+                button1.FlatAppearance.BorderColor = classes.DarkTheme.border;
+            }
         }
 
         private void selection_SelectedIndexChanged(object sender, EventArgs e)

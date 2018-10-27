@@ -36,16 +36,16 @@
             // 
             // content
             // 
-            this.content.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.content.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.content.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.content.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.content.Cursor = System.Windows.Forms.Cursors.Default;
             this.content.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.content.Location = new System.Drawing.Point(3, 33);
+            this.content.Location = new System.Drawing.Point(8, 33);
             this.content.Name = "content";
             this.content.ReadOnly = true;
-            this.content.Size = new System.Drawing.Size(326, 145);
+            this.content.Size = new System.Drawing.Size(318, 145);
             this.content.TabIndex = 0;
-            this.content.Text = "Here be the changelog";
+            this.content.Text = "";
             // 
             // version
             // 
@@ -63,7 +63,7 @@
             this.exit.Name = "exit";
             this.exit.Size = new System.Drawing.Size(102, 23);
             this.exit.TabIndex = 2;
-            this.exit.Text = "Exit";
+            this.exit.Text = "Continue";
             this.exit.UseVisualStyleBackColor = true;
             this.exit.Click += new System.EventHandler(this.exit_Click);
             // 
@@ -80,8 +80,9 @@
             this.MaximumSize = new System.Drawing.Size(349, 253);
             this.MinimumSize = new System.Drawing.Size(349, 253);
             this.Name = "ChangelogForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lynx2D - Changelog";
+            this.Load += new System.EventHandler(this.ChangelogForm_Load);
             this.ResumeLayout(false);
 
         }

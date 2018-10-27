@@ -1,3 +1,5 @@
++ Dark theme added
 + Tilemaps now feature collision
 + Changelog at first startup
++ Hierarchy refreshing improved
 + Overall bug fixes

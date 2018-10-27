@@ -80,6 +80,21 @@ namespace Lynx2DEngine.forms
             maxSize.Maximum = Decimal.MaxValue;
             minSize.Minimum = -Decimal.MaxValue;
             maxSize.Minimum = -Decimal.MaxValue;
+
+            CheckTheme();
+        }
+
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.mainBackground;
+                ForeColor = classes.DarkTheme.font;
+
+                refresh.BackColor = classes.DarkTheme.background;
+                refresh.FlatStyle = FlatStyle.Flat;
+                refresh.FlatAppearance.BorderColor = classes.DarkTheme.border;
+            }
         }
 
         private void updateSpriteSelection()
@@ -125,7 +140,7 @@ namespace Lynx2DEngine.forms
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Engine.RemoveEngineObject(engineId, true);
+            Engine.RemoveEngineObject(engineId, true, true);
             Close();
         }
 

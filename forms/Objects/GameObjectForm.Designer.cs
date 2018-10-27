@@ -46,7 +46,7 @@
             this.collider = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.refresh = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.refresh2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.layer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.x)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).BeginInit();
@@ -162,7 +162,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Red;
-            this.linkLabel1.Location = new System.Drawing.Point(54, 259);
+            this.linkLabel1.Location = new System.Drawing.Point(55, 199);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(38, 13);
             this.linkLabel1.TabIndex = 32;
@@ -185,7 +185,7 @@
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel2.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel2.Location = new System.Drawing.Point(9, 259);
+            this.linkLabel2.Location = new System.Drawing.Point(10, 199);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(47, 13);
             this.linkLabel2.TabIndex = 36;
@@ -241,30 +241,30 @@
             this.refresh.UseVisualStyleBackColor = false;
             this.refresh.Click += new System.EventHandler(this.refresh_Click);
             // 
-            // button1
+            // refresh2
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.Control;
-            this.button1.BackgroundImage = global::Lynx2DEngine.Properties.Resources.refresh;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(206, 158);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(16, 16);
-            this.button1.TabIndex = 45;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.refresh2.BackColor = System.Drawing.SystemColors.Control;
+            this.refresh2.BackgroundImage = global::Lynx2DEngine.Properties.Resources.refresh;
+            this.refresh2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.refresh2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.refresh2.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.refresh2.FlatAppearance.BorderSize = 0;
+            this.refresh2.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
+            this.refresh2.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
+            this.refresh2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.refresh2.Location = new System.Drawing.Point(206, 158);
+            this.refresh2.Name = "refresh2";
+            this.refresh2.Size = new System.Drawing.Size(16, 16);
+            this.refresh2.TabIndex = 45;
+            this.refresh2.UseVisualStyleBackColor = false;
+            this.refresh2.Click += new System.EventHandler(this.button1_Click);
             // 
             // GameObjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 281);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(234, 221);
+            this.Controls.Add(this.refresh2);
             this.Controls.Add(this.refresh);
             this.Controls.Add(this.collider);
             this.Controls.Add(this.label6);
@@ -284,8 +284,8 @@
             this.Controls.Add(this.label2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(250, 320);
-            this.MinimumSize = new System.Drawing.Size(250, 320);
+            this.MaximumSize = new System.Drawing.Size(250, 260);
+            this.MinimumSize = new System.Drawing.Size(250, 260);
             this.Name = "GameObjectForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Game Object";
@@ -319,6 +319,6 @@
         private System.Windows.Forms.ComboBox collider;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button refresh;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button refresh2;
     }
 }

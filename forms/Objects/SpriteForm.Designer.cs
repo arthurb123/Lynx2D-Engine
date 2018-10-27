@@ -192,7 +192,7 @@
             // clipped
             // 
             this.clipped.AutoSize = true;
-            this.clipped.Location = new System.Drawing.Point(103, 111);
+            this.clipped.Location = new System.Drawing.Point(67, 111);
             this.clipped.Name = "clipped";
             this.clipped.Size = new System.Drawing.Size(72, 17);
             this.clipped.TabIndex = 27;
@@ -239,7 +239,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Red;
-            this.linkLabel1.Location = new System.Drawing.Point(56, 299);
+            this.linkLabel1.Location = new System.Drawing.Point(57, 240);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(38, 13);
             this.linkLabel1.TabIndex = 33;
@@ -253,7 +253,7 @@
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel2.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel2.Location = new System.Drawing.Point(8, 299);
+            this.linkLabel2.Location = new System.Drawing.Point(9, 240);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(47, 13);
             this.linkLabel2.TabIndex = 34;
@@ -266,7 +266,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 321);
+            this.ClientSize = new System.Drawing.Size(234, 261);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label5);
@@ -286,8 +286,8 @@
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(250, 360);
-            this.MinimumSize = new System.Drawing.Size(250, 360);
+            this.MaximumSize = new System.Drawing.Size(250, 300);
+            this.MinimumSize = new System.Drawing.Size(250, 300);
             this.Name = "SpriteForm";
             this.Text = "Sprite Form";
             this.TopMost = true;

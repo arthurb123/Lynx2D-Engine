@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
+using Lynx2DEngine.classes;
 using Lynx2DEngine.forms;
 
 namespace Lynx2DEngine
@@ -47,8 +49,11 @@ namespace Lynx2DEngine
             Feed.form = this;
             Tilemapper.form = this;
 
+            EngineStartup();
+
             Feed.EvaluateFirstStartup();
-            Feed.CheckVersion(false);
+
+            timer2.Enabled = true;
 
             CefSettings settings = new CefSettings();
             Cef.Initialize(settings);
@@ -71,8 +76,20 @@ namespace Lynx2DEngine
             hierarchy.ImageList = hierarchyList;
         }
 
+        private void EngineStartup()
+        {
+            bool hasPreferences = Engine.EvaluateEnginePreferences();
+            if (hasPreferences)
+            {
+                LoadTheme(Engine.ePreferences.theme);
+                //...
+            }
+        }
+
         private void Form1_FormClosing(object sender, CancelEventArgs e)
         {
+            Engine.SaveEnginePreferences(true);
+
             Project.RequestSave();
 
             Cef.Shutdown();
@@ -109,7 +126,7 @@ namespace Lynx2DEngine
                 switch (type)
                 {
                     case StatusType.Message:
-                        statusLabel.ForeColor = Color.Black;
+                        statusLabel.ForeColor = (Engine.ePreferences.theme == Theme.Light ? LightTheme.font : DarkTheme.font);
                         break;
                     case StatusType.Warning:
                         statusLabel.ForeColor = Color.DarkOrange;
@@ -153,12 +170,28 @@ namespace Lynx2DEngine
             switch (state)
             {
                 case HierarchyState.Objects:
-                    hierarchyObjects.BackColor = Color.FromKnownColor(KnownColor.MenuBar);
-                    hierarchyScenes.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+                    if (Engine.ePreferences.theme == Theme.Light)
+                    {
+                        hierarchyObjects.BackColor = LightTheme.background;
+                        hierarchyScenes.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+                    }
+                    else
+                    {
+                        hierarchyObjects.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+                        hierarchyScenes.BackColor = DarkTheme.background;
+                    }
                     break;
                 case HierarchyState.Scenes:
-                    hierarchyObjects.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
-                    hierarchyScenes.BackColor = Color.FromKnownColor(KnownColor.MenuBar);
+                    if (Engine.ePreferences.theme == Theme.Light)
+                    {
+                        hierarchyObjects.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+                        hierarchyScenes.BackColor = LightTheme.background;
+                    }
+                    else
+                    {
+                        hierarchyObjects.BackColor = DarkTheme.background;
+                        hierarchyScenes.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+                    }
                     break;
             }
 
@@ -365,7 +398,9 @@ namespace Lynx2DEngine
                     Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[item.X].RemoveItem((int)draggedNode.Tag);
                 }
 
-                UpdateHierarchy();
+                draggedNode.Remove();
+                targetNode.Nodes.Add(draggedNode);
+                targetNode.Expand();
             }
         }
 
@@ -488,10 +523,15 @@ namespace Lynx2DEngine
 
             if (e.KeyCode == Keys.Delete && hierarchy.SelectedNode != null && Input.YesNo("Are you sure you want to delete '" + hierarchy.SelectedNode.Text + "'?", "Lynx2D Engine - Question"))
             {
-                if (hierarchy.SelectedNode.ImageIndex == 1)
-                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.RemoveFolderWithIdentifier((int)hierarchy.SelectedNode.Tag);
+                int imgIndex = hierarchy.SelectedNode.ImageIndex;
+                int tag = (int)hierarchy.SelectedNode.Tag;
+
+                hierarchy.SelectedNode.Remove();
+
+                if (imgIndex == 1)
+                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.RemoveFolderWithIdentifier(tag);
                 else 
-                    Engine.RemoveEngineObject((int)hierarchy.SelectedNode.Tag, true);
+                    Engine.RemoveEngineObject(tag, true, false);
             }
 
             if (e.Control && e.KeyCode == Keys.C && hierarchy.SelectedNode != null) copied = Engine.GetEngineObjects()[(int)hierarchy.SelectedNode.Tag];
@@ -578,8 +618,6 @@ namespace Lynx2DEngine
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
                 SetStatus("Exception occurred while renaming item", StatusType.Warning);
             }
-
-            UpdateHierarchy();
         }
 
         private void hierarchyObjects_Click(object sender, EventArgs e)
@@ -605,7 +643,7 @@ namespace Lynx2DEngine
         }
         #endregion
 
-        #region "File Toolstrip Stuff"
+        #region "Engine Toolstrip Stuff"
         private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Project.Create();
@@ -633,6 +671,16 @@ namespace Lynx2DEngine
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
                 SetStatus("Exception occurred trying to open project.", StatusType.Warning);
             }
+        }
+
+        private void lightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadTheme(Theme.Light);
+        }
+
+        private void darkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadTheme(Theme.Dark);
         }
         #endregion
 
@@ -1049,7 +1097,7 @@ namespace Lynx2DEngine
 
         private void showChangelogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Feed.ShowChangelog();
+            Feed.ShowChangelog(false);
         }
         #endregion
 
@@ -1188,7 +1236,68 @@ namespace Lynx2DEngine
                 MessageBox.Show(e.Message);
             }
         }
+
+        public void LoadTheme(Theme t)
+        {
+            killChildren();
+            
+            Engine.ePreferences.theme = t;
+
+            if (t == Theme.Light)
+            {
+                darkToolStripMenuItem.Checked = false;
+                lightToolStripMenuItem.Checked = true;
+
+                menuStrip1.Renderer = new ToolStripProfessionalRenderer();
+                menuStrip1.BackColor = LightTheme.menuBackground;
+                menuStrip1.ForeColor = LightTheme.font;
+ 
+                statusLabel.BackColor = LightTheme.menuBackground;
+
+                panel1.BackColor = LightTheme.mainBackground;
+                hierarchy.BackColor = LightTheme.mainBackground;
+                hierarchy.ForeColor = LightTheme.font;
+
+                if (hierarchyView == HierarchyState.Objects)
+                    hierarchyObjects.BackColor = LightTheme.background;
+                else
+                    hierarchyScenes.BackColor = LightTheme.background;
+
+                BackColor = LightTheme.mainBackground;
+                ForeColor = LightTheme.font;
+            }
+            else if (t == Theme.Dark)
+            {
+                darkToolStripMenuItem.Checked = true;
+                lightToolStripMenuItem.Checked = false;
+
+                menuStrip1.Renderer = new ToolStripProfessionalRenderer(new DarkThemeColorTable());
+                menuStrip1.BackColor = DarkTheme.menuBackground;
+                menuStrip1.ForeColor = DarkTheme.font;
+
+                statusLabel.BackColor = DarkTheme.menuBackground;
+
+                panel1.BackColor = DarkTheme.mainBackground;
+                hierarchy.BackColor = DarkTheme.mainBackground;
+                hierarchy.ForeColor = DarkTheme.font;
+
+                if (hierarchyView == HierarchyState.Objects)
+                    hierarchyObjects.BackColor = DarkTheme.background;
+                else
+                    hierarchyScenes.BackColor = DarkTheme.background;
+
+                BackColor = DarkTheme.mainBackground;
+                ForeColor = DarkTheme.font;
+            }
+        }
         #endregion
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            timer2.Enabled = false;
+
+            Feed.CheckVersion(false);
+        }
     }
 }
 
@@ -1198,7 +1307,7 @@ public enum HierarchyState
     Scenes
 }
 
-public class CustomMenuHandler : CefSharp.IContextMenuHandler
+public class CustomMenuHandler : IContextMenuHandler
 {
     public void OnBeforeContextMenu(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
     {

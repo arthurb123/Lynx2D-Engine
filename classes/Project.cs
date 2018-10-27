@@ -320,7 +320,13 @@ namespace Lynx2DEngine
                     installed++;
                 }
 
-                if (setsStatus) form.SetStatus(installed + " Lynx2D resource(s) reloaded.", Main.StatusType.Message);
+                if (setsStatus)
+                {
+                    if (installed != 0)
+                        form.SetStatus(installed + " Lynx2D resource(s) reloaded.", Main.StatusType.Message);
+                    else
+                        form.SetStatus("No Lynx2D resources are missing.", Main.StatusType.Message);
+                }
             }
             catch (Exception e)
             {

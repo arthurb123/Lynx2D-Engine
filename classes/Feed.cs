@@ -12,7 +12,7 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static readonly string version = "0.4.6";
+        private static readonly string version = "0.5.0";
         private static readonly string stage = "beta";
 
         private static bool extract = true;
@@ -74,15 +74,16 @@ namespace Lynx2DEngine
         public static void EvaluateFirstStartup()
         {
             if (!Directory.Exists("blob_storage"))
-                ShowChangelog();
+                ShowChangelog(true);
         }
 
-        public static void ShowChangelog()
+        public static void ShowChangelog(bool welcomes)
         {
             ChangelogForm changelog = new ChangelogForm();
-            changelog.Show();
 
-            changelog.Initialize();
+            changelog.Initialize(welcomes);
+
+            changelog.ShowDialog();
         }
 
         public static void UpdateVersion(string version)

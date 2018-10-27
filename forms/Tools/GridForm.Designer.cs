@@ -129,7 +129,7 @@
             // 
             // gridStrokeSize
             // 
-            this.gridStrokeSize.Location = new System.Drawing.Point(232, 50);
+            this.gridStrokeSize.Location = new System.Drawing.Point(238, 46);
             this.gridStrokeSize.Minimum = new decimal(new int[] {
             1,
             0,
@@ -149,7 +149,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(154, 53);
+            this.label4.Location = new System.Drawing.Point(160, 49);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 13);
             this.label4.TabIndex = 6;
@@ -158,7 +158,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(154, 78);
+            this.label5.Location = new System.Drawing.Point(160, 74);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(65, 13);
             this.label5.TabIndex = 8;
@@ -166,9 +166,9 @@
             // 
             // gridColor
             // 
-            this.gridColor.Location = new System.Drawing.Point(232, 78);
+            this.gridColor.Location = new System.Drawing.Point(238, 74);
             this.gridColor.Name = "gridColor";
-            this.gridColor.Size = new System.Drawing.Size(29, 18);
+            this.gridColor.Size = new System.Drawing.Size(18, 18);
             this.gridColor.TabIndex = 9;
             // 
             // linkLabel1
@@ -177,7 +177,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel1.Location = new System.Drawing.Point(267, 81);
+            this.linkLabel1.Location = new System.Drawing.Point(269, 75);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(44, 13);
             this.linkLabel1.TabIndex = 10;
@@ -225,7 +225,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 78);
+            this.label8.Location = new System.Drawing.Point(29, 75);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(43, 13);
             this.label8.TabIndex = 15;
@@ -233,7 +233,7 @@
             // 
             // gridOpacity
             // 
-            this.gridOpacity.Location = new System.Drawing.Point(89, 76);
+            this.gridOpacity.Location = new System.Drawing.Point(95, 72);
             this.gridOpacity.Name = "gridOpacity";
             this.gridOpacity.Size = new System.Drawing.Size(54, 20);
             this.gridOpacity.TabIndex = 100;
@@ -247,7 +247,7 @@
             // 
             // gridLayer
             // 
-            this.gridLayer.Location = new System.Drawing.Point(89, 51);
+            this.gridLayer.Location = new System.Drawing.Point(95, 47);
             this.gridLayer.Name = "gridLayer";
             this.gridLayer.Size = new System.Drawing.Size(54, 20);
             this.gridLayer.TabIndex = 102;
@@ -257,7 +257,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 53);
+            this.label9.Location = new System.Drawing.Point(29, 50);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(55, 13);
             this.label9.TabIndex = 101;

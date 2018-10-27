@@ -62,6 +62,24 @@ namespace Lynx2DEngine.forms
         private void ScriptForm_Load(object sender, EventArgs e)
         {
             FormClosing += ScriptForm_Close;
+
+            CheckTheme();
+        }
+
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.mainBackground;
+                ForeColor = classes.DarkTheme.font;
+
+                numberLabel.BackColor = classes.DarkTheme.scriptNumbersBackground;
+                scriptCode.BackColor = classes.DarkTheme.scriptBackground;
+
+                menuStrip1.Renderer = new ToolStripProfessionalRenderer(new classes.DarkThemeColorTable());
+                menuStrip1.BackColor = classes.DarkTheme.menuBackground;
+                menuStrip1.ForeColor = classes.DarkTheme.font;
+            }
         }
 
         private void ScriptForm_Close(object sender, EventArgs e)
@@ -109,7 +127,7 @@ namespace Lynx2DEngine.forms
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Engine.RemoveEngineObject(engineId, true);
+            Engine.RemoveEngineObject(engineId, true, true);
             Close();
         }
 
@@ -134,6 +152,9 @@ namespace Lynx2DEngine.forms
             int originalLength = scriptCode.SelectionLength;
             Color originalColor = Color.Black;
 
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+                originalColor = classes.DarkTheme.font;
+
             //This is unfortunately necessary - to avoid blinking
             numberLabel.Focus();
 
@@ -145,7 +166,10 @@ namespace Lynx2DEngine.forms
             {
                 scriptCode.SelectionStart = m.Index;
                 scriptCode.SelectionLength = m.Length;
+
                 scriptCode.SelectionColor = Color.Blue;
+                if (Engine.ePreferences.theme == classes.Theme.Dark)
+                    scriptCode.SelectionColor = Color.RoyalBlue;
             }
 
             foreach (Match m in methodMatches)

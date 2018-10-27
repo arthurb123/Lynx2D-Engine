@@ -169,11 +169,30 @@ namespace Lynx2DEngine
             h.Maximum = Decimal.MaxValue;
             w.Minimum = -Decimal.MaxValue;
             h.Minimum = -Decimal.MaxValue;
+
+            CheckTheme();
+        }
+
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.mainBackground;
+                ForeColor = classes.DarkTheme.font;
+
+                refresh.BackColor = classes.DarkTheme.background;
+                refresh.FlatStyle = FlatStyle.Flat;
+                refresh.FlatAppearance.BorderColor = classes.DarkTheme.border;
+
+                refresh2.BackColor = classes.DarkTheme.background;
+                refresh2.FlatStyle = FlatStyle.Flat;
+                refresh2.FlatAppearance.BorderColor = classes.DarkTheme.border;
+            }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Engine.RemoveEngineObject(engineId, true);
+            Engine.RemoveEngineObject(engineId, true, true);
 
             Close();
         }

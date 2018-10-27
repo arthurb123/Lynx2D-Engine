@@ -34,7 +34,22 @@ namespace Lynx2DEngine
 
         private void PromptForm_Load(object sender, EventArgs e)
         {
+            CheckTheme();
+
             AcceptButton = button1;
+        }
+
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.mainBackground;
+                ForeColor = classes.DarkTheme.font;
+
+                button1.BackColor = classes.DarkTheme.background;
+                button1.FlatStyle = FlatStyle.Flat;
+                button1.FlatAppearance.BorderColor = classes.DarkTheme.border;
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

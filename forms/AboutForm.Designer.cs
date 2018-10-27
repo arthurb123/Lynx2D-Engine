@@ -115,6 +115,7 @@
             this.MaximumSize = new System.Drawing.Size(330, 180);
             this.MinimumSize = new System.Drawing.Size(330, 180);
             this.Name = "AboutForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lynx2D Engine - About";
             this.Load += new System.EventHandler(this.AboutForm_Load);
             this.ResumeLayout(false);

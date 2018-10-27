@@ -1,4 +1,5 @@
 ﻿using CefSharp;
+using Lynx2DEngine.classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,59 @@ namespace Lynx2DEngine
         public static Scene[] scenes = new Scene[0];
         public static BuildSettings bSettings = new BuildSettings();
         public static EngineSettings eSettings = new EngineSettings();
+        public static EnginePreferences ePreferences = new EnginePreferences();
+
+        public static bool EvaluateEnginePreferences()
+        {
+            try
+            {
+                if (File.Exists("preferences.bin"))
+                {
+                    Stream stream = File.Open("preferences.bin", FileMode.Open);
+                    BinaryFormatter bf = new BinaryFormatter();
+
+                    ePreferences = ((EnginePreferences)bf.Deserialize(stream));
+                    stream.Close();
+                    stream.Dispose();
+
+                    return true;
+                } else
+                {
+                    SaveEnginePreferences(false);
+
+                    return true;
+                }
+            }   
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                form.SetStatus("Exception occurred while loading engine preferences.", Main.StatusType.Warning);
+            }
+
+            return false;
+        }
+
+        public static void SaveEnginePreferences(bool exists)
+        {
+            try
+            {
+                Stream stream = File.Open("preferences.bin", FileMode.OpenOrCreate);
+                BinaryFormatter bf = new BinaryFormatter();
+
+                EnginePreferences temp = new EnginePreferences();
+                if (exists) temp = ePreferences;
+
+                bf.Serialize(stream, temp);
+
+                stream.Close();
+                stream.Dispose();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                form.SetStatus("Exception occurred while saving engine preferences.", Main.StatusType.Warning);
+            }
+        }
 
         public static void LoadScene(int id)
         {
@@ -119,11 +173,18 @@ namespace Lynx2DEngine
             return -1;
         }
 
-        public static void RemoveEngineObject(int id, bool refreshes)
+        public static void RemoveEngineObject(int id, bool refreshes, bool updates)
         {
+            bool childRemoved = false;
+
             if (scenes[eSettings.currentScene].objects[id] == null) return;
 
-            if (scenes[eSettings.currentScene].objects[id].child != -1) RemoveEngineObject(scenes[eSettings.currentScene].objects[id].child, false);
+            if (scenes[eSettings.currentScene].objects[id].child != -1)
+            {
+                RemoveEngineObject(scenes[eSettings.currentScene].objects[id].child, false, true);
+
+                childRemoved = true;
+            }
             if (scenes[eSettings.currentScene].objects[id].parent != -1)
             {
                 scenes[eSettings.currentScene].objects[scenes[eSettings.currentScene].objects[id].parent].child = -1;
@@ -140,6 +201,9 @@ namespace Lynx2DEngine
 
             if (refreshes)
                 form.refreshBrowser();
+
+            if (updates || childRemoved)
+                form.UpdateHierarchy();
         }
 
         public static int[] GetEmptyEnginePositions()
@@ -408,6 +472,7 @@ namespace Lynx2DEngine
                 }
 
                 stream.Close();
+                stream.Dispose();
             }
             catch (Exception e)
             {
@@ -649,11 +714,15 @@ namespace Lynx2DEngine
 
             scenes[eSettings.currentScene].objects[id].Rename(name);
 
-            form.UpdateHierarchy();
-
             form.refreshBrowser();
         }
         #endregion
+    }
+
+    [Serializable]
+    class EnginePreferences
+    {
+        public Theme theme = Theme.Light;
     }
 
     [Serializable]

@@ -41,8 +41,6 @@ namespace Lynx2DEngine
 
                     break;
                 }
-
-            Engine.form.UpdateHierarchy();
         }
 
         public void RemoveFolderWithIdentifier(int id)
@@ -52,7 +50,7 @@ namespace Lynx2DEngine
                 HierarchyItem[] items = folders[id].content.ToArray();
 
                 foreach (HierarchyItem i in items)
-                    Engine.RemoveEngineObject(i.engineId, false);
+                    Engine.RemoveEngineObject(i.engineId, false, false);
 
                 Engine.form.refreshBrowser();
             }
@@ -66,8 +64,6 @@ namespace Lynx2DEngine
                 }
 
             folders.RemoveAt(id);
-
-            Engine.form.UpdateHierarchy();
         }
 
         public int GetFolderIdentifierWithName(string name)

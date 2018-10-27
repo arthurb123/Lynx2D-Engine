@@ -42,6 +42,17 @@ namespace Lynx2DEngine.forms
             gridOpacity.Value = Engine.eSettings.gridOpacity;
 
             LoadColor();
+
+            CheckTheme();
+        }
+
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.mainBackground;
+                ForeColor = classes.DarkTheme.font;
+            }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
