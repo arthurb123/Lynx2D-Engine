@@ -689,7 +689,7 @@ namespace Lynx2DEngine
             scenes[eSettings.currentScene].objects[id].speed = speed;
         }
 
-        public static void RenameEngineObject(int id, string name)
+        public static void RenameEngineObject(int id, string name, bool updates)
         {
             if (scenes[eSettings.currentScene].objects[id] == null || name == "HAS_BEEN_CLOSED") return;
 
@@ -713,6 +713,9 @@ namespace Lynx2DEngine
             }
 
             scenes[eSettings.currentScene].objects[id].Rename(name);
+
+            if (updates)
+                form.UpdateHierarchy();
 
             form.refreshBrowser();
         }

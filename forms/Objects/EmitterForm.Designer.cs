@@ -155,6 +155,7 @@
             // 
             // maxX
             // 
+            this.maxX.DecimalPlaces = 2;
             this.maxX.Location = new System.Drawing.Point(147, 60);
             this.maxX.Name = "maxX";
             this.maxX.Size = new System.Drawing.Size(72, 20);
@@ -164,6 +165,7 @@
             // 
             // minX
             // 
+            this.minX.DecimalPlaces = 2;
             this.minX.Location = new System.Drawing.Point(67, 60);
             this.minX.Name = "minX";
             this.minX.Size = new System.Drawing.Size(72, 20);
@@ -182,6 +184,7 @@
             // 
             // maxY
             // 
+            this.maxY.DecimalPlaces = 2;
             this.maxY.Location = new System.Drawing.Point(147, 86);
             this.maxY.Name = "maxY";
             this.maxY.Size = new System.Drawing.Size(72, 20);
@@ -191,6 +194,7 @@
             // 
             // minY
             // 
+            this.minY.DecimalPlaces = 2;
             this.minY.Location = new System.Drawing.Point(67, 86);
             this.minY.Name = "minY";
             this.minY.Size = new System.Drawing.Size(72, 20);
@@ -209,6 +213,7 @@
             // 
             // maxSize
             // 
+            this.maxSize.DecimalPlaces = 2;
             this.maxSize.Location = new System.Drawing.Point(147, 112);
             this.maxSize.Name = "maxSize";
             this.maxSize.Size = new System.Drawing.Size(72, 20);
@@ -218,6 +223,7 @@
             // 
             // minSize
             // 
+            this.minSize.DecimalPlaces = 2;
             this.minSize.Location = new System.Drawing.Point(67, 112);
             this.minSize.Name = "minSize";
             this.minSize.Size = new System.Drawing.Size(72, 20);

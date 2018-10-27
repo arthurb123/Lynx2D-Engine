@@ -43,6 +43,9 @@ namespace Lynx2DEngine.forms
             isStatic.Checked = obj.isStatic;
             solid.Checked = obj.isSolid;
 
+            if (obj.child == -1)
+                button1.Enabled = false;
+
             System.Threading.Thread.Sleep(10);
 
             canDetect = true;
@@ -57,6 +60,9 @@ namespace Lynx2DEngine.forms
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (obj.child == -1)
+                return;
+
             ScriptForm script = new ScriptForm();
 
             script.Show();
@@ -173,7 +179,7 @@ namespace Lynx2DEngine.forms
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Engine.RenameEngineObject(engineId, Input.Prompt("Enter the new name", "Rename " + obj.Variable()));
+            Engine.RenameEngineObject(engineId, Input.Prompt("Enter the new name", "Rename " + obj.Variable()), true);
 
             UpdateTitle();
         }

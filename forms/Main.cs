@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using CefSharp;
@@ -582,7 +581,7 @@ namespace Lynx2DEngine
                     temp.child = child;
 
                     Engine.SetEngineObject(result, temp);
-                    Engine.RenameEngineObject(result, copied.Variable() + "Copy");
+                    Engine.RenameEngineObject(result, copied.Variable() + "Copy", true);
 
                     copied = null;
                 }
@@ -608,7 +607,7 @@ namespace Lynx2DEngine
                     if (e.Node.ImageIndex == 1)
                         Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[(int)e.Node.Tag].Rename(e.Label);
                     else
-                        Engine.RenameEngineObject((int)e.Node.Tag, e.Label);
+                        Engine.RenameEngineObject((int)e.Node.Tag, e.Label, false);
                 }
                 else if (hierarchyView == HierarchyState.Scenes)
                     Engine.RenameScene((int)e.Node.Tag, e.Label);
