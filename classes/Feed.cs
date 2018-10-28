@@ -75,6 +75,14 @@ namespace Lynx2DEngine
         {
             if (!Directory.Exists("blob_storage"))
                 ShowChangelog(true);
+
+            if (Directory.Exists("downloads"))
+            {
+                string[] files = Directory.GetFiles("downloads");
+
+                if (files.Length == 0 || files.Length == 1 && files[0].Contains("Lynx2DEngineUpdater"))
+                    Directory.Delete("downloads", true);
+            }
         }
 
         public static void ShowChangelog(bool welcomes)
@@ -156,11 +164,6 @@ namespace Lynx2DEngine
                 cmd.FileName = "CMD.exe";
                 cmd.Arguments = "/C cd downloads&start Lynx2DEngineUpdater.exe";
                 Process.Start(cmd);
-                /*
-                ProcessStartInfo startInfo = new ProcessStartInfo(Manager.Root() + "update.bat");
-                startInfo.UseShellExecute = true;
-                Process.Start(startInfo);
-                */
 
                 Application.Exit();
             }

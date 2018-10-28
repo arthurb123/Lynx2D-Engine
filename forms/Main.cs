@@ -1281,9 +1281,15 @@ namespace Lynx2DEngine
                 hierarchy.ForeColor = DarkTheme.font;
 
                 if (hierarchyView == HierarchyState.Objects)
-                    hierarchyObjects.BackColor = DarkTheme.background;
-                else
+                {
+                    hierarchyObjects.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
                     hierarchyScenes.BackColor = DarkTheme.background;
+                }
+                else
+                {
+                    hierarchyObjects.BackColor = DarkTheme.background;
+                    hierarchyScenes.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+                }
 
                 BackColor = DarkTheme.mainBackground;
                 ForeColor = DarkTheme.font;

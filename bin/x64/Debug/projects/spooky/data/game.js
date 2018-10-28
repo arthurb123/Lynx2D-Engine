@@ -1,0 +1,1 @@
+﻿lx.Initialize('spooky'); lx.Smoothing(false); lx.Start(60);

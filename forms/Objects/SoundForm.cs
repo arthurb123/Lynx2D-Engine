@@ -28,6 +28,7 @@ namespace Lynx2DEngine.forms
             UpdateTitle();
 
             id = obj.id;
+            source.Text = obj.source;
 
             x.Value = obj.x;
             y.Value = obj.y;
