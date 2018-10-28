@@ -301,22 +301,22 @@ namespace Lynx2DEngine
 
                 if (!File.Exists("projects/" + cur + "/res/lynx2d/sprite.png"))
                 {
-                    File.Copy(@"resources/sprite.png", "projects/" + cur + "/res/lynx2d/sprite.png");
+                    Properties.Resources.sprite.Save("projects/" + cur + "/res/lynx2d/sprite.png");
                     installed++;
                 }
                 if (!File.Exists("projects/" + cur + "/res/lynx2d/pointer.png"))
                 {
-                    File.Copy(@"resources/pointer.png", "projects/" + cur + "/res/lynx2d/pointer.png");
+                    Properties.Resources.pointer.Save("projects/" + cur + "/res/lynx2d/pointer.png");
                     installed++;
                 }
                 if (!File.Exists("projects/" + cur + "/res/lynx2d/particle.png"))
                 {
-                    File.Copy(@"resources/particle.png", "projects/" + cur + "/res/lynx2d/particle.png");
+                    Properties.Resources.particle.Save("projects/" + cur + "/res/lynx2d/particle.png");
                     installed++;
                 }
                 if (!File.Exists("projects/" + cur + "/res/lynx2d/location.png"))
                 {
-                    File.Copy(@"resources/location.png", "projects/" + cur + "/res/lynx2d/location.png");
+                    Properties.Resources.location.Save("projects/" + cur + "/res/lynx2d/location.png");
                     installed++;
                 }
 

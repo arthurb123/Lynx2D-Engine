@@ -94,6 +94,9 @@ namespace Lynx2DEngine.forms
                 refresh.BackColor = classes.DarkTheme.background;
                 refresh.FlatStyle = FlatStyle.Flat;
                 refresh.FlatAppearance.BorderColor = classes.DarkTheme.border;
+
+                pointer.BackColor = classes.DarkTheme.background;
+                pointer.FlatAppearance.BorderColor = classes.DarkTheme.border;
             }
         }
 
@@ -238,6 +241,22 @@ namespace Lynx2DEngine.forms
         private void refresh_Click(object sender, EventArgs e)
         {
             updateSpriteSelection();
+        }
+
+        private void pointer_Click(object sender, EventArgs e)
+        {
+            if (pointer.BackgroundImage == null)
+            {
+                pointer.BackgroundImage = Properties.Resources.location;
+
+                Pointer.Inject(obj.Variable());
+            }
+            else
+            {
+                pointer.BackgroundImage = null;
+
+                Pointer.Remove();
+            }
         }
     }
 }

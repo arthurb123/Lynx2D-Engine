@@ -1,0 +1,2 @@
++ Image resources optimized
++ Position pointers can now be hidden

@@ -187,6 +187,9 @@ namespace Lynx2DEngine
                 refresh2.BackColor = classes.DarkTheme.background;
                 refresh2.FlatStyle = FlatStyle.Flat;
                 refresh2.FlatAppearance.BorderColor = classes.DarkTheme.border;
+
+                pointer.BackColor = classes.DarkTheme.background;
+                pointer.FlatAppearance.BorderColor = classes.DarkTheme.border;
             }
         }
 
@@ -248,6 +251,22 @@ namespace Lynx2DEngine
         private void button1_Click(object sender, EventArgs e)
         {
             updateColliderSelection();
+        }
+
+        private void pointer_Click(object sender, EventArgs e)
+        {
+            if (pointer.BackgroundImage == null)
+            {
+                pointer.BackgroundImage = Properties.Resources.location;
+
+                Pointer.Inject(obj.Variable());
+            }
+            else
+            {
+                pointer.BackgroundImage = null;
+
+                Pointer.Remove();
+            }
         }
     }
 }

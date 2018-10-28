@@ -55,6 +55,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.sprite = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.pointer = new System.Windows.Forms.Button();
             this.refresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.duration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.amount)).BeginInit();
@@ -346,6 +347,19 @@
             this.label10.TabIndex = 72;
             this.label10.Text = "Sprite";
             // 
+            // pointer
+            // 
+            this.pointer.BackColor = System.Drawing.Color.Silver;
+            this.pointer.BackgroundImage = global::Lynx2DEngine.Properties.Resources.location;
+            this.pointer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pointer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pointer.Location = new System.Drawing.Point(210, 8);
+            this.pointer.Name = "pointer";
+            this.pointer.Size = new System.Drawing.Size(16, 16);
+            this.pointer.TabIndex = 75;
+            this.pointer.UseVisualStyleBackColor = false;
+            this.pointer.Click += new System.EventHandler(this.pointer_Click);
+            // 
             // refresh
             // 
             this.refresh.BackColor = System.Drawing.SystemColors.Control;
@@ -369,6 +383,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(234, 266);
+            this.Controls.Add(this.pointer);
             this.Controls.Add(this.refresh);
             this.Controls.Add(this.sprite);
             this.Controls.Add(this.label10);
@@ -450,5 +465,6 @@
         private System.Windows.Forms.ComboBox sprite;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button refresh;
+        private System.Windows.Forms.Button pointer;
     }
 }

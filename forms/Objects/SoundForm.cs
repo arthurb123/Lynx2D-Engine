@@ -62,6 +62,9 @@ namespace Lynx2DEngine.forms
                 button1.BackColor = classes.DarkTheme.background;
                 button1.FlatStyle = FlatStyle.Flat;
                 button1.FlatAppearance.BorderColor = classes.DarkTheme.border;
+
+                pointer.BackColor = classes.DarkTheme.background;
+                pointer.FlatAppearance.BorderColor = classes.DarkTheme.border;
             }
         }
 
@@ -128,6 +131,22 @@ namespace Lynx2DEngine.forms
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+            }
+        }
+
+        private void pointer_Click(object sender, EventArgs e)
+        {
+            if (pointer.BackgroundImage == null)
+            {
+                pointer.BackgroundImage = Properties.Resources.location;
+
+                Pointer.Inject(obj.Variable());
+            }
+            else
+            {
+                pointer.BackgroundImage = null;
+
+                Pointer.Remove();
             }
         }
     }

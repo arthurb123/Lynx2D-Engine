@@ -47,6 +47,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.refresh = new System.Windows.Forms.Button();
             this.refresh2 = new System.Windows.Forms.Button();
+            this.pointer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.layer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.x)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.y)).BeginInit();
@@ -57,7 +58,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 29);
+            this.label2.Location = new System.Drawing.Point(11, 34);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 2;
@@ -66,7 +67,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 95);
+            this.label3.Location = new System.Drawing.Point(15, 100);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(33, 13);
             this.label3.TabIndex = 5;
@@ -74,7 +75,7 @@
             // 
             // layer
             // 
-            this.layer.Location = new System.Drawing.Point(70, 92);
+            this.layer.Location = new System.Drawing.Point(69, 97);
             this.layer.Name = "layer";
             this.layer.Size = new System.Drawing.Size(72, 20);
             this.layer.TabIndex = 6;
@@ -84,7 +85,7 @@
             // visible
             // 
             this.visible.AutoSize = true;
-            this.visible.Location = new System.Drawing.Point(155, 94);
+            this.visible.Location = new System.Drawing.Point(154, 99);
             this.visible.Name = "visible";
             this.visible.Size = new System.Drawing.Size(56, 17);
             this.visible.TabIndex = 7;
@@ -94,7 +95,7 @@
             // 
             // x
             // 
-            this.x.Location = new System.Drawing.Point(70, 26);
+            this.x.Location = new System.Drawing.Point(69, 31);
             this.x.Name = "x";
             this.x.Size = new System.Drawing.Size(72, 20);
             this.x.TabIndex = 8;
@@ -103,7 +104,7 @@
             // 
             // y
             // 
-            this.y.Location = new System.Drawing.Point(150, 26);
+            this.y.Location = new System.Drawing.Point(149, 31);
             this.y.Name = "y";
             this.y.Size = new System.Drawing.Size(72, 20);
             this.y.TabIndex = 9;
@@ -112,7 +113,7 @@
             // 
             // h
             // 
-            this.h.Location = new System.Drawing.Point(150, 58);
+            this.h.Location = new System.Drawing.Point(149, 63);
             this.h.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -126,7 +127,7 @@
             // 
             // w
             // 
-            this.w.Location = new System.Drawing.Point(70, 58);
+            this.w.Location = new System.Drawing.Point(69, 63);
             this.w.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -141,7 +142,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 62);
+            this.label1.Location = new System.Drawing.Point(18, 67);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(27, 13);
             this.label1.TabIndex = 10;
@@ -151,7 +152,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(88, 6);
+            this.label5.Location = new System.Drawing.Point(88, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(51, 13);
             this.label5.TabIndex = 31;
@@ -174,7 +175,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 127);
+            this.label4.Location = new System.Drawing.Point(13, 132);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(34, 13);
             this.label4.TabIndex = 33;
@@ -198,7 +199,7 @@
             // 
             this.sprite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.sprite.FormattingEnabled = true;
-            this.sprite.Location = new System.Drawing.Point(70, 124);
+            this.sprite.Location = new System.Drawing.Point(69, 129);
             this.sprite.Name = "sprite";
             this.sprite.Size = new System.Drawing.Size(132, 21);
             this.sprite.TabIndex = 37;
@@ -208,7 +209,7 @@
             // 
             this.collider.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.collider.FormattingEnabled = true;
-            this.collider.Location = new System.Drawing.Point(69, 156);
+            this.collider.Location = new System.Drawing.Point(68, 161);
             this.collider.Name = "collider";
             this.collider.Size = new System.Drawing.Size(133, 21);
             this.collider.TabIndex = 39;
@@ -217,7 +218,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(11, 159);
+            this.label6.Location = new System.Drawing.Point(12, 164);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 13);
             this.label6.TabIndex = 38;
@@ -234,7 +235,7 @@
             this.refresh.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
             this.refresh.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
             this.refresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.refresh.Location = new System.Drawing.Point(206, 126);
+            this.refresh.Location = new System.Drawing.Point(205, 131);
             this.refresh.Name = "refresh";
             this.refresh.Size = new System.Drawing.Size(16, 16);
             this.refresh.TabIndex = 44;
@@ -252,18 +253,32 @@
             this.refresh2.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
             this.refresh2.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
             this.refresh2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.refresh2.Location = new System.Drawing.Point(206, 158);
+            this.refresh2.Location = new System.Drawing.Point(205, 163);
             this.refresh2.Name = "refresh2";
             this.refresh2.Size = new System.Drawing.Size(16, 16);
             this.refresh2.TabIndex = 45;
             this.refresh2.UseVisualStyleBackColor = false;
             this.refresh2.Click += new System.EventHandler(this.button1_Click);
             // 
+            // pointer
+            // 
+            this.pointer.BackColor = System.Drawing.Color.Silver;
+            this.pointer.BackgroundImage = global::Lynx2DEngine.Properties.Resources.location;
+            this.pointer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pointer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pointer.Location = new System.Drawing.Point(209, 7);
+            this.pointer.Name = "pointer";
+            this.pointer.Size = new System.Drawing.Size(16, 16);
+            this.pointer.TabIndex = 76;
+            this.pointer.UseVisualStyleBackColor = false;
+            this.pointer.Click += new System.EventHandler(this.pointer_Click);
+            // 
             // GameObjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(234, 221);
+            this.Controls.Add(this.pointer);
             this.Controls.Add(this.refresh2);
             this.Controls.Add(this.refresh);
             this.Controls.Add(this.collider);
@@ -320,5 +335,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button refresh;
         private System.Windows.Forms.Button refresh2;
+        private System.Windows.Forms.Button pointer;
     }
 }

@@ -49,7 +49,7 @@ if (go.Identifier() == "Player") {
 	Scene0.Save();
 	lx.LoadScene(Scene1);
 	Scene1.Restore();
-}});DoorCollider.Solid(false); DoorCollider.Enable(); var Player = new lx.GameObject(PlayerSprite, -120, 0, 48, 48); Player.ApplyCollider(PlayerCollider); Player.Show(2); var Firewood = new lx.GameObject(FirewoodSprite, 100, 100, 48, 48); Firewood.ApplyCollider(FirewoodCollider); Firewood.Show(1); var FireEmitter = new lx.Emitter(FireSprite, 26, 24, 18, 25); FireEmitter.Setup(-0.75, 0.75, -2, 0.25, 4, 16); FireEmitter.Speed(8); FireEmitter.Show(3); //We first want to focus our Player GameObject.
+}});DoorCollider.Solid(false); DoorCollider.Enable(); var Player = new lx.GameObject(PlayerSprite, -120, 0, 48, 48); Player.ApplyCollider(PlayerCollider); Player.Show(2); var Firewood = new lx.GameObject(FirewoodSprite, 100, 100, 48, 48); Firewood.ApplyCollider(FirewoodCollider); Firewood.Show(1); var FireEmitter = new lx.Emitter(FireSprite, 26, 25, 18, 25); FireEmitter.Setup(-0.75, 0.75, -2, 0.25, 4, 16); FireEmitter.Speed(8); FireEmitter.Show(3); //We first want to focus our Player GameObject.
 //Then make it so that we can control it.
 Player.Focus();
 Player.SetTopDownController(.125, .125, 2.25);

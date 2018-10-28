@@ -62,15 +62,15 @@ namespace Lynx2DEngine
 
             hierarchyList.Images.Add(new Bitmap(1, 1));
 
-            AddHierarchyIcon(@"resources/folder.png");
-            AddHierarchyIcon(@"resources/go.png");
-            AddHierarchyIcon(@"resources/image.png");
-            AddHierarchyIcon(@"resources/collider.png");
-            AddHierarchyIcon(@"resources/emitter.png");
-            AddHierarchyIcon(@"resources/script.png");
-            AddHierarchyIcon(@"resources/tilemap.png");
-            AddHierarchyIcon(@"resources/scene.png");
-            AddHierarchyIcon(@"resources/sound.png");
+            hierarchyList.Images.Add(Properties.Resources.folder);
+            hierarchyList.Images.Add(Properties.Resources.go);
+            hierarchyList.Images.Add(Properties.Resources.image);
+            hierarchyList.Images.Add(Properties.Resources.collider);
+            hierarchyList.Images.Add(Properties.Resources.emitter);
+            hierarchyList.Images.Add(Properties.Resources.script);
+            hierarchyList.Images.Add(Properties.Resources.tilemap);
+            hierarchyList.Images.Add(Properties.Resources.scene);
+            hierarchyList.Images.Add(Properties.Resources.sound);
 
             hierarchy.ImageList = hierarchyList;
         }
@@ -627,18 +627,6 @@ namespace Lynx2DEngine
         private void hierachyScenes_Click(object sender, EventArgs e)
         {
             SwitchHierarchyView(HierarchyState.Scenes);
-        }
-
-        private void AddHierarchyIcon(string src)
-        {
-            try
-            {
-                hierarchyList.Images.Add(Image.FromFile(src));
-            }
-            catch (Exception e)
-            {
-                SetStatus("Resource missing '" + src + "'", StatusType.Warning);
-            }
         }
         #endregion
 
