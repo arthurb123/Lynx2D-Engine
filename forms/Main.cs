@@ -54,7 +54,10 @@ namespace Lynx2DEngine
 
             timer2.Enabled = true;
 
-            CefSettings settings = new CefSettings();
+            CefSettings settings = new CefSettings()
+            {
+                WindowlessRenderingEnabled = true
+            };
             Cef.Initialize(settings);
 
             hierarchyList = new ImageList();

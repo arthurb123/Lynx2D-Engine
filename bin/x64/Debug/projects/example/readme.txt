@@ -5,4 +5,4 @@ Every resource is created by myself.
 
 [Official Site]
 
-http://www.lythumn.com/lynx2d/engine/
+http://www.lynx2d.com/engine

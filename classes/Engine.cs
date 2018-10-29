@@ -963,6 +963,7 @@ namespace Lynx2DEngine
 
         public int lineBreaks = 0;
         public bool obfuscates = false;
+        public bool mergeFramework = false;
     }
 
     [Serializable]

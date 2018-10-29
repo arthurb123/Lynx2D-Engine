@@ -22,6 +22,7 @@ namespace Lynx2DEngine.forms
 
             lineBreaks.Value = Engine.bSettings.lineBreaks;
             obfuscates.Checked = Engine.bSettings.obfuscates;
+            mergeFramework.Checked = Engine.bSettings.mergeFramework;
 
             ReloadIconImage();
             UpdateScenesCollection();
@@ -130,6 +131,22 @@ namespace Lynx2DEngine.forms
         private void imageSmoothing_CheckedChanged(object sender, EventArgs e)
         {
             Engine.bSettings.imageSmoothing = imageSmoothing.Checked;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Engine.bSettings.mergeFramework = mergeFramework.Checked;
+
+            if (mergeFramework.Checked)
+            {
+                lineBreaks.Enabled = false;
+                lineBreaks.Value = 0;
+            }
+            else
+            {
+                lineBreaks.Value = Engine.bSettings.lineBreaks;
+                lineBreaks.Enabled = true;
+            }
         }
     }
 }

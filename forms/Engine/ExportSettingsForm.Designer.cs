@@ -44,6 +44,7 @@
             this.framerate = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.imageSmoothing = new System.Windows.Forms.CheckBox();
+            this.mergeFramework = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.lineBreaks)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.framerate)).BeginInit();
@@ -216,11 +217,23 @@
             this.imageSmoothing.UseVisualStyleBackColor = true;
             this.imageSmoothing.CheckedChanged += new System.EventHandler(this.imageSmoothing_CheckedChanged);
             // 
+            // mergeFramework
+            // 
+            this.mergeFramework.AutoSize = true;
+            this.mergeFramework.Location = new System.Drawing.Point(15, 207);
+            this.mergeFramework.Name = "mergeFramework";
+            this.mergeFramework.Size = new System.Drawing.Size(111, 17);
+            this.mergeFramework.TabIndex = 15;
+            this.mergeFramework.Text = "Merge Framework";
+            this.mergeFramework.UseVisualStyleBackColor = true;
+            this.mergeFramework.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // ExportSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 211);
+            this.ClientSize = new System.Drawing.Size(344, 233);
+            this.Controls.Add(this.mergeFramework);
             this.Controls.Add(this.imageSmoothing);
             this.Controls.Add(this.framerate);
             this.Controls.Add(this.label6);
@@ -238,8 +251,8 @@
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(360, 250);
-            this.MinimumSize = new System.Drawing.Size(360, 250);
+            this.MaximumSize = new System.Drawing.Size(360, 272);
+            this.MinimumSize = new System.Drawing.Size(360, 272);
             this.Name = "ExportSettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Lynx2D Engine - Export Settings";
@@ -269,5 +282,6 @@
         private System.Windows.Forms.NumericUpDown framerate;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox imageSmoothing;
+        private System.Windows.Forms.CheckBox mergeFramework;
     }
 }

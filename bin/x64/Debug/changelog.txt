@@ -1,2 +1,4 @@
++ Framework can now be merged with game code 
+   on export
 + Image resources optimized
 + Position pointers can now be hidden

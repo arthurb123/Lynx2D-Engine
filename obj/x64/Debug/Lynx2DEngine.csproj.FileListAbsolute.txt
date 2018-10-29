@@ -522,6 +522,7 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.applicat
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.exe
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.pdb
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.AboutForm.resources
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ChangelogForm.resources
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ExportSettingsForm.resources
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ColliderForm.resources
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.ConsoleForm.resources
@@ -544,4 +545,3 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.applicat
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.exe
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.pdb
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.csprojAssemblyReference.cache
-C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ChangelogForm.resources
