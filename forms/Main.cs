@@ -60,8 +60,10 @@ namespace Lynx2DEngine
             };
             Cef.Initialize(settings);
 
-            hierarchyList = new ImageList();
-            hierarchyList.ImageSize = new Size(16, 16);
+            hierarchyList = new ImageList
+            {
+                ImageSize = new Size(16, 16)
+            };
 
             hierarchyList.Images.Add(new Bitmap(1, 1));
 
@@ -143,7 +145,7 @@ namespace Lynx2DEngine
 
                 timer1.Enabled = true;
             }
-            catch (Exception e)
+            catch
             {
                 //...
             }
@@ -251,8 +253,10 @@ namespace Lynx2DEngine
                         { 
                             EngineObject childEO = Engine.GetEngineObject(obj.child);
 
-                            TreeNode child = new TreeNode(childEO.Variable());
-                            child.Tag = obj.child;
+                            TreeNode child = new TreeNode(childEO.Variable())
+                            {
+                                Tag = obj.child
+                            };
 
                             if (childEO.type == EngineObjectType.Sprite)
                                 child.ImageIndex = 3;
@@ -263,8 +267,10 @@ namespace Lynx2DEngine
                             children.Add(child);
                         }
 
-                        TreeNode node = new TreeNode(obj.Variable(), children.ToArray());
-                        node.Tag = obj.id;
+                        TreeNode node = new TreeNode(obj.Variable(), children.ToArray())
+                        {
+                            Tag = obj.id
+                        };
 
                         if (obj.type == EngineObjectType.GameObject)
                             node.ImageIndex = 2;
@@ -286,9 +292,11 @@ namespace Lynx2DEngine
                     }
                 }
 
-                TreeNode ftn = new TreeNode(f.name, nodes.ToArray());
-                ftn.Tag = e;
-                ftn.ImageIndex = 1;
+                TreeNode ftn = new TreeNode(f.name, nodes.ToArray())
+                {
+                    Tag = e,
+                    ImageIndex = 1
+                };
 
                 ftn.SelectedImageIndex = ftn.ImageIndex;
                 newHierarchy.Add(ftn);
@@ -307,8 +315,10 @@ namespace Lynx2DEngine
                     {
                         EngineObject childEO = Engine.GetEngineObject(obj.child);
 
-                        TreeNode child = new TreeNode(childEO.Variable());
-                        child.Tag = obj.child;
+                        TreeNode child = new TreeNode(childEO.Variable())
+                        {
+                            Tag = obj.child
+                        };
 
                         if (childEO.type == EngineObjectType.Sprite)
                             child.ImageIndex = 3;
@@ -319,8 +329,10 @@ namespace Lynx2DEngine
                         children.Add(child);
                     }
 
-                    TreeNode node = new TreeNode(obj.Variable(), children.ToArray());
-                    node.Tag = obj.id;
+                    TreeNode node = new TreeNode(obj.Variable(), children.ToArray())
+                    {
+                        Tag = obj.id
+                    };
 
                     if (obj.type == EngineObjectType.GameObject)
                         node.ImageIndex = 2;
@@ -830,9 +842,11 @@ namespace Lynx2DEngine
 
             UpdateHierarchy();
 
-            List<int> result = new List<int>();
-            result.Add(go);
-            result.Add(sprite);
+            List<int> result = new List<int>
+            {
+                go,
+                sprite
+            };
 
             return result;
         }
@@ -900,9 +914,11 @@ namespace Lynx2DEngine
 
             UpdateHierarchy();
 
-            List<int> result = new List<int>();
-            result.Add(coll);
-            result.Add(script);
+            List<int> result = new List<int>
+            {
+                coll,
+                script
+            };
 
             return result;
         }
@@ -938,9 +954,11 @@ namespace Lynx2DEngine
 
             UpdateHierarchy();
 
-            List<int> result = new List<int>();
-            result.Add(em);
-            result.Add(sprite);
+            List<int> result = new List<int>
+            {
+                em,
+                sprite
+            };
 
             return result;
         }
@@ -1111,7 +1129,7 @@ namespace Lynx2DEngine
                 Camera.Remove();
                 Pointer.Remove();
                 Grid.Remove();
-                Obfuscater.Remove();
+                Obfuscator.Remove();
                 Tilemapper.StopEditing();
                 Tilemapper.ResetInjections();
 
@@ -1129,12 +1147,14 @@ namespace Lynx2DEngine
             if (browser != null || !Cef.IsInitialized)
                 return;
 
-            browser = new ChromiumWebBrowser("about:blank");
-            browser.BrowserSettings = new BrowserSettings()
+            browser = new ChromiumWebBrowser("about:blank")
             {
-                BackgroundColor = Cef.ColorSetARGB(0, 255, 255, 255)
+                BrowserSettings = new BrowserSettings()
+                {
+                    BackgroundColor = Cef.ColorSetARGB(0, 255, 255, 255)
+                }
             };
-            
+
             browser.LoadingStateChanged += OnBrowserLoadingStateChanged;
             browser.ConsoleMessage += OnBrowserConsoleMessage;
             browser.MenuHandler = new CustomMenuHandler();
@@ -1157,7 +1177,7 @@ namespace Lynx2DEngine
                 imageSmoothingToolStripMenuItem_Click(sender, args);
 
                 if (Engine.bSettings.obfuscates)
-                    Obfuscater.Inject();
+                    Obfuscator.Inject();
 
                 Tilemapper.InjectAll();
             }

@@ -12,7 +12,7 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static readonly string version = "0.5.1";
+        private static readonly string version = "0.5.2";
         private static readonly string stage = "beta";
 
         private static bool extract = true;
@@ -30,7 +30,7 @@ namespace Lynx2DEngine
 
                 return true;
             }
-            catch (Exception e)
+            catch
             {
                 form.SetStatus("Not connected to the internet.", Main.StatusType.Warning);
             }
@@ -55,7 +55,7 @@ namespace Lynx2DEngine
                             content.Dispose();
                         }
             }
-            catch (Exception e)
+            catch
             {
                 if (setsStatus) form.SetStatus("Could not get online version.", Main.StatusType.Warning);
             }
@@ -130,7 +130,7 @@ namespace Lynx2DEngine
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(UpdateVersionCompleted);
                 client.DownloadFileAsync(new Uri("http://www.lynx2d.com/engine/res/" + version + ".zip"), "downloads/" + version + ".zip");
             }
-            catch (Exception e)
+            catch
             {
                 form.SetStatus("Could not download update.", Main.StatusType.Message);
             }
@@ -177,10 +177,12 @@ namespace Lynx2DEngine
         {
             try
             {
-                ProcessStartInfo cmd = new ProcessStartInfo();
-                cmd.WindowStyle = ProcessWindowStyle.Hidden;
-                cmd.FileName = "CMD.exe";
-                cmd.Arguments = "/C cd downloads&start Lynx2DEngineUpdater.exe";
+                ProcessStartInfo cmd = new ProcessStartInfo
+                {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "CMD.exe",
+                    Arguments = "/C cd downloads&start Lynx2DEngineUpdater.exe"
+                };
                 Process.Start(cmd);
 
                 Application.Exit();
@@ -210,7 +212,7 @@ namespace Lynx2DEngine
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(GetUpdaterCompleted);
                 client.DownloadFileAsync(new Uri("http://www.lynx2d.com/engine/res/updater/Lynx2DEngineUpdater.exe"), "downloads/Lynx2DEngineUpdater.exe");
             }
-            catch (Exception e)
+            catch
             {
                 form.SetStatus("Could not download updater.", Main.StatusType.Message);
             }

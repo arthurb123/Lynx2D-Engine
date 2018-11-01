@@ -13,6 +13,7 @@ namespace Lynx2DEngine
         public static int editing = -1;
         private static int selectedLayer = 0;
         public static Main form;
+        private static Dictionary<int, List<string>> existingColliders = new Dictionary<int, List<string>>();
 
         public static void LoadFromScene(int id)
         {
@@ -21,8 +22,11 @@ namespace Lynx2DEngine
             maps = Engine.scenes[id].tilemaps;
             injected = new bool[maps.Length];
 
-            for (int i = 0; i < injected.Length; i++)
+            for (int i = 0; i < maps.Length; i++)
+            {
                 injected[i] = false;
+                existingColliders.Add(i, new List<string>());
+            }
         }
 
         public static void SaveMapsToCurrentScene()
@@ -142,6 +146,16 @@ namespace Lynx2DEngine
             string r = "",
                    c = "";
 
+            foreach (string ec in existingColliders[tm.id])
+            {
+                c += "if (window['" + ec + "'] != undefined) {" +
+                        "window['" + ec + "'].Disable();" +
+                        "window['" + ec + "'] = undefined;" +
+                     "}";
+            }
+
+            existingColliders[tm.id] = new List<string>();
+
             for (int i = 0; i < tm.map.GetLength(0); i++)
                 for (int j = 0; j < tm.map.GetLength(1); j++)
                 {
@@ -154,21 +168,10 @@ namespace Lynx2DEngine
                         if (tm.collides && !tm.colliders[i, j])
                         {
                             string tileColl = "engineTileMap" + tm.id + "TileCollider" + (j * tm.map.GetLength(1) + i);
+                            existingColliders[tm.id].Add(tileColl);
 
-                            c += "if (window['" + tileColl + "'] != undefined) {" +
-                                    "window['" + tileColl + "'].Disable();" +
-                                    "window['" + tileColl + "'] = undefined;" +
-                                    "}" +
-                                    "var " + tileColl + " = " + GenerateCollider(tm, i, j);
+                            c += "var " + tileColl + " = " + GenerateCollider(tm, i, j);
                         }
-                    } else if (tm.collides)
-                    {
-                        string tileColl = "engineTileMap" + tm.id + "TileCollider" + (j * tm.map.GetLength(1) + i);
-
-                        c += "if (window['" + tileColl + "'] != undefined) {" +
-                                "window['" + tileColl + "'].Disable();" +
-                                "window['" + tileColl + "'] = undefined;" +
-                                "}";
                     }
                 }
 
@@ -347,21 +350,16 @@ namespace Lynx2DEngine
         {
             if (msg.Contains("PLACE_TILE"))
             {
-                int x = 0, y = 0;
-                float r = 0;
-
-                int.TryParse(msg.Substring(msg.IndexOf('X') + 1, msg.IndexOf('Y') - msg.IndexOf('X') - 1), out x);
-                int.TryParse(msg.Substring(msg.IndexOf('Y') + 1, msg.IndexOf('R') - msg.IndexOf('Y') - 1), out y);
-                float.TryParse(msg.Substring(msg.IndexOf('R') + 1, msg.IndexOf(')') - msg.IndexOf('R') - 1), out r);
+                int.TryParse(msg.Substring(msg.IndexOf('X') + 1, msg.IndexOf('Y') - msg.IndexOf('X') - 1), out int x);
+                int.TryParse(msg.Substring(msg.IndexOf('Y') + 1, msg.IndexOf('R') - msg.IndexOf('Y') - 1), out int y);
+                float.TryParse(msg.Substring(msg.IndexOf('R') + 1, msg.IndexOf(')') - msg.IndexOf('R') - 1), out float r);
 
                 PlaceTile(x, y, r);
             }
             if (msg.Contains("REMOVE_TILE"))
             {
-                int x = 0, y = 0;
-
-                int.TryParse(msg.Substring(msg.IndexOf('X') + 1, msg.IndexOf('Y') - msg.IndexOf('X') - 1), out x);
-                int.TryParse(msg.Substring(msg.IndexOf('Y') + 1, msg.IndexOf(')') - msg.IndexOf('Y') - 1), out y);
+                int.TryParse(msg.Substring(msg.IndexOf('X') + 1, msg.IndexOf('Y') - msg.IndexOf('X') - 1), out int x);
+                int.TryParse(msg.Substring(msg.IndexOf('Y') + 1, msg.IndexOf(')') - msg.IndexOf('Y') - 1), out int y);
 
                 RemoveTile(x, y);
             }

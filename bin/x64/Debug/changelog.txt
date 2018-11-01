@@ -2,3 +2,5 @@
   checked after opening a project
 + Framework downloading more efficient
 + Tilemap collision improved
++ Obfuscator bug fix
++ Tile selection bug fix

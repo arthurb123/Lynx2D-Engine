@@ -17,7 +17,7 @@ namespace Lynx2DEngine.forms
         private Point tilesetOffset = new Point(0, 0);
         private bool dragging = false;
         private Point oldMouse = default(Point);
-        private Point selected = default(Point);
+        private Point selected = new Point(-1, -1);
 
         public TilemapForm()
         {
@@ -163,7 +163,7 @@ namespace Lynx2DEngine.forms
                 Point cursor = GetCursorTile();
                 g.DrawRectangle(Pens.Silver, new Rectangle(cursor.X * tm.scale * tm.tilesize + tilesetOffset.X, cursor.Y * tm.scale * tm.tilesize + tilesetOffset.Y, tm.tilesize*tm.scale, tm.tilesize*tm.scale));
 
-                if (selected != default(Point))
+                if (selected.X != -1 && selected.Y != -1)
                     g.DrawRectangle(Pens.WhiteSmoke, new Rectangle(selected.X * tm.tilesize * tm.scale + tilesetOffset.X, selected.Y * tm.tilesize * tm.scale + tilesetOffset.Y, tm.tilesize * tm.scale, tm.tilesize * tm.scale));
             }
             catch (Exception ex)
@@ -182,7 +182,7 @@ namespace Lynx2DEngine.forms
 
         private void SelectTile(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left || selected == GetCursorTile() || selected.X < 0 || selected.Y < 0) return;
+            if (e.Button != MouseButtons.Left || selected == GetCursorTile()) return;
 
             try
             {

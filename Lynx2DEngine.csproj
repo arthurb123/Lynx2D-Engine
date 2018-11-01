@@ -111,7 +111,7 @@
     <Compile Include="classes\Feed.cs" />
     <Compile Include="classes\Grid.cs" />
     <Compile Include="classes\Hierarchy.cs" />
-    <Compile Include="classes\Obfuscater.cs" />
+    <Compile Include="classes\Obfuscator.cs" />
     <Compile Include="classes\Pointer.cs" />
     <Compile Include="classes\Syntax.cs" />
     <Compile Include="classes\Themes.cs" />

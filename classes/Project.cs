@@ -157,12 +157,12 @@ namespace Lynx2DEngine
 
                             try
                             {
-                                string r = await Obfuscater.Encode(gameCode);
+                                string r = await Obfuscator.Encode(gameCode);
                                 gameCode = r;
 
                                 obfuscated = true;
                             }
-                            catch (Exception e)
+                            catch
                             {
                                 form.SetStatus("Could not obfuscate game code.", Main.StatusType.Warning);
                             }

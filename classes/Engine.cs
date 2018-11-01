@@ -872,36 +872,37 @@ namespace Lynx2DEngine
 
         public EngineObject Clone()
         {
-            EngineObject temp = new EngineObject(id, type, child, parent);
+            EngineObject temp = new EngineObject(id, type, child, parent)
+            {
+                layer = layer,
+                visible = visible,
 
-            temp.layer = layer;
-            temp.visible = visible;
+                sprite = sprite,
+                x = x,
+                y = y,
+                w = w,
+                h = h,
 
-            temp.sprite = sprite;
-            temp.x = x;
-            temp.y = y;
-            temp.w = w;
-            temp.h = h;
+                minvx = minvx,
+                maxvx = maxvx,
+                minvy = minvy,
+                maxvy = maxvy,
+                minSize = minSize,
+                maxSize = maxSize,
+                speed = speed,
+                amount = amount,
+                duration = duration,
 
-            temp.minvx = minvx;
-            temp.maxvx = maxvx;
-            temp.minvy = minvy;
-            temp.maxvy = maxvy;
-            temp.minSize = minSize;
-            temp.maxSize = maxSize;
-            temp.speed = speed;
-            temp.amount = amount;
-            temp.duration = duration;
+                source = source,
+                cx = cx,
+                cy = cy,
+                cw = cw,
+                ch = ch,
+                clipped = clipped,
+                rotation = rotation,
 
-            temp.source = source;
-            temp.cx = cx;
-            temp.cy = cy;
-            temp.cw = cw;
-            temp.ch = ch;
-            temp.clipped = clipped;
-            temp.rotation = rotation;
-
-            temp.unique = unique;
+                unique = unique
+            };
 
             return temp;
         }

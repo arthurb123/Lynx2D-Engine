@@ -2,7 +2,7 @@
 
 namespace Lynx2DEngine
 {
-    class Obfuscater
+    class Obfuscator
     {
         private static bool injected = false;
 
@@ -36,7 +36,9 @@ namespace Lynx2DEngine
             if (!injected)
                 return;
 
-            Engine.ExecuteScript("document.body.removeChild(document.getElementById('obfuscationScript'));");
+            Engine.ExecuteScript("var el = document.getElementById('obfuscationScript');" +
+                                 "if (typeof(el) != 'undefined' && el != undefined)" +
+                                     "document.body.removeChild(el);");
 
             injected = false;
         }

@@ -26,7 +26,7 @@ namespace Lynx2DEngine
             {
                 outputText.Text += TimeFormat() + msg + "\n";
             }
-            catch (Exception e)
+            catch
             {
                 //Do something with this exception
             }

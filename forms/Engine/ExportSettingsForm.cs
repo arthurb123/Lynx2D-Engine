@@ -100,14 +100,14 @@ namespace Lynx2DEngine.forms
 
             if (obfuscates.Checked)
             {
-                Obfuscater.Inject();
+                Obfuscator.Inject();
 
                 lineBreaks.Enabled = false;
                 lineBreaks.Value = 0;
             }
             else
             {
-                Obfuscater.Remove();
+                Obfuscator.Remove();
 
                 lineBreaks.Value = Engine.bSettings.lineBreaks;
                 lineBreaks.Enabled = true;
