@@ -71,7 +71,25 @@ namespace Lynx2DEngine
             else if (setsStatus) form.SetStatus("Running latest version (" + Version() + ").", Main.StatusType.Message);
         }
 
-        public static void EvaluateFirstStartup()
+        public static void CheckFrameworkDate()
+        {
+            if (!CheckOnline())
+                return;
+
+            HttpWebRequest frameworkFile = (HttpWebRequest)WebRequest.Create(@"http://www.lynx2d.com/res/lynx2d.js");
+            HttpWebResponse frameworkFileResponse = (HttpWebResponse)frameworkFile.GetResponse();
+
+            DateTime localFileModifiedTime = File.GetLastWriteTime("projects/" + Project.Name() + "/data/lynx2d.js");
+            DateTime onlineFileModifiedTime = frameworkFileResponse.LastModified;
+
+            if (localFileModifiedTime < onlineFileModifiedTime)
+            {
+                if (Input.YesNo("This project is using an outdated version of the Lynx2D framework. Do you want to install the newer version?", "Lynx2D Engine - Question"))
+                    Project.DownloadFramework(true);
+            }
+        }
+
+        public static void EvaluateStartup()
         {
             if (!Directory.Exists("blob_storage"))
                 ShowChangelog(true);

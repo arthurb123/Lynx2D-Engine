@@ -50,7 +50,7 @@ namespace Lynx2DEngine
 
             EngineStartup();
 
-            Feed.EvaluateFirstStartup();
+            Feed.EvaluateStartup();
 
             timer2.Enabled = true;
 

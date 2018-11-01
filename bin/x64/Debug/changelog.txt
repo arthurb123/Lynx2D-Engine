@@ -1,4 +1,4 @@
-+ Framework can now be merged with game code 
-   on export
-+ Image resources optimized
-+ Position pointers can now be hidden
++ Framework version now gets
+  checked after opening a project
++ Framework downloading more efficient
++ Tilemap collision improved

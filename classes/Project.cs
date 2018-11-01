@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -69,6 +70,8 @@ namespace Lynx2DEngine
 
                 form.SetGameAvailability(true);
                 form.refreshBrowser();
+
+                Feed.CheckFrameworkDate();
             }
             catch (Exception e)
             {
@@ -277,20 +280,21 @@ namespace Lynx2DEngine
 
             try
             {
-                using (FileStream fs = new FileStream("projects/" + cur + "/data/lynx2d.js", FileMode.Create))
+                using (WebClient client = new WebClient())
                 {
-                    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                    client.DownloadFileCompleted += (object s, AsyncCompletedEventArgs e) =>
                     {
-                        WebClient client = new WebClient();
+                        if (setsStatus)
+                        {
+                            form.SetStatus("The Lynx2D framework has been reloaded.", Main.StatusType.Message);
 
-                        w.Write(client.DownloadString(new Uri("http://www.lynx2d.com/res/lynx2d.js")));
+                            form.refreshBrowser();
+                        }
 
                         client.Dispose();
-                        w.Dispose();
-                        fs.Dispose();
+                    };
 
-                        if (setsStatus) form.SetStatus("The Lynx2D framework has been reloaded.", Main.StatusType.Message);
-                    }
+                    client.DownloadFileAsync(new Uri("http://www.lynx2d.com/res/lynx2d.js"), "projects/" + cur + "/data/lynx2d.js");
                 }
             }
             catch (Exception e)

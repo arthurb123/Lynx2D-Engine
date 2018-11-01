@@ -26,6 +26,17 @@ namespace Lynx2DEngine.forms
 
             ReloadIconImage();
             UpdateScenesCollection();
+
+            CheckTheme();
+        }
+
+        private void CheckTheme()
+        {
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+            {
+                BackColor = classes.DarkTheme.mainBackground;
+                ForeColor = classes.DarkTheme.font;
+            }
         }
 
         private void UpdateScenesCollection()

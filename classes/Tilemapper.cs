@@ -378,44 +378,54 @@ namespace Lynx2DEngine
 
         public static string GenerateCollider(Tilemap tm, int y, int x)
         {
-            int w = 1, h = 0, fw = -1;
+            int w = 1, h = 1;
 
-            for (int j = 0; j < tm.map.GetLength(0) - y; j++)
+            tm.colliders[y, x] = true;
+
+            for (int i = 0; i < tm.map.GetLength(0) - y; i++)
             {
-                if (tm.map[y + j, x] != null && tm.map[y + j, x].build && !tm.colliders[y + j, x])
+                if (tm.map[y + i, x] != null && tm.map[y + i, x].build && !tm.colliders[y + i, x])
                 {
-                    h++;
-                    tm.colliders[y + j, x] = true;
+                    w++;
+
+                    tm.colliders[y + i, x] = true;
                 }
-                else
+                else if (i != 0)
                     break;
-
-                for (int i = 1; i < tm.map.GetLength(1) - x - 1; i++)
-                {
-                    if (tm.map[y + j, x + i] != null && tm.map[y + j, x + i].build && !tm.colliders[y + j, x + i])
-                    {
-                        if (fw != -1 && i > fw)
-                            break;
-
-                        w++;
-
-                        tm.colliders[y + j, x + i] = true;
-                    }
-                    else if (fw != -1 && i < fw)
-                    {
-                        h--;
-                        goto ReturnCollider;
-                    }
-                    else
-                        break;
-                }
-
-                if (fw == -1)
-                    fw = w;
             }
 
-            ReturnCollider:
-            return "new lx.Collider(" + (y + tm.x) * tm.tilesize * tm.scale + ", " + (x + tm.y) * tm.tilesize * tm.scale + ", " + h * tm.tilesize * tm.scale + ", " + fw * tm.tilesize * tm.scale + ", true);";
+            int fh = 1;
+
+            for (int yy = y; yy < y + w; yy++)
+            {
+                h = 1;
+
+                for (int xx = x+1; xx <= tm.map.GetLength(1) - x - 1; xx++)
+                {
+                    if (tm.map[yy, xx] != null && tm.map[yy, xx].build && !tm.colliders[yy, xx])
+                    {
+                        if (yy != y && h >= fh)
+                            break;
+
+                        h++;
+
+                        tm.colliders[yy, xx] = true;
+                    }
+                    else break;
+                }
+
+                if (yy == y)
+                    fh = h;
+
+                if (h < fh)
+                {
+                    w = (yy - y);
+
+                    break;
+                }
+            }
+
+            return "new lx.Collider(" + (y + tm.x) * tm.tilesize * tm.scale + ", " + (x + tm.y) * tm.tilesize * tm.scale + ", " + w * tm.tilesize * tm.scale + ", " + fh * tm.tilesize * tm.scale + ", true);";
         }
     }
 }

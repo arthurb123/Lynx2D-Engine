@@ -320,27 +320,41 @@ function Lynx2D() {
                 
                 if (this.CHANNELS[CHANNEL] == undefined) this.SET_CHANNEL_VOLUME(CHANNEL, 1);
                 
-                this.SOUNDS[this.SOUNDS.length] = {
-                    CUR: 0,
-                    SRC: SRC,
-                    CHANNEL: CHANNEL,
-                    SPATIAL: false,
-                    DELAY: DELAY
-                };
+                for (var i = 0; i <= this.SOUNDS.length; i++) {
+                    if (this.SOUNDS[i] == undefined) {
+                        this.SOUNDS[i] = {
+                            CUR: 0,
+                            SRC: SRC,
+                            CHANNEL: CHANNEL,
+                            SPATIAL: false,
+                            DELAY: DELAY,
+                            PLAYING: false
+                        };
+                        
+                        return i;
+                    }
+                }
             },
             ADD_SPATIAL: function(POS, SRC, CHANNEL, DELAY) {
                 if (!this.CAN_PLAY || SRC == "") return;
                 
                 if (this.CHANNELS[CHANNEL] == undefined) this.SET_CHANNEL_VOLUME(CHANNEL, 1);
                 
-                this.SOUNDS[this.SOUNDS.length] = {
-                    CUR: 0,
-                    POS: POS,
-                    SRC: SRC,
-                    SPATIAL: true,
-                    CHANNEL: CHANNEL,
-                    DELAY: DELAY
-                };
+                for (var i = 0; i <= this.SOUNDS.length; i++) {
+                    if (this.SOUNDS[i] == undefined) {
+                        this.SOUNDS[i] = {
+                            CUR: 0,
+                            POS: POS,
+                            SRC: SRC,
+                            SPATIAL: true,
+                            CHANNEL: CHANNEL,
+                            DELAY: DELAY,
+                            PLAYING: false
+                        };
+                        
+                        return i;
+                    }
+                }
             },
             CALCULATE_SPATIAL: function(POS, CHANNEL) {
                 POS = lx.GAME.TRANSLATE_FROM_FOCUS(POS);
@@ -353,19 +367,44 @@ function Lynx2D() {
             },
             UPDATE: function () {
                 for (var i = 0; i < this.SOUNDS.length; i++) {
+                    if (this.SOUNDS[i] == undefined) 
+                        continue;
+                    
+                    if (this.SOUNDS[i].PLAYING) 
+                    {
+                        if (this.SOUNDS[i].SPATIAL)
+                            this.SOUNDS[i].AUDIO.volume = this.CALCULATE_SPATIAL(this.SOUNDS[i].POS, this.SOUNDS[i].CHANNEL);
+                            
+                        continue;
+                    }
+                    
                     this.SOUNDS[i].CUR++;
                     if (this.SOUNDS[i].DELAY == undefined || this.SOUNDS[i].CUR >= this.SOUNDS[i].DELAY) {
                         var temp = new Audio();
                         temp.type = 'audio/mpeg';
                         temp.src = this.SOUNDS[i].SRC;
+                        temp.play_id = i;
+                        temp.onended = function() {
+                            lx.GAME.AUDIO.SOUNDS[this.play_id] = undefined;
+                        }
                         
                         if (!this.SOUNDS[i].SPATIAL) temp.volume = this.CHANNELS[this.SOUNDS[i].CHANNEL];
                         else temp.volume = this.CALCULATE_SPATIAL(this.SOUNDS[i].POS, this.SOUNDS[i].CHANNEL);
                         
-                        temp.play();
-                        this.SOUNDS.splice(i, 1);
+                        this.SOUNDS[i].PLAYING = true;
+                        this.SOUNDS[i].AUDIO = temp;
+                        this.SOUNDS[i].AUDIO.play();
                     }
                 }
+            },
+            REMOVE: function(ID) {
+                if (ID == undefined || this.SOUNDS[ID] == undefined || !this.SOUNDS[ID].PLAYING)
+                    return;
+                
+                this.SOUNDS[ID].AUDIO.pause();
+                this.SOUNDS[ID].AUDIO.currentTime = 0;
+                
+                this.SOUNDS[ID] = undefined;
             }
         },
         ADD_GO_MOUSE_EVENT: function (GO, BUTTON, CALLBACK) {
@@ -843,12 +882,12 @@ function Lynx2D() {
             },
             APPLY: function(VX, VY) {
                 if (VX > 0 && this.VX+VX <= this.VMAX || VX < 0 && this.VX+VX >= -this.VMAX) this.VX+=VX;
-                else {
+                else if (VX != 0) {
                     if (this.VX+VX > this.VMAX) this.VX = this.VMAX;
                     else if (this.VX+VX < -this.VMAX) this.VX = -this.VMAX;
                 }
                 if (VY > 0 && this.VY+VY <= this.VMAX || VY < 0 && this.VY+VY >= -this.VMAX) this.VY+=VY;
-                else {
+                else if (VY != 0) {
                     if (this.VY+VY > this.VMAX) this.VY = this.VMAX;
                     else if (this.VY+VY < -this.VMAX) this.VY = -this.VMAX;
                 }
@@ -1821,6 +1860,7 @@ function Lynx2D() {
     this.Sound = function (src, channel) {
         this.SRC = src;
         this.POS = { X: 0, Y: 0 };
+        this.PLAY_ID = [];
         
         if (channel != undefined) this.CHANNEL = channel;
         else this.CHANNEL = 0;
@@ -1835,14 +1875,29 @@ function Lynx2D() {
             return this;
         };
         
+        this.Stop = function() {
+            if (this.PLAY_ID != undefined)
+                lx.GAME.AUDIO.REMOVE(this.PLAY_ID);  
+            
+            this.PLAY_ID = undefined;
+            
+            return this;
+        };
+        
         this.Play = function (delay) {
-            lx.GAME.AUDIO.ADD(this.SRC, this.CHANNEL, delay);
+            if (this.PLAY_ID != undefined && lx.GAME.AUDIO.SOUNDS[this.PLAY_ID] != undefined)
+                return;
+            
+            this.PLAY_ID = lx.GAME.AUDIO.ADD(this.SRC, this.CHANNEL, delay);
             
             return this;
         };
         
         this.PlaySpatial = function(delay) {
-            lx.GAME.AUDIO.ADD_SPATIAL(this.POS, this.SRC, this.CHANNEL, delay);
+            if (this.PLAY_ID != undefined && lx.GAME.AUDIO.SOUNDS[this.PLAY_ID] != undefined)
+                return;
+            
+            this.PLAY_ID = lx.GAME.AUDIO.ADD_SPATIAL(this.POS, this.SRC, this.CHANNEL, delay);
             
             return this;
         };
