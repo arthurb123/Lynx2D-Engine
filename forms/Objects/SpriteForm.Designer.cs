@@ -33,8 +33,6 @@
             this.w = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.source = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cX = new System.Windows.Forms.NumericUpDown();
             this.cY = new System.Windows.Forms.NumericUpDown();
@@ -46,6 +44,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.source = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.h)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.w)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cX)).BeginInit();
@@ -102,23 +101,6 @@
             this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 19;
             this.label3.Text = "Source";
-            // 
-            // source
-            // 
-            this.source.Location = new System.Drawing.Point(67, 167);
-            this.source.Name = "source";
-            this.source.Size = new System.Drawing.Size(152, 20);
-            this.source.TabIndex = 20;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(11, 196);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(208, 23);
-            this.button1.TabIndex = 21;
-            this.button1.Text = "Apply Source";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label2
             // 
@@ -262,11 +244,21 @@
             this.linkLabel2.VisitedLinkColor = System.Drawing.Color.Blue;
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
+            // source
+            // 
+            this.source.FormattingEnabled = true;
+            this.source.Location = new System.Drawing.Point(67, 167);
+            this.source.Name = "source";
+            this.source.Size = new System.Drawing.Size(152, 21);
+            this.source.TabIndex = 35;
+            this.source.SelectedIndexChanged += new System.EventHandler(this.sprite_SelectedIndexChanged);
+            // 
             // SpriteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(234, 261);
+            this.Controls.Add(this.source);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label5);
@@ -278,8 +270,6 @@
             this.Controls.Add(this.cY);
             this.Controls.Add(this.cX);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.source);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.h);
             this.Controls.Add(this.w);
@@ -310,8 +300,6 @@
         private System.Windows.Forms.NumericUpDown w;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox source;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown cX;
         private System.Windows.Forms.NumericUpDown cY;
@@ -323,5 +311,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.ComboBox source;
     }
 }

@@ -51,7 +51,7 @@
             this.scriptCode.ShowSelectionMargin = true;
             this.scriptCode.Size = new System.Drawing.Size(456, 237);
             this.scriptCode.TabIndex = 0;
-            this.scriptCode.Text = "Here be code";
+            this.scriptCode.Text = "ERROR: Script could not be loaded.";
             this.scriptCode.TextChanged += new System.EventHandler(this.scriptCode_TextChanged);
             // 
             // numberLabel
@@ -120,7 +120,6 @@
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Visible = false;
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // ScriptForm
             // 
@@ -138,7 +137,7 @@
             this.MinimumSize = new System.Drawing.Size(500, 300);
             this.Name = "ScriptForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Script Form";
+            this.Text = "Scipt Form";
             this.Load += new System.EventHandler(this.ScriptForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

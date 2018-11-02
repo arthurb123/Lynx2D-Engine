@@ -28,7 +28,7 @@ namespace Lynx2DEngine.forms
             UpdateTitle();
 
             id = obj.id;
-            source.Text = obj.source;
+            UpdateSoundSelection();
 
             x.Value = obj.x;
             y.Value = obj.y;
@@ -59,26 +59,8 @@ namespace Lynx2DEngine.forms
                 BackColor = classes.DarkTheme.mainBackground;
                 ForeColor = classes.DarkTheme.font;
 
-                button1.BackColor = classes.DarkTheme.background;
-                button1.FlatStyle = FlatStyle.Flat;
-                button1.FlatAppearance.BorderColor = classes.DarkTheme.border;
-
                 pointer.BackColor = classes.DarkTheme.background;
                 pointer.FlatAppearance.BorderColor = classes.DarkTheme.border;
-            }
-        }
-
-        private void source_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                Engine.SetEngineObjectSource(engineId, source.Text);
-
-                Engine.ExecuteScript(obj.Variable() + ".SRC = '" + source.Text + "';");
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
             }
         }
 
@@ -147,6 +129,36 @@ namespace Lynx2DEngine.forms
                 pointer.BackgroundImage = null;
 
                 Pointer.Remove();
+            }
+        }
+
+        private void UpdateSoundSelection()
+        {
+            string[] filters = new string[] { "mp3", "wav", "ogg" };
+            string[] sounds = Manager.GetFilesFrom("projects/" + Project.Name() + "/res/", filters, true);
+
+            for (int i = 0; i < sounds.Length; i++)
+                sounds[i] = sounds[i].Substring(10 + Project.Name().Length, sounds[i].Length - (10 + Project.Name().Length));
+
+            source.Items.Clear();
+            source.Items.AddRange(sounds);
+
+            source.Text = obj.source;
+        }
+
+        private void source_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (source.Text == string.Empty) return;
+
+            try
+            {
+                Engine.SetEngineObjectSource(engineId, source.Text);
+
+                Engine.ExecuteScript(obj.Variable() + ".SRC = '" + source.Text + "';");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
             }
         }
     }

@@ -1520,6 +1520,8 @@ function Lynx2D() {
         this.Show = function(layer) {
             if (this.BUFFER_ID != -1) this.Hide();
             
+            this.PARTICLES = [];
+            
             this.BUFFER_ID = lx.GAME.ADD_TO_BUFFER(this, layer);
             this.BUFFER_LAYER = layer;
             
@@ -1535,6 +1537,7 @@ function Lynx2D() {
         };
         
         this.Emit = function(layer, amount) {
+            this.TIMER.CURRENT = this.TIMER.STANDARD;
             this.HIDES_AFTER_AMOUNT = amount;
             this.Show(layer);
             

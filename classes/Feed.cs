@@ -16,6 +16,7 @@ namespace Lynx2DEngine
         private static readonly string stage = "beta";
 
         private static bool extract = true;
+        public static bool wantsToExtract = false;
 
         public static bool CheckOnline()
         {
@@ -177,6 +178,8 @@ namespace Lynx2DEngine
         {
             try
             {
+                wantsToExtract = true;
+
                 ProcessStartInfo cmd = new ProcessStartInfo
                 {
                     WindowStyle = ProcessWindowStyle.Hidden,

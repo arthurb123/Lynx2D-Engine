@@ -20,6 +20,7 @@ namespace Lynx2DEngine
             Clear();
 
             maps = Engine.scenes[id].tilemaps;
+            existingColliders = new Dictionary<int, List<string>>();
             injected = new bool[maps.Length];
 
             for (int i = 0; i < maps.Length; i++)
@@ -99,6 +100,7 @@ namespace Lynx2DEngine
                     maps[i] = tm;
                     maps[i].id = i;
                     injected[i] = false;
+                    existingColliders[i] = new List<string>();
 
                     SaveMapsToCurrentScene();
 

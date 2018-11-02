@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine.forms
@@ -40,6 +35,9 @@ namespace Lynx2DEngine.forms
 
             if (ModifierKeys.HasFlag(Keys.Control) && e.KeyCode == Keys.S && !saved)
                 saveToolStripMenuItem_Click(sender, e);
+
+            if (ModifierKeys.HasFlag(Keys.Control) && e.KeyCode == Keys.Z)
+                scriptCode.Undo();
         }
 
         public void Initialize(int engineId)
@@ -235,11 +233,6 @@ namespace Lynx2DEngine.forms
             Engine.SetEngineObjectScript(engineId, scriptCode.Text);
 
             setSaved(true);
-        }
-
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void setSaved(bool saved)

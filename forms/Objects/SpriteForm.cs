@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Lynx2DEngine
 
             id = obj.id;
 
-            source.Text = obj.source;
+            UpdateSpriteSelection();
 
             rotation.Value = obj.rotation;
 
@@ -51,6 +52,20 @@ namespace Lynx2DEngine
             canDetect = true;
         }
 
+        private void UpdateSpriteSelection()
+        {
+            string[] filters = new string[] { "jpg", "jpeg", "png", "gif", "tiff", "bmp" };
+            string[] sprites = Manager.GetFilesFrom("projects/" + Project.Name() + "/res/", filters, true);
+
+            for (int i = 0; i < sprites.Length; i++)
+                sprites[i] = sprites[i].Substring(10+Project.Name().Length, sprites[i].Length - (10+Project.Name().Length));
+
+            source.Items.Clear();
+            source.Items.AddRange(sprites);
+
+            source.Text = obj.source;
+        }
+
         private void UpdateTitle()
         {
             obj = Engine.GetEngineObjects()[engineId];
@@ -64,24 +79,6 @@ namespace Lynx2DEngine
             {
                 w.Value = int.Parse(await Engine.ExecuteScriptWithResult(obj.Variable() + ".Size().W;"));
                 h.Value = int.Parse(await Engine.ExecuteScriptWithResult(obj.Variable() + ".Size().H;"));
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-            }
-        }
-
-        private void SetSource()
-        {
-            if (!canDetect || source.Text == string.Empty) return;
-
-            try
-            {
-                Engine.SetEngineObjectSource(engineId, source.Text);
-
-                Engine.ExecuteScript(obj.Variable() + ".Source('" + source.Text + "');");
-
-                GetSpriteSize();
             }
             catch (Exception e)
             {
@@ -131,16 +128,7 @@ namespace Lynx2DEngine
             {
                 BackColor = classes.DarkTheme.mainBackground;
                 ForeColor = classes.DarkTheme.font;
-
-                button1.BackColor = classes.DarkTheme.background;
-                button1.FlatStyle = FlatStyle.Flat;
-                button1.FlatAppearance.BorderColor = classes.DarkTheme.border;
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            SetSource();
         }
 
         private void cX_ValueChanged(object sender, EventArgs e)
@@ -210,6 +198,24 @@ namespace Lynx2DEngine
             Engine.RenameEngineObject(engineId, Input.Prompt("Enter the new name", "Rename " + obj.Variable()), true);
 
             UpdateTitle();
+        }
+
+        private void sprite_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!canDetect || source.Text == string.Empty) return;
+
+            try
+            {
+                Engine.SetEngineObjectSource(engineId, source.Text);
+
+                Engine.ExecuteScript(obj.Variable() + ".Source('" + source.Text + "');");
+
+                GetSpriteSize();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lynx2D Engine - Exception");
+            }
         }
     }
 }

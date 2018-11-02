@@ -140,8 +140,10 @@ namespace Lynx2DEngine
             Save();
             ExportHTML();
 
-            gameCode = (Engine.bSettings.mergeFramework ? File.ReadAllText("projects/" + cur + "/data/lynx2d.js") : "") + "lx.Initialize('" + cur + "'); lx.Smoothing(" + Engine.bSettings.imageSmoothing.ToString().ToLower() + "); lx.Start(" + Engine.bSettings.initialFramerate + ");";
+            gameCode = (Engine.bSettings.mergeFramework ? File.ReadAllText("projects/" + cur + "/data/lynx2d.js") : "") + "lx.Initialize('" + cur + "'); lx.Smoothing(" + Engine.bSettings.imageSmoothing.ToString().ToLower() + ");";
             Engine.BuildEngineCode(true);
+
+            gameCode += "lx.Start(" + Engine.bSettings.initialFramerate + ")";
 
             using (FileStream fs = new FileStream("projects/" + cur + "/data/game.js", FileMode.Create))
             {
@@ -258,16 +260,29 @@ namespace Lynx2DEngine
 
         private static void ExportHTML()
         {
-            using (FileStream fs = new FileStream("projects/" + cur + "/index.html", FileMode.OpenOrCreate))
-            {
-                using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
-                {
-                    if (Engine.bSettings.mergeFramework) w.Write("<html>\n<head>\n  <link id='icon' type='image / ico' rel='shortcut icon'/>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='black'>\n  <script type='text/javascript' src='data/game.js'></script>\n</body>\n</html>");
-                    else w.Write("<html>\n<head>\n  <link id='icon' type='image / ico' rel='shortcut icon'/>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='black'>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  <script type='text/javascript' src='data/game.js'></script>\n</body>\n</html>");
-                    w.Dispose();
-                    fs.Dispose();
-                }
-            }
+            string html = "";
+
+            if (Engine.bSettings.mergeFramework) html = "<html>\n" +
+                                                            "<head>\n  " +
+                                                            "  <link id='icon' type='image / ico' rel='shortcut icon'/>\n" +
+                                                            "  <meta charset='utf-8'/>\n" +
+                                                            "</head>\n" +
+                                                            "<body bgcolor='black'>\n" +
+                                                            "  <script type='text/javascript' src='data/game.js'></script>\n" +
+                                                            "</body>\n" +
+                                                        "</html>";
+            else html = "<html>\n" +
+                            "<head>\n" +
+                            "  <link id='icon' type='image / ico' rel='shortcut icon'/>\n" +
+                            "  <meta charset='utf-8'/>\n" +
+                            "</head>\n" +
+                            "<body bgcolor='black'>\n" +
+                            "  <script type='text/javascript' src='data/lynx2d.js'></script>\n" +
+                            "  <script type='text/javascript' src='data/game.js'></script>\n" +
+                            "</body>\n" +
+                         "</html>";
+
+            File.WriteAllText("projects/" + cur + "/index.html", html);
         }
 
         public static void DownloadFramework(bool setsStatus)

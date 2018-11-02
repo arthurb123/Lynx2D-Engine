@@ -94,7 +94,8 @@ namespace Lynx2DEngine
         {
             Engine.SaveEnginePreferences(true);
 
-            Project.RequestSave();
+            if (!Feed.wantsToExtract)
+                Project.RequestSave();
 
             Cef.Shutdown();
         }

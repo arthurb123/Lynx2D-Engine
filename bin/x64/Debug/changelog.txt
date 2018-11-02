@@ -1,6 +1,2 @@
-+ Framework version now gets
-  checked after opening a project
-+ Framework downloading more efficient
-+ Tilemap collision improved
-+ Obfuscator bug fix
-+ Tile selection bug fix
++ Export bug fixed
++ Improved sprite and sound source selection
