@@ -805,46 +805,6 @@ namespace Lynx2DEngine
 
             if (child != -1) this.child = child;
             if (parent != -1) this.parent = parent;
-
-            switch (type)
-            {
-                case EngineObjectType.GameObject:
-                    name = "GameObject";
-                    sprite = "Sprite" + this.child;
-                    Engine.ExecuteScript(Variable() + ".Show(0);");
-
-                    break;
-                case EngineObjectType.Sprite:
-                    name = "Sprite";
-                    source = "res/lynx2d/sprite.png";
-
-                    break;
-                case EngineObjectType.Script:
-                    name = "Script";
-
-                    break;
-                case EngineObjectType.Collider:
-                    name = "Collider";
-                    visible = false;
-                    Engine.ExecuteScript(Variable() + ".Disable();");
-
-                    break;
-                case EngineObjectType.Emitter:
-                    name = "Emitter";
-                    sprite = "Sprite" + this.child;
-                    Engine.ExecuteScript(Variable() + ".Show(0);"); ;
-
-                    break;
-                case EngineObjectType.Tilemap:
-                    name = "Tilemap";
-                    tileMap = Tilemapper.AddMap(new Tilemap(10, 10));
-
-                    break;
-                case EngineObjectType.Sound:
-                    name = "Sound";
-
-                    break;
-            }
         }
 
         public string Variable()
@@ -876,6 +836,7 @@ namespace Lynx2DEngine
             {
                 layer = layer,
                 visible = visible,
+                name = name,
 
                 sprite = sprite,
                 x = x,
@@ -900,6 +861,8 @@ namespace Lynx2DEngine
                 ch = ch,
                 clipped = clipped,
                 rotation = rotation,
+
+                code = code,
 
                 unique = unique
             };

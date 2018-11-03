@@ -1,2 +1,3 @@
 + Export bug fixed
 + Improved sprite and sound source selection
++ Improved copy and pasting of objects

@@ -22,6 +22,7 @@ namespace Lynx2DEngine
         private ImageList hierarchyList;
 
         private EngineObject copied = null;
+        private int copiedFromScene = 0;
 
         #region "Main Stuff"
         public Main()
@@ -549,7 +550,16 @@ namespace Lynx2DEngine
                     Engine.RemoveEngineObject(tag, true, false);
             }
 
-            if (e.Control && e.KeyCode == Keys.C && hierarchy.SelectedNode != null) copied = Engine.GetEngineObjects()[(int)hierarchy.SelectedNode.Tag];
+            if (e.Control && e.KeyCode == Keys.C && hierarchy.SelectedNode != null)
+            {
+                if (hierarchy.SelectedNode.ImageIndex == 1)
+                    return;
+
+                copied = Engine.GetEngineObject((int)hierarchy.SelectedNode.Tag);
+                copiedFromScene = Engine.eSettings.currentScene;
+
+                SetStatus("'" + copied.Variable() + "' has been copied.", StatusType.Message);
+            }
 
             if (e.Control && e.KeyCode == Keys.V)
             {
@@ -588,23 +598,51 @@ namespace Lynx2DEngine
                         case EngineObjectType.Tilemap:
                             result = AddTilemap();
                             break;
+                        case EngineObjectType.Sound:
+                            result = AddSound();
+                            break;
                     }
 
                     if (result == -1) return;
 
                     EngineObject temp = copied.Clone();
-                    temp.id = result;
+                    EngineObject tempChild = null;
+
+                    if (child != -1)
+                    {
+                        tempChild = Engine.scenes[copiedFromScene].objects[copied.child].Clone();
+
+                        tempChild.parent = result;
+                    }
+
                     temp.child = child;
 
-                    Engine.SetEngineObject(result, temp);
-                    Engine.RenameEngineObject(result, copied.Variable() + "Copy", true);
+                    string copies = "";
+                    int amount = 0;
+                    while (Engine.GetEngineObjectWithVarName(copied.Variable() + copies) != null)
+                    {
+                        amount++;
 
-                    copied = null;
+                        copies = "_" + amount;
+                    }
+
+                    if (copies != "") {
+                        temp.Rename(temp.Variable() + copies);
+                        if (tempChild != null) tempChild.Rename(tempChild.Variable() + copies);
+                    }
+
+                    Engine.SetEngineObject(result, temp);
+                    if (tempChild != null) Engine.SetEngineObject(child, tempChild);
+
+                    SetStatus("'" + temp.Variable() + "' has been pasted.", StatusType.Message);
+
+                    refreshBrowser();
+                    UpdateHierarchy();
                 }
                 catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                    SetStatus("Exception occurred while adding GameObject", StatusType.Warning);
+                    SetStatus("Exception occurred while pasting engine object.", StatusType.Warning);
                 }
             }
         }

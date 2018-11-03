@@ -48,6 +48,7 @@ namespace Lynx2DEngine.forms
             id = obj.id;
 
             scriptCode.Text = obj.code;
+
         }
 
         private void UpdateTitle()
