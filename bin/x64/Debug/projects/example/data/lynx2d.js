@@ -95,6 +95,19 @@ function Lynx2D() {
                 }
             });
             
+            //Loop
+            if (this.LOOPS.length > 0) 
+                this.LOOPS.forEach(function(loop) {
+                    if (loop != undefined) loop(); 
+            });
+            
+            //GameObjects
+            this.BUFFER.forEach(function(layer) {
+                if (layer != undefined) layer.forEach(function(obj) {
+                    if (obj != undefined && obj.UPDATES) obj.UPDATE();
+                });
+            });
+            
             //Colliders
             this.COLLIDERS.forEach(function(coll1) {
                 if (coll1 != undefined) lx.GAME.COLLIDERS.forEach(function(coll2) {
@@ -114,13 +127,6 @@ function Lynx2D() {
                 });
             });
             
-            //GameObjects
-            this.BUFFER.forEach(function(layer) {
-                if (layer != undefined) layer.forEach(function(obj) {
-                    if (obj != undefined && obj.UPDATES) obj.UPDATE();
-                });
-            });
-            
             //UI
             this.UI.forEach(function(element) {
                 if (element != undefined) element.UPDATE();
@@ -128,12 +134,6 @@ function Lynx2D() {
             
             //Audio
             this.AUDIO.UPDATE();
-            
-            //Loop
-            if (this.LOOPS.length > 0) 
-                this.LOOPS.forEach(function(loop) {
-                    if (loop != undefined) loop(); 
-                });
             
             this.LOG.UPDATE();
             

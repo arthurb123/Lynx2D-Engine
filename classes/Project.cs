@@ -248,13 +248,15 @@ namespace Lynx2DEngine
 
                 Engine.ClearEngine();
                 Engine.SaveEngineState();
-
-                Load(false);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
                 form.SetStatus("Exception occurred while creating project canon.", Main.StatusType.Warning);
+            }
+            finally
+            {
+                Load(false);
             }
         }
 
@@ -309,7 +311,7 @@ namespace Lynx2DEngine
                         client.Dispose();
                     };
 
-                    client.DownloadFileAsync(new Uri("http://www.lynx2d.com/res/lynx2d.js"), "projects/" + cur + "/data/lynx2d.js");
+                    client.DownloadFile(new Uri("http://www.lynx2d.com/res/lynx2d.js"), "projects/" + cur + "/data/lynx2d.js");
                 }
             }
             catch (Exception e)

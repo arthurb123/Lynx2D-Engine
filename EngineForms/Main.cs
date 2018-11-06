@@ -19,7 +19,8 @@ namespace Lynx2DEngine
         public ConsoleForm console;
         private bool consoleVisible;
         private HierarchyState hierarchyView = HierarchyState.Objects;
-        private ImageList hierarchyList;
+
+        public ImageList hierarchyList;
 
         private EngineObject copied = null;
         private int copiedFromScene = 0;
@@ -168,10 +169,10 @@ namespace Lynx2DEngine
         #endregion
 
         #region "Hierarchy Stuff"
-        public void SwitchHierarchyView(HierarchyState state)
+        public bool SwitchHierarchyView(HierarchyState state)
         {
             if (hierarchyView == state)
-                return;
+                return false;
 
             switch (state)
             {
@@ -204,6 +205,8 @@ namespace Lynx2DEngine
             hierarchyView = state;
 
             UpdateHierarchy();
+
+            return true;
         }
 
         public void UpdateHierarchy()
@@ -245,15 +248,21 @@ namespace Lynx2DEngine
 
                 foreach (HierarchyItem i in f.content)
                 {
-                    EngineObject obj = Engine.GetEngineObject(i.engineId);
+                    EngineObject obj;
 
-                    if (obj != null && obj.parent == -1)
+                    if (i.isLink) obj = Engine.scenes[i.scene].objects[i.engineId];
+                    else obj = Engine.GetEngineObject(i.engineId);
+
+                    if (obj != null && obj.parent == -1 || obj != null && i.isLink)
                     {
                         List<TreeNode> children = new List<TreeNode>();
 
                         if (obj.child != -1)
-                        { 
-                            EngineObject childEO = Engine.GetEngineObject(obj.child);
+                        {
+                            EngineObject childEO;
+
+                            if (i.isLink) childEO = Engine.scenes[i.scene].objects[obj.child];
+                            else childEO = Engine.GetEngineObject(obj.child);
 
                             TreeNode child = new TreeNode(childEO.Variable())
                             {
@@ -264,6 +273,9 @@ namespace Lynx2DEngine
                                 child.ImageIndex = 3;
                             if (childEO.type == EngineObjectType.Script)
                                 child.ImageIndex = 6;
+
+                            if (i.isLink)
+                                child.NodeFont = new Font(hierarchy.Font, FontStyle.Italic);
 
                             child.SelectedImageIndex = child.ImageIndex;
                             children.Add(child);
@@ -289,6 +301,9 @@ namespace Lynx2DEngine
                         if (obj.type == EngineObjectType.Sound)
                             node.ImageIndex = 9;
 
+                        if (i.isLink)
+                            node.NodeFont = new Font(hierarchy.Font, FontStyle.Italic);
+
                         node.SelectedImageIndex = node.ImageIndex;
                         nodes.Add(node);
                     }
@@ -307,15 +322,21 @@ namespace Lynx2DEngine
             //Then add the engine objects
             foreach (HierarchyItem i in h.items)
             {
-                EngineObject obj = Engine.GetEngineObject(i.engineId);
+                EngineObject obj;
 
-                if (obj != null && obj.parent == -1)
+                if (i.isLink) obj = Engine.scenes[i.scene].objects[i.engineId];
+                else obj = Engine.GetEngineObject(i.engineId);
+
+                if (obj != null && obj.parent == -1 || obj != null && i.isLink)
                 {
                     List<TreeNode> children = new List<TreeNode>();
 
                     if (obj.child != -1)
                     {
-                        EngineObject childEO = Engine.GetEngineObject(obj.child);
+                        EngineObject childEO;
+
+                        if (i.isLink) childEO = Engine.scenes[i.scene].objects[obj.child];
+                        else childEO = Engine.GetEngineObject(obj.child);
 
                         TreeNode child = new TreeNode(childEO.Variable())
                         {
@@ -326,6 +347,9 @@ namespace Lynx2DEngine
                             child.ImageIndex = 3;
                         if (childEO.type == EngineObjectType.Script)
                             child.ImageIndex = 6;
+
+                        if (i.isLink)
+                            child.NodeFont = new Font(hierarchy.Font, FontStyle.Italic);
 
                         child.SelectedImageIndex = child.ImageIndex;
                         children.Add(child);
@@ -350,6 +374,9 @@ namespace Lynx2DEngine
                         node.ImageIndex = 7;
                     if (obj.type == EngineObjectType.Sound)
                         node.ImageIndex = 9;
+
+                    if (i.isLink)
+                        node.NodeFont = new Font(hierarchy.Font, FontStyle.Italic);
 
                     node.SelectedImageIndex = node.ImageIndex;
                     newHierarchy.Add(node);
@@ -738,6 +765,27 @@ namespace Lynx2DEngine
         private void removeSceneToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Engine.RemoveScene(Engine.eSettings.currentScene);
+        }
+
+        private void addLinkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Engine.scenes.Length == 1)
+            {
+                MessageBox.Show("Links can only be added when there is more than one scene available.", "Lynx2D Engine - Exception");
+                return;
+            }
+
+            Point location = Input.HierarchySelection("Add Link", "Select an object in another scene to link to from the current scene.");
+
+            if (location.X != -1 && location.Y != -1)
+            {
+                Engine.scenes[Engine.eSettings.currentScene].hierarchy.AddLinkedItem(location.X, location.Y);
+
+                if (!SwitchHierarchyView(HierarchyState.Objects))
+                    UpdateHierarchy();
+
+                refreshBrowser();
+            }
         }
         #endregion
 

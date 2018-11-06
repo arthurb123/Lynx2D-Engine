@@ -394,6 +394,23 @@ namespace Lynx2DEngine
             string sprites = "";
             string tilemaps = "";
             string sounds = "";
+
+            foreach (HierarchyItem li in scenes[id].hierarchy.GetLinkedItemsInScene())
+            {
+                GenerateEngineObjectCode(li.scene, li.engineId);
+
+                EngineObject eo = scenes[li.scene].objects[li.engineId];
+
+                if (eo.type == EngineObjectType.Sprite) sprites += eo.buildCode;
+                else if (eo.type == EngineObjectType.GameObject) gameobjects += eo.buildCode;
+                else if (eo.type == EngineObjectType.Script && eo.parent == -1) scripts += eo.buildCode;
+                else if (eo.type == EngineObjectType.Collider) colliders += eo.buildCode;
+                else if (eo.type == EngineObjectType.Emitter) emitters += eo.buildCode;
+                else if (eo.type == EngineObjectType.Tilemap && !globalScope) tilemaps += eo.buildCode;
+                else if (eo.type == EngineObjectType.Sound) sounds += eo.buildCode;
+
+                scenes[li.scene].objects[li.engineId].buildCode = "";
+            }
             
             for (int i = 0; i < scenes[id].objects.Length; i++)
             {
@@ -401,13 +418,15 @@ namespace Lynx2DEngine
 
                 GenerateEngineObjectCode(id, i);
 
-                if (scenes[id].objects[i].type == EngineObjectType.Sprite) sprites += scenes[id].objects[i].buildCode;
-                else if (scenes[id].objects[i].type == EngineObjectType.GameObject) gameobjects += scenes[id].objects[i].buildCode;
-                else if (scenes[id].objects[i].type == EngineObjectType.Script && scenes[id].objects[i].parent == -1) scripts += scenes[id].objects[i].buildCode;
-                else if (scenes[id].objects[i].type == EngineObjectType.Collider) colliders += scenes[id].objects[i].buildCode;
-                else if (scenes[id].objects[i].type == EngineObjectType.Emitter) emitters += scenes[id].objects[i].buildCode;
-                else if (scenes[id].objects[i].type == EngineObjectType.Tilemap && !globalScope) tilemaps += scenes[id].objects[i].buildCode;
-                else if (scenes[id].objects[i].type == EngineObjectType.Sound) sounds += scenes[id].objects[i].buildCode;
+                EngineObject eo = scenes[id].objects[i];
+
+                if (eo.type == EngineObjectType.Sprite) sprites += eo.buildCode;
+                else if (eo.type == EngineObjectType.GameObject) gameobjects += eo.buildCode;
+                else if (eo.type == EngineObjectType.Script && eo.parent == -1) scripts += eo.buildCode;
+                else if (eo.type == EngineObjectType.Collider) colliders += eo.buildCode;
+                else if (eo.type == EngineObjectType.Emitter) emitters += eo.buildCode;
+                else if (eo.type == EngineObjectType.Tilemap && !globalScope) tilemaps += eo.buildCode;
+                else if (eo.type == EngineObjectType.Sound) sounds += eo.buildCode;
 
                 scenes[id].objects[i].buildCode = "";
             }

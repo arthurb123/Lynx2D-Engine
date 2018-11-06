@@ -15,6 +15,11 @@ namespace Lynx2DEngine
             items.Add(new HierarchyItem(engineId));
         }
 
+        public void AddLinkedItem(int scene, int engineId)
+        {
+            items.Add(new HierarchyItem(scene, engineId));
+        }
+
         public void AddFolder()
         {
             folders.Add(new HierarchyFolder("New Folder"));
@@ -124,16 +129,42 @@ namespace Lynx2DEngine
 
             return id;
         }
+
+        public HierarchyItem[] GetLinkedItemsInScene()
+        {
+            List<HierarchyItem> result = new List<HierarchyItem>();
+
+            foreach (HierarchyFolder f in folders)
+                foreach (HierarchyItem i in f.content)
+                    if (i.isLink)
+                        result.Add(i);
+
+            foreach (HierarchyItem i in items)
+                if (i.isLink)
+                    result.Add(i);
+
+            return result.ToArray();
+        }
     }
 
     [Serializable]
     public class HierarchyItem
     {
+        public bool isLink = false;
         public int engineId;
+        public int scene;
 
         public HierarchyItem(int engineId)
         {
             this.engineId = engineId;
+        }
+
+        public HierarchyItem(int scene, int engineId)
+        {
+            this.scene = scene;
+            this.engineId = engineId;
+
+            isLink = true;
         }
     }
 
