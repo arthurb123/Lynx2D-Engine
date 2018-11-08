@@ -2,6 +2,7 @@
 using Lynx2DEngine.classes;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
@@ -171,6 +172,54 @@ namespace Lynx2DEngine
             }
 
             return -1;
+        }
+
+        public static int AddExistingEngineObject(EngineObject eo)
+        {
+            for (int i = 0; i < scenes[eSettings.currentScene].objects.Length + 1; i++)
+            {
+                if (i == scenes[eSettings.currentScene].objects.Length) Array.Resize(ref scenes[eSettings.currentScene].objects, scenes[eSettings.currentScene].objects.Length + 1);
+
+                if (scenes[eSettings.currentScene].objects[i] == null || i == scenes[eSettings.currentScene].objects.Length)
+                {
+                    //Add existing engine object
+                    scenes[eSettings.currentScene].objects[i] = eo;
+
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public static Point AddExistingEngineObjectWithChild(EngineObject eo, EngineObject eoChild)
+        {
+            int parent = -1, child = -1;
+
+            for (int i = 0; i < scenes[eSettings.currentScene].objects.Length + 2; i++)
+            {
+                if (i == scenes[eSettings.currentScene].objects.Length) Array.Resize(ref scenes[eSettings.currentScene].objects, scenes[eSettings.currentScene].objects.Length + 1);
+
+                if (scenes[eSettings.currentScene].objects[i] == null || i == scenes[eSettings.currentScene].objects.Length)
+                {
+                    if (child == -1)
+                    {
+                        scenes[eSettings.currentScene].objects[i] = eoChild;
+
+                        child = i;
+                    }
+                    else
+                    {
+                        scenes[eSettings.currentScene].objects[i] = eo;
+
+                        parent = i;
+
+                        break;
+                    }
+                }
+            }
+
+            return new Point(parent, child);
         }
 
         public static void RemoveEngineObject(int id, bool refreshes, bool updates)
@@ -394,23 +443,6 @@ namespace Lynx2DEngine
             string sprites = "";
             string tilemaps = "";
             string sounds = "";
-
-            foreach (HierarchyItem li in scenes[id].hierarchy.GetLinkedItemsInScene())
-            {
-                GenerateEngineObjectCode(li.scene, li.engineId);
-
-                EngineObject eo = scenes[li.scene].objects[li.engineId];
-
-                if (eo.type == EngineObjectType.Sprite) sprites += eo.buildCode;
-                else if (eo.type == EngineObjectType.GameObject) gameobjects += eo.buildCode;
-                else if (eo.type == EngineObjectType.Script && eo.parent == -1) scripts += eo.buildCode;
-                else if (eo.type == EngineObjectType.Collider) colliders += eo.buildCode;
-                else if (eo.type == EngineObjectType.Emitter) emitters += eo.buildCode;
-                else if (eo.type == EngineObjectType.Tilemap && !globalScope) tilemaps += eo.buildCode;
-                else if (eo.type == EngineObjectType.Sound) sounds += eo.buildCode;
-
-                scenes[li.scene].objects[li.engineId].buildCode = "";
-            }
             
             for (int i = 0; i < scenes[id].objects.Length; i++)
             {

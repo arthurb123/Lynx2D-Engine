@@ -23,6 +23,7 @@ namespace Lynx2DEngine
         public ImageList hierarchyList;
 
         private EngineObject copied = null;
+        private HierarchyFolder copiedFolder = null;
         private int copiedFromScene = 0;
 
         #region "Main Stuff"
@@ -242,145 +243,14 @@ namespace Lynx2DEngine
 
             //First add the folders
             for (int e = 0; e < h.folders.Count; e++)
-            {
-                HierarchyFolder f = h.folders[e];
-                List<TreeNode> nodes = new List<TreeNode>(); 
-
-                foreach (HierarchyItem i in f.content)
-                {
-                    EngineObject obj;
-
-                    if (i.isLink) obj = Engine.scenes[i.scene].objects[i.engineId];
-                    else obj = Engine.GetEngineObject(i.engineId);
-
-                    if (obj != null && obj.parent == -1 || obj != null && i.isLink)
-                    {
-                        List<TreeNode> children = new List<TreeNode>();
-
-                        if (obj.child != -1)
-                        {
-                            EngineObject childEO;
-
-                            if (i.isLink) childEO = Engine.scenes[i.scene].objects[obj.child];
-                            else childEO = Engine.GetEngineObject(obj.child);
-
-                            TreeNode child = new TreeNode(childEO.Variable())
-                            {
-                                Tag = obj.child
-                            };
-
-                            if (childEO.type == EngineObjectType.Sprite)
-                                child.ImageIndex = 3;
-                            if (childEO.type == EngineObjectType.Script)
-                                child.ImageIndex = 6;
-
-                            if (i.isLink)
-                                child.NodeFont = new Font(hierarchy.Font, FontStyle.Italic);
-
-                            child.SelectedImageIndex = child.ImageIndex;
-                            children.Add(child);
-                        }
-
-                        TreeNode node = new TreeNode(obj.Variable(), children.ToArray())
-                        {
-                            Tag = obj.id
-                        };
-
-                        if (obj.type == EngineObjectType.GameObject)
-                            node.ImageIndex = 2;
-                        if (obj.type == EngineObjectType.Sprite)
-                            node.ImageIndex = 3;
-                        if (obj.type == EngineObjectType.Collider)
-                            node.ImageIndex = 4;
-                        if (obj.type == EngineObjectType.Emitter)
-                            node.ImageIndex = 5;
-                        if (obj.type == EngineObjectType.Script)
-                            node.ImageIndex = 6;
-                        if (obj.type == EngineObjectType.Tilemap)
-                            node.ImageIndex = 7;
-                        if (obj.type == EngineObjectType.Sound)
-                            node.ImageIndex = 9;
-
-                        if (i.isLink)
-                            node.NodeFont = new Font(hierarchy.Font, FontStyle.Italic);
-
-                        node.SelectedImageIndex = node.ImageIndex;
-                        nodes.Add(node);
-                    }
-                }
-
-                TreeNode ftn = new TreeNode(f.name, nodes.ToArray())
-                {
-                    Tag = e,
-                    ImageIndex = 1
-                };
-
-                ftn.SelectedImageIndex = ftn.ImageIndex;
-                newHierarchy.Add(ftn);
-            }
+                newHierarchy.Add(ConvertFolderToTreeNode(e, h.folders[e]));
 
             //Then add the engine objects
             foreach (HierarchyItem i in h.items)
             {
-                EngineObject obj;
+                TreeNode item = ConvertItemToTreeNode(i);
 
-                if (i.isLink) obj = Engine.scenes[i.scene].objects[i.engineId];
-                else obj = Engine.GetEngineObject(i.engineId);
-
-                if (obj != null && obj.parent == -1 || obj != null && i.isLink)
-                {
-                    List<TreeNode> children = new List<TreeNode>();
-
-                    if (obj.child != -1)
-                    {
-                        EngineObject childEO;
-
-                        if (i.isLink) childEO = Engine.scenes[i.scene].objects[obj.child];
-                        else childEO = Engine.GetEngineObject(obj.child);
-
-                        TreeNode child = new TreeNode(childEO.Variable())
-                        {
-                            Tag = obj.child
-                        };
-
-                        if (childEO.type == EngineObjectType.Sprite)
-                            child.ImageIndex = 3;
-                        if (childEO.type == EngineObjectType.Script)
-                            child.ImageIndex = 6;
-
-                        if (i.isLink)
-                            child.NodeFont = new Font(hierarchy.Font, FontStyle.Italic);
-
-                        child.SelectedImageIndex = child.ImageIndex;
-                        children.Add(child);
-                    }
-
-                    TreeNode node = new TreeNode(obj.Variable(), children.ToArray())
-                    {
-                        Tag = obj.id
-                    };
-
-                    if (obj.type == EngineObjectType.GameObject)
-                        node.ImageIndex = 2;
-                    if (obj.type == EngineObjectType.Sprite)
-                        node.ImageIndex = 3;
-                    if (obj.type == EngineObjectType.Collider)
-                        node.ImageIndex = 4;
-                    if (obj.type == EngineObjectType.Emitter)
-                        node.ImageIndex = 5;
-                    if (obj.type == EngineObjectType.Script)
-                        node.ImageIndex = 6;
-                    if (obj.type == EngineObjectType.Tilemap)
-                        node.ImageIndex = 7;
-                    if (obj.type == EngineObjectType.Sound)
-                        node.ImageIndex = 9;
-
-                    if (i.isLink)
-                        node.NodeFont = new Font(hierarchy.Font, FontStyle.Italic);
-
-                    node.SelectedImageIndex = node.ImageIndex;
-                    newHierarchy.Add(node);
-                }
+                if (item != null) newHierarchy.Add(item);
             }
 
             hierarchy.Nodes.AddRange(newHierarchy.ToArray());
@@ -407,6 +277,80 @@ namespace Lynx2DEngine
             }
         }
 
+        private TreeNode ConvertFolderToTreeNode(int id, HierarchyFolder f)
+        {
+            List<TreeNode> nodes = new List<TreeNode>();
+
+            foreach (HierarchyItem i in f.content)
+            {
+                TreeNode item = ConvertItemToTreeNode(i);
+
+                if (item != null) nodes.Add(item);
+            }
+
+            TreeNode ftn = new TreeNode(f.name, nodes.ToArray())
+            {
+                Tag = id,
+                ImageIndex = 1
+            };
+
+            ftn.SelectedImageIndex = ftn.ImageIndex;
+            return ftn;
+        }
+
+        private TreeNode ConvertItemToTreeNode(HierarchyItem i)
+        {
+            EngineObject obj = Engine.GetEngineObject(i.engineId);
+
+            if (obj != null && obj.parent == -1)
+            {
+                List<TreeNode> children = new List<TreeNode>();
+
+                if (obj.child != -1)
+                {
+                    EngineObject childEO = Engine.GetEngineObject(obj.child);
+
+                    TreeNode child = new TreeNode(childEO.Variable())
+                    {
+                        Tag = obj.child
+                    };
+
+                    if (childEO.type == EngineObjectType.Sprite)
+                        child.ImageIndex = 3;
+                    if (childEO.type == EngineObjectType.Script)
+                        child.ImageIndex = 6;
+
+                    child.SelectedImageIndex = child.ImageIndex;
+                    children.Add(child);
+                }
+
+                TreeNode node = new TreeNode(obj.Variable(), children.ToArray())
+                {
+                    Tag = i.engineId
+                };
+
+                if (obj.type == EngineObjectType.GameObject)
+                    node.ImageIndex = 2;
+                if (obj.type == EngineObjectType.Sprite)
+                    node.ImageIndex = 3;
+                if (obj.type == EngineObjectType.Collider)
+                    node.ImageIndex = 4;
+                if (obj.type == EngineObjectType.Emitter)
+                    node.ImageIndex = 5;
+                if (obj.type == EngineObjectType.Script)
+                    node.ImageIndex = 6;
+                if (obj.type == EngineObjectType.Tilemap)
+                    node.ImageIndex = 7;
+                if (obj.type == EngineObjectType.Sound)
+                    node.ImageIndex = 9;
+
+                node.SelectedImageIndex = node.ImageIndex;
+                return node;
+            }
+
+            return null;
+        }
+
         private void hierarchy_ItemDrag(object sender, ItemDragEventArgs e)
         {
             DoDragDrop(e.Item, DragDropEffects.Move);
@@ -419,31 +363,40 @@ namespace Lynx2DEngine
 
         private void hierarchy_DragDrop(object sender, DragEventArgs e)
         {
-            Point targetPoint = hierarchy.PointToClient(new Point(e.X, e.Y));
-
-            TreeNode targetNode = hierarchy.GetNodeAt(targetPoint);
-            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-
-            if (!draggedNode.Equals(targetNode) && 
-                targetNode != null &&
-                targetNode.ImageIndex == 1)
+            try
             {
-                Point item = Engine.scenes[Engine.eSettings.currentScene].hierarchy.GetItemIdentifierWithEngineId((int)draggedNode.Tag);
+                Point targetPoint = hierarchy.PointToClient(new Point(e.X, e.Y));
 
-                if (item.X == -1)
-                {
-                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[(int)targetNode.Tag].AddItem(Engine.scenes[Engine.eSettings.currentScene].hierarchy.items[item.Y]);
-                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.RemoveItem((int)draggedNode.Tag, false);
-                }
-                else
-                {
-                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[(int)targetNode.Tag].AddItem(Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[item.X].content[item.Y]);
-                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[item.X].RemoveItem((int)draggedNode.Tag);
-                }
+                TreeNode targetNode = hierarchy.GetNodeAt(targetPoint);
+                TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
 
-                draggedNode.Remove();
-                targetNode.Nodes.Add(draggedNode);
-                targetNode.Expand();
+                if (!draggedNode.Equals(targetNode) &&
+                    targetNode != null &&
+                    targetNode.ImageIndex == 1 &&
+                    draggedNode.ImageIndex != 1)
+                {
+                    Point item = Engine.scenes[Engine.eSettings.currentScene].hierarchy.GetItemIdentifierWithEngineId((int)draggedNode.Tag);
+
+                    if (item.X == -1)
+                    {
+                        Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[(int)targetNode.Tag].AddItem(Engine.scenes[Engine.eSettings.currentScene].hierarchy.items[item.Y]);
+                        Engine.scenes[Engine.eSettings.currentScene].hierarchy.RemoveItem((int)draggedNode.Tag, false);
+                    }
+                    else
+                    {
+                        Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[(int)targetNode.Tag].AddItem(Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[item.X].content[item.Y]);
+                        Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[item.X].RemoveItem((int)draggedNode.Tag);
+                    }
+
+                    draggedNode.Remove();
+                    targetNode.Nodes.Add(draggedNode);
+                    targetNode.Expand();
+                }
+            }
+            catch (Exception ex)
+            {
+                SetStatus("Could not move hierarchy item", StatusType.Warning);
+                MessageBox.Show(ex.Message, "Lynx2D Engine - Exception");
             }
         }
 
@@ -559,118 +512,157 @@ namespace Lynx2DEngine
             if (hierarchyView == HierarchyState.Scenes && hierarchy.SelectedNode != null)
             {
                 if (e.KeyCode == Keys.Delete)
+                {
                     Engine.RemoveScene((int)hierarchy.SelectedNode.Tag);
+
+                    SetTitle();
+                }
 
                 return;
             }
 
-            if (e.KeyCode == Keys.Delete && hierarchy.SelectedNode != null && Input.YesNo("Are you sure you want to delete '" + hierarchy.SelectedNode.Text + "'?", "Lynx2D Engine - Question"))
+            if (e.KeyCode == Keys.Delete && hierarchy.SelectedNode != null)
             {
-                int imgIndex = hierarchy.SelectedNode.ImageIndex;
-                int tag = (int)hierarchy.SelectedNode.Tag;
+                int imgIndex = hierarchy.SelectedNode.ImageIndex,
+                    tag = (int)hierarchy.SelectedNode.Tag;
 
-                hierarchy.SelectedNode.Remove();
+                TreeNode tn = hierarchy.SelectedNode;
+
+                if (!Input.YesNo("Are you sure you want to delete '" + hierarchy.SelectedNode.Text + "'?", "Lynx2D Engine - Question"))
+                    return;
 
                 if (imgIndex == 1)
                     Engine.scenes[Engine.eSettings.currentScene].hierarchy.RemoveFolderWithIdentifier(tag);
-                else 
+                else
+                {
                     Engine.RemoveEngineObject(tag, true, false);
+
+                    hierarchy.Nodes.Remove(tn);
+                }
             }
 
             if (e.Control && e.KeyCode == Keys.C && hierarchy.SelectedNode != null)
             {
-                if (hierarchy.SelectedNode.ImageIndex == 1)
-                    return;
-
-                copied = Engine.GetEngineObject((int)hierarchy.SelectedNode.Tag);
                 copiedFromScene = Engine.eSettings.currentScene;
 
-                SetStatus("'" + copied.Variable() + "' has been copied.", StatusType.Message);
+                if (hierarchy.SelectedNode.ImageIndex == 1)
+                {
+                    copiedFolder = Engine.scenes[Engine.eSettings.currentScene].hierarchy.folders[(int)hierarchy.SelectedNode.Tag];
+
+                    copied = null;
+
+                    SetStatus("'" + copiedFolder.name + "' has been copied.", StatusType.Message);
+                }
+                else
+                {
+                    copied = Engine.GetEngineObject((int)hierarchy.SelectedNode.Tag);
+
+                    copiedFolder = null;
+
+                    SetStatus("'" + copied.Variable() + "' has been copied.", StatusType.Message);
+                }
             }
 
             if (e.Control && e.KeyCode == Keys.V)
             {
                 e.Handled = true;
-                if (copied == null) return;
+                PasteCopied();
+            }
+        }
 
-                List<int> r;
-                int result = -1;
-                int child = copied.child;
-
-                try
+        private void PasteCopied()
+        {
+            if (copied == null)
+            {
+                if (copiedFolder != null)
                 {
-                    switch (copied.type)
-                    {
-                        case EngineObjectType.GameObject:
-                            r = AddGameObject();
-                            result = r[0];
-                            child = r[1];
-                            break;
-                        case EngineObjectType.Sprite:
-                            result = AddSprite();
-                            break;
-                        case EngineObjectType.Script:
-                            result = AddScript();
-                            break;
-                        case EngineObjectType.Collider:
-                            r = AddCollider();
-                            result = r[0];
-                            child = r[1];
-                            break;
-                        case EngineObjectType.Emitter:
-                            r = AddEmitter();
-                            result = r[0];
-                            child = r[1];
-                            break;
-                        case EngineObjectType.Tilemap:
-                            result = AddTilemap();
-                            break;
-                        case EngineObjectType.Sound:
-                            result = AddSound();
-                            break;
-                    }
+                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.CopyFolder(copiedFromScene, copiedFolder);
 
-                    if (result == -1) return;
-
-                    EngineObject temp = copied.Clone();
-                    EngineObject tempChild = null;
-
-                    if (child != -1)
-                    {
-                        tempChild = Engine.scenes[copiedFromScene].objects[copied.child].Clone();
-
-                        tempChild.parent = result;
-                    }
-
-                    temp.child = child;
-
-                    string copies = "";
-                    int amount = 0;
-                    while (Engine.GetEngineObjectWithVarName(copied.Variable() + copies) != null)
-                    {
-                        amount++;
-
-                        copies = "_" + amount;
-                    }
-
-                    if (copies != "") {
-                        temp.Rename(temp.Variable() + copies);
-                        if (tempChild != null) tempChild.Rename(tempChild.Variable() + copies);
-                    }
-
-                    Engine.SetEngineObject(result, temp);
-                    if (tempChild != null) Engine.SetEngineObject(child, tempChild);
-
-                    SetStatus("'" + temp.Variable() + "' has been pasted.", StatusType.Message);
-
-                    refreshBrowser();
                     UpdateHierarchy();
+                    refreshBrowser();
                 }
-                catch (Exception exc)
+
+                return;
+            }
+
+            List<int> r;
+            int result = -1;
+            int child = copied.child;
+
+            try
+            {
+                switch (copied.type)
                 {
-                    MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                    SetStatus("Exception occurred while pasting engine object.", StatusType.Warning);
+                    case EngineObjectType.GameObject:
+                        r = AddGameObject();
+                        result = r[0];
+                        child = r[1];
+                        break;
+                    case EngineObjectType.Sprite:
+                        result = AddSprite();
+                        break;
+                    case EngineObjectType.Script:
+                        result = AddScript();
+                        break;
+                    case EngineObjectType.Collider:
+                        r = AddCollider();
+                        result = r[0];
+                        child = r[1];
+                        break;
+                    case EngineObjectType.Emitter:
+                        r = AddEmitter();
+                        result = r[0];
+                        child = r[1];
+                        break;
+                    case EngineObjectType.Tilemap:
+                        result = AddTilemap();
+                        break;
+                    case EngineObjectType.Sound:
+                        result = AddSound();
+                        break;
                 }
+
+                if (result == -1) return;
+
+                EngineObject temp = copied.Clone();
+                EngineObject tempChild = null;
+
+                if (child != -1)
+                {
+                    tempChild = Engine.scenes[copiedFromScene].objects[copied.child].Clone();
+
+                    tempChild.parent = result;
+                }
+
+                temp.child = child;
+
+                string copies = "";
+                int amount = 0;
+                while (Engine.GetEngineObjectWithVarName(copied.Variable() + copies) != null)
+                {
+                    amount++;
+
+                    copies = "_" + amount;
+                }
+
+                if (copies != "")
+                {
+                    temp.Rename(temp.Variable() + copies);
+                    if (tempChild != null) tempChild.Rename(tempChild.Variable() + copies);
+                }
+
+                Engine.SetEngineObject(result, temp);
+                if (tempChild != null) Engine.SetEngineObject(child, tempChild);
+
+                SetStatus("'" + temp.Variable() + "' has been pasted.", StatusType.Message);
+
+                refreshBrowser();
+                UpdateHierarchy();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                SetStatus("Exception occurred while pasting engine object.", StatusType.Warning);
             }
         }
 
@@ -765,27 +757,6 @@ namespace Lynx2DEngine
         private void removeSceneToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Engine.RemoveScene(Engine.eSettings.currentScene);
-        }
-
-        private void addLinkToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (Engine.scenes.Length == 1)
-            {
-                MessageBox.Show("Links can only be added when there is more than one scene available.", "Lynx2D Engine - Exception");
-                return;
-            }
-
-            Point location = Input.HierarchySelection("Add Link", "Select an object in another scene to link to from the current scene.");
-
-            if (location.X != -1 && location.Y != -1)
-            {
-                Engine.scenes[Engine.eSettings.currentScene].hierarchy.AddLinkedItem(location.X, location.Y);
-
-                if (!SwitchHierarchyView(HierarchyState.Objects))
-                    UpdateHierarchy();
-
-                refreshBrowser();
-            }
         }
         #endregion
 

@@ -79,7 +79,6 @@
             this.hierarchyScenes = new System.Windows.Forms.Button();
             this.hierarchyObjects = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.addLinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -187,7 +186,6 @@
             // 
             this.sceneToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addSceneToolStripMenuItem,
-            this.addLinkToolStripMenuItem,
             this.removeSceneToolStripMenuItem});
             this.sceneToolStripMenuItem.Enabled = false;
             this.sceneToolStripMenuItem.Name = "sceneToolStripMenuItem";
@@ -545,13 +543,6 @@
             this.timer2.Interval = 1500;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // addLinkToolStripMenuItem
-            // 
-            this.addLinkToolStripMenuItem.Name = "addLinkToolStripMenuItem";
-            this.addLinkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addLinkToolStripMenuItem.Text = "Add Link";
-            this.addLinkToolStripMenuItem.Click += new System.EventHandler(this.addLinkToolStripMenuItem_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -627,7 +618,6 @@
         private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
         private System.Windows.Forms.Timer timer2;
-        private System.Windows.Forms.ToolStripMenuItem addLinkToolStripMenuItem;
     }
 }
 

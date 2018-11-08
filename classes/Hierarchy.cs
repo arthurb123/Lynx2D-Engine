@@ -15,14 +15,58 @@ namespace Lynx2DEngine
             items.Add(new HierarchyItem(engineId));
         }
 
-        public void AddLinkedItem(int scene, int engineId)
-        {
-            items.Add(new HierarchyItem(scene, engineId));
-        }
-
         public void AddFolder()
         {
-            folders.Add(new HierarchyFolder("New Folder"));
+            folders.Add(new HierarchyFolder(folders.Count, "New Folder"));
+        }
+
+        public void CopyFolder(int prevScene, HierarchyFolder f)
+        {
+            HierarchyFolder cf = new HierarchyFolder(folders.Count, f.name);
+
+            foreach (HierarchyItem i in f.content)
+            {
+                EngineObject temp = Engine.scenes[prevScene].objects[i.engineId].Clone();
+                if (temp.parent != -1)
+                    continue;
+
+                EngineObject tempChild = null;
+
+                if (temp.child != -1)
+                    tempChild = Engine.scenes[prevScene].objects[temp.child].Clone();
+
+                string copies = "";
+                int amount = 0;
+                while (Engine.GetEngineObjectWithVarName(temp.Variable() + copies) != null)
+                {
+                    amount++;
+
+                    copies = "_" + amount;
+                }
+
+                if (copies != "")
+                {
+                    temp.Rename(temp.Variable() + copies);
+                    if (tempChild != null) tempChild.Rename(tempChild.Variable() + copies);
+                }
+
+                int result = 0;
+
+                if (temp.child == -1) result = Engine.AddExistingEngineObject(temp);
+                else
+                {
+                    Point r = Engine.AddExistingEngineObjectWithChild(temp, tempChild);
+
+                    Engine.scenes[Engine.eSettings.currentScene].objects[r.X].child = r.Y;
+                    Engine.scenes[Engine.eSettings.currentScene].objects[r.Y].parent = r.X;
+
+                    result = r.X;
+                }
+
+                cf.AddItem(new HierarchyItem(result));
+            }
+
+            folders.Add(cf);
         }
 
         public void RemoveItem(int engineId, bool checkFolders)
@@ -57,10 +101,15 @@ namespace Lynx2DEngine
                 foreach (HierarchyItem i in items)
                     Engine.RemoveEngineObject(i.engineId, false, false);
 
+                folders.RemoveAt(id);
+
                 Engine.form.refreshBrowser();
             }
             else
-                foreach (HierarchyItem hi in folders[id].content)
+            {
+                HierarchyItem[] items = folders[id].content.ToArray();
+
+                foreach (HierarchyItem hi in items)
                 {
                     int i = hi.engineId;
 
@@ -68,7 +117,10 @@ namespace Lynx2DEngine
                     AddItem(i);
                 }
 
-            folders.RemoveAt(id);
+                folders.RemoveAt(id);
+            }
+
+            Engine.form.UpdateHierarchy();
         }
 
         public int GetFolderIdentifierWithName(string name)
@@ -129,43 +181,18 @@ namespace Lynx2DEngine
 
             return id;
         }
-
-        public HierarchyItem[] GetLinkedItemsInScene()
-        {
-            List<HierarchyItem> result = new List<HierarchyItem>();
-
-            foreach (HierarchyFolder f in folders)
-                foreach (HierarchyItem i in f.content)
-                    if (i.isLink)
-                        result.Add(i);
-
-            foreach (HierarchyItem i in items)
-                if (i.isLink)
-                    result.Add(i);
-
-            return result.ToArray();
-        }
     }
 
     [Serializable]
     public class HierarchyItem
     {
-        public bool isLink = false;
         public int engineId;
-        public int scene;
 
         public HierarchyItem(int engineId)
         {
             this.engineId = engineId;
         }
 
-        public HierarchyItem(int scene, int engineId)
-        {
-            this.scene = scene;
-            this.engineId = engineId;
-
-            isLink = true;
-        }
     }
 
     [Serializable]
@@ -175,8 +202,9 @@ namespace Lynx2DEngine
         public string name;
         public int identifier;
 
-        public HierarchyFolder(string name)
+        public HierarchyFolder(int id, string name)
         {
+            identifier = id;
             Rename(name);
         }
 
