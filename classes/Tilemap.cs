@@ -39,7 +39,7 @@ namespace Lynx2DEngine
             Tilemapper.SetCurrentTile();
         }
 
-        public void SetTile(int x, int y, Tile t)
+        public void SetTile(int x, int y, Tile t, bool converts)
         {
             x -= this.x;
             y -= this.y;
@@ -58,10 +58,29 @@ namespace Lynx2DEngine
                     map[x, y].r == Tilemapper.selected.r)
                     return;
 
-                t.build = true;
-                map[x, y] = t;
+                if (t.cW == tilesize && t.cH == tilesize)
+                {
+                    t.build = true;
+                    map[x, y] = t;
+                }
+                else
+                    for (int yy = 0; yy < t.cH / tilesize; yy++)
+                        for (int xx = 0; xx < t.cW / tilesize; xx++)
+                        {
+                            Tile tt = new Tile()
+                            {
+                                sprite = t.sprite,
+                                cX = t.cX + xx * tilesize,
+                                cY = t.cY + yy * tilesize,
+                                cW = tilesize,
+                                cH = tilesize,
+                                build = true
+                            };
 
-                Tilemapper.ConvertAndSetMap(this);
+                            SetTile(x + xx, y + yy, tt, false);
+                        }
+
+                if (converts) Tilemapper.ConvertAndSetMap(this);
             }
             catch (Exception e)
             {

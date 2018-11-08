@@ -321,7 +321,7 @@ namespace Lynx2DEngine
 
             selected.r = r;
 
-            maps[editing].SetTile(x, y, selected);
+            maps[editing].SetTile(x, y, selected, true);
         }
 
         public static void RemoveTile(int x, int y)

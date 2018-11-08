@@ -454,8 +454,8 @@ function Lynx2D() {
         this.CONTEXT.CANVAS.id = 'lynx-canvas';
         this.CONTEXT.CANVAS.style = 'background-color: #282828; position: absolute; top: 0px; left: 0px;'
         window.onresize = function() {
-            document.getElementById('lynx-canvas').width = self.innerWidth;
-            document.getElementById('lynx-canvas').height = self.innerHeight;
+            lx.CONTEXT.CANVAS.width = self.innerWidth;
+            lx.CONTEXT.CANVAS.height = self.innerHeight;
         };
 
         //Setup graphics
@@ -477,6 +477,20 @@ function Lynx2D() {
         
         //Create standard controller
         if (this.CONTEXT.CONTROLLER == undefined) this.CreateController();
+        
+        return this;
+    }
+    
+    this.Background = function(color) {
+        if (this.CONTEXT.CANVAS == undefined) {
+            if (color != undefined) return this;
+            else return;
+        }
+        
+        if (color == undefined) 
+            return this.CONTEXT.CANVAS.style.backgroundColor;
+        else
+            this.CONTEXT.CANVAS.style.backgroundColor = color;
         
         return this;
     }

@@ -16,8 +16,10 @@ namespace Lynx2DEngine.forms
 
         private Point tilesetOffset = new Point(0, 0);
         private bool dragging = false;
+        private bool resizing = false;
         private Point oldMouse = default(Point);
         private Point selected = new Point(-1, -1);
+        private Size selectedSize = new Size(1, 1);
 
         public TilemapForm()
         {
@@ -164,7 +166,7 @@ namespace Lynx2DEngine.forms
                 g.DrawRectangle(Pens.Silver, new Rectangle(cursor.X * tm.scale * tm.tilesize + tilesetOffset.X, cursor.Y * tm.scale * tm.tilesize + tilesetOffset.Y, tm.tilesize*tm.scale, tm.tilesize*tm.scale));
 
                 if (selected.X != -1 && selected.Y != -1)
-                    g.DrawRectangle(Pens.WhiteSmoke, new Rectangle(selected.X * tm.tilesize * tm.scale + tilesetOffset.X, selected.Y * tm.tilesize * tm.scale + tilesetOffset.Y, tm.tilesize * tm.scale, tm.tilesize * tm.scale));
+                    g.DrawRectangle(Pens.WhiteSmoke, new Rectangle(selected.X * tm.tilesize * tm.scale + tilesetOffset.X, selected.Y * tm.tilesize * tm.scale + tilesetOffset.Y, selectedSize.Width * tm.tilesize * tm.scale, selectedSize.Height * tm.tilesize * tm.scale));
             }
             catch (Exception ex)
             {
@@ -188,7 +190,7 @@ namespace Lynx2DEngine.forms
             {
                 selected = GetCursorTile();
 
-                Tilemapper.SelectTile(tm.id, selected.X * tm.tilesize, selected.Y * tm.tilesize, tm.tilesize, tm.tilesize);
+                Tilemapper.SelectTile(tm.id, selected.X * tm.tilesize, selected.Y * tm.tilesize, selectedSize.Width*tm.tilesize, selectedSize.Width * tm.tilesize);
             }
             catch (Exception ex)
             {
@@ -260,6 +262,12 @@ namespace Lynx2DEngine.forms
                 oldMouse = tileSelection.PointToClient(MousePosition);
                 dragging = true;
             }
+            else
+            {
+                oldMouse = tileSelection.PointToClient(MousePosition);
+                resizing = true;
+                selectedSize = new Size(1, 1);
+            }
         }
 
         private void tileSelection_MouseMove(object sender, MouseEventArgs e)
@@ -271,11 +279,21 @@ namespace Lynx2DEngine.forms
 
                 oldMouse = new Point(e.X, e.Y);
             }
+
+            if (resizing)
+            {
+                selectedSize.Width = (int)Math.Floor((float)Math.Abs(e.X - oldMouse.X) / (tm.tilesize * tm.scale)+.5)+1;
+                selectedSize.Height = (int)Math.Floor((float)Math.Abs(e.Y - oldMouse.Y) / (tm.tilesize * tm.scale)+.5) + 1;
+            }
         }
 
         private void tileSelection_MouseUp(object sender, MouseEventArgs e)
         {
             dragging = false;
+            resizing = false;
+
+            if (selectedSize.Width != 1 || selectedSize.Height != -1)
+                Tilemapper.SelectTile(tm.id, selected.X * tm.tilesize, selected.Y * tm.tilesize, selectedSize.Width * tm.tilesize, selectedSize.Width * tm.tilesize);
         }
 
         private void label2_Click(object sender, EventArgs e)

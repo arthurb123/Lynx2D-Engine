@@ -528,7 +528,7 @@ namespace Lynx2DEngine
 
                 TreeNode tn = hierarchy.SelectedNode;
 
-                if (!Input.YesNo("Are you sure you want to delete '" + hierarchy.SelectedNode.Text + "'?", "Lynx2D Engine - Question"))
+                if (!Input.YesNo("Are you sure you want to delete '" + tn.Text + "'?", "Lynx2D Engine - Question"))
                     return;
 
                 if (imgIndex == 1)

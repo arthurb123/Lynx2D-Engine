@@ -1,3 +1,4 @@
++ Tilemaps now supports multi select
 + Improved folder deletion
 + Folders can now be copied and pasted
 + Various bug fixes
