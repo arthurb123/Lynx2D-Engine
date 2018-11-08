@@ -1,1 +1,0 @@
-﻿lx.Initialize('test'); lx.Smoothing(false); lx.Start(60);
