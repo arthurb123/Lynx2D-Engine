@@ -90,19 +90,27 @@ namespace Lynx2DEngine
             }
         }
 
-        public void RemoveTile(int x, int y)
+        public void RemoveTile(int x, int y, int w, int h, bool converts)
         {
             x -= this.x;
             y -= this.y;
 
             try
             {
-                if (map[x, y] != null && !map[x, y].build)
-                    return;
+                if (w == tilesize && h == tilesize)
+                {
+                    if (map[x, y] != null && !map[x, y].build)
+                        return;
 
-                map[x, y] = new Tile();
+                    map[x, y] = new Tile();
+                }
+                else
+                    for (int yy = 0; yy < h / tilesize; yy++)
+                        for (int xx = 0; xx < w / tilesize; xx++)
+                            RemoveTile(x + xx, y + yy, tilesize, tilesize, false);
 
-                Tilemapper.ConvertAndSetMap(this);
+                if (converts)
+                    Tilemapper.ConvertAndSetMap(this);
             }
             catch (Exception e)
             {

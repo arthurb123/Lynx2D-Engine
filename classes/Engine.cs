@@ -914,6 +914,7 @@ namespace Lynx2DEngine
                 rotation = rotation,
 
                 code = code,
+                tileMap = tileMap,
 
                 unique = unique
             };

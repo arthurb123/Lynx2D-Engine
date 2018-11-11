@@ -27,8 +27,12 @@ namespace Lynx2DEngine
                 return;
             }
 
-            if (needsName && cur != string.Empty)
-                RequestSave();
+            if (cur != string.Empty)
+            {
+                RemoveEngineHTML();
+
+                if (needsName) RequestSave();
+            }
 
             string[] projects = Directory.GetDirectories("projects/");
             for (int i = 0; i < projects.Length; i++)
@@ -53,13 +57,14 @@ namespace Lynx2DEngine
 
             try
             {
-                gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(true); lx.Start(60);";
-
                 if (!Engine.LoadEngineState())
                 {
                     cur = string.Empty;
                     return;
                 }
+
+                gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(true); lx.Start(60);";
+                InstallEngineHTML();
 
                 form.createBrowser();
 
@@ -184,7 +189,7 @@ namespace Lynx2DEngine
             {
                 form.SetStatus("'" + cur + "' has been exported.", Main.StatusType.Message);
 
-                form.showProjectToolStripMenuItem_Click(form, new EventArgs());
+                Manager.OpenDirectory(@WorkDirectory());
             }
         }
 
@@ -222,16 +227,6 @@ namespace Lynx2DEngine
                 Manager.CheckDirectory("projects/" + cur + "/res/lynx2d", true);
 
                 ExportHTML();
-                
-                using (FileStream fs = new FileStream("projects/" + cur + "/engine.html", FileMode.Create))
-                {
-                    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
-                    {
-                        w.Write("<html>\n<head>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='#282828'>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  </body>\n</html>");
-                        w.Dispose();
-                        fs.Dispose();
-                    }
-                }
 
                 using (FileStream fs = new FileStream("projects/" + cur + "/data/game.js", FileMode.Create))
                 {
@@ -361,6 +356,30 @@ namespace Lynx2DEngine
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
                 form.SetStatus("Exception occurred while reloading resources", Main.StatusType.Warning);
             }
+        }
+
+        public static void InstallEngineHTML()
+        {
+            if (File.Exists("projects/" + cur + "/engine.html"))
+                return;
+
+            using (FileStream fs = new FileStream("projects/" + cur + "/engine.html", FileMode.Create))
+            {
+                using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                {
+                    w.Write("<html>\n<head>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='#282828'>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  </body>\n</html>");
+                    w.Dispose();
+                    fs.Dispose();
+                }
+            }
+        }
+        
+        public static void RemoveEngineHTML()
+        {
+            if (!File.Exists("projects/" + cur + "/engine.html"))
+                return;
+
+            File.Delete("projects/" + cur + "/engine.html");
         }
     }
 }

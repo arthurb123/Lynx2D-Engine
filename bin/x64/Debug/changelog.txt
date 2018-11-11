@@ -1,4 +1,5 @@
-+ Tilemaps now supports multi select
-+ Improved folder deletion
-+ Folders can now be copied and pasted
-+ Various bug fixes
++ Tilemap multi selection now also supports 
+    tile deletion
++ Projects now only have an engine.html 
+    file when loaded
++ Fixed tilemap copying crash

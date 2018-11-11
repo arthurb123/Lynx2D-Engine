@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Lynx2DEngine
 {
@@ -32,6 +34,19 @@ namespace Lynx2DEngine
                 filesFound.AddRange(Directory.GetFiles(searchFolder, String.Format("*.{0}", filter), searchOption));
             }
             return filesFound.ToArray();
+        }
+
+        public static void OpenDirectory(string path)
+        {
+            try
+            {
+                Process.Start(@Project.WorkDirectory());
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                Engine.form.SetStatus("Exception occurred while opening directory.", Main.StatusType.Warning);
+            }
         }
     }
 }

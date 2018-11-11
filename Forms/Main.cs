@@ -572,25 +572,24 @@ namespace Lynx2DEngine
 
         private void PasteCopied()
         {
-            if (copied == null)
-            {
-                if (copiedFolder != null)
+            try { 
+                if (copied == null)
                 {
-                    Engine.scenes[Engine.eSettings.currentScene].hierarchy.CopyFolder(copiedFromScene, copiedFolder);
+                    if (copiedFolder != null)
+                    {
+                        Engine.scenes[Engine.eSettings.currentScene].hierarchy.CopyFolder(copiedFromScene, copiedFolder);
 
-                    UpdateHierarchy();
-                    refreshBrowser();
+                        UpdateHierarchy();
+                        refreshBrowser();
+                    }
+
+                    return;
                 }
 
-                return;
-            }
+                List<int> r;
+                int result = -1;
+                int child = copied.child;
 
-            List<int> r;
-            int result = -1;
-            int child = copied.child;
-
-            try
-            {
                 switch (copied.type)
                 {
                     case EngineObjectType.GameObject:
@@ -627,6 +626,9 @@ namespace Lynx2DEngine
                 EngineObject temp = copied.Clone();
                 EngineObject tempChild = null;
 
+                if (temp.type == EngineObjectType.Tilemap)
+                    temp.tileMap = Engine.GetEngineObject(result).tileMap;
+
                 if (child != -1)
                 {
                     tempChild = Engine.scenes[copiedFromScene].objects[copied.child].Clone();
@@ -662,7 +664,7 @@ namespace Lynx2DEngine
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while pasting engine object.", StatusType.Warning);
+                SetStatus("Exception occurred while pasting copied object(s).", StatusType.Warning);
             }
         }
 
@@ -719,18 +721,9 @@ namespace Lynx2DEngine
             Project.Save();
         }
 
-
         public void showProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Process.Start(@Project.WorkDirectory());
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred trying to open project.", StatusType.Warning);
-            }
+            Manager.OpenDirectory(@Project.WorkDirectory());
         }
 
         private void lightToolStripMenuItem_Click(object sender, EventArgs e)

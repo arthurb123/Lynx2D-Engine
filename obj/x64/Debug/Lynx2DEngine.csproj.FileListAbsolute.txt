@@ -292,8 +292,6 @@ C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\CefSharp.XML
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\CefSharp.WinForms.dll
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\CefSharp.WinForms.pdb
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\CefSharp.WinForms.XML
-C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\resources\pointer.png
-C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\resources\sprite.png
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.exe.config
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.exe.manifest
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\Lynx2DEngine.application
@@ -430,7 +428,6 @@ D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.BuildSettingsForm.resources
 D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.EmitterForm.resources
 D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.GridForm.resources
 D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.TilemapForm.resources
-C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\bin\x64\Debug\resources\particle.png
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.EmitterForm.resources
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.TilemapForm.resources
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ExportSettingsForm.resources
@@ -545,3 +542,6 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.exe.mani
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.application
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.exe
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.pdb
+C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ChangelogForm.resources
+C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.SoundForm.resources
+C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.SelectionForm.resources

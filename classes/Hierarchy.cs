@@ -63,6 +63,9 @@ namespace Lynx2DEngine
                     result = r.X;
                 }
 
+                if (temp.type == EngineObjectType.Tilemap)
+                    temp.tileMap = Tilemapper.AddMap(Engine.scenes[prevScene].tilemaps[temp.tileMap]);
+
                 cf.AddItem(new HierarchyItem(result));
             }
 
