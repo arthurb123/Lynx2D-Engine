@@ -108,6 +108,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Backup.cs" />
     <Compile Include="Classes\Camera.cs" />
     <Compile Include="Classes\Feed.cs" />
     <Compile Include="Classes\Grid.cs" />

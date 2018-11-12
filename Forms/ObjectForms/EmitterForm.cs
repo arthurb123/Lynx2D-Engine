@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine.forms
@@ -164,16 +157,22 @@ namespace Lynx2DEngine.forms
 
         private void maxX_ValueChanged(object sender, EventArgs e)
         {
+            maxX.Text.Replace(",", ".");
+
             SetSetup();
         }
 
         private void minY_ValueChanged(object sender, EventArgs e)
         {
+            minY.Text.Replace(",", ".");
+
             SetSetup();
         }
 
         private void maxY_ValueChanged(object sender, EventArgs e)
         {
+            maxY.Text.Replace(",", ".");
+
             SetSetup();
         }
 

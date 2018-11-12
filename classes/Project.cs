@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Lynx2DEngine.Classes;
+using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine
@@ -65,6 +63,9 @@ namespace Lynx2DEngine
 
                 gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(true); lx.Start(60);";
                 InstallEngineHTML();
+
+                Backup.Disable();
+                Backup.Enable();
 
                 form.createBrowser();
 

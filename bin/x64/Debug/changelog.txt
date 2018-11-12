@@ -3,3 +3,4 @@
 + Projects now only have an engine.html 
     file when loaded
 + Fixed tilemap copying crash
++ Projects now backup every five minutes
