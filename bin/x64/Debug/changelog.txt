@@ -1,6 +1,8 @@
-+ Tilemap multi selection now also supports 
-    tile deletion
-+ Projects now only have an engine.html 
++ Tilemaps now also support multi tile 
+    deletion
++ Projects now only contain a engine.html 
     file when loaded
++ Projects now backup every five minutes,
+    these backups can be restored at all time
 + Fixed tilemap copying crash
-+ Projects now backup every five minutes
++ Various bug fixes

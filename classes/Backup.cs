@@ -43,8 +43,12 @@ namespace Lynx2DEngine.Classes
             {
                 Manager.CheckDirectory("projects/" + Project.Name() + "/backup/", true);
 
-                string time = DateTime.Now.ToString("dddd dd-HH.mm");
+                string time = DateTime.Now.ToString("dddd dd - HH.mm");
+                string fileName = "projects/" + Project.Name() + "/backup/" + time + ".bin";
                 DirectoryInfo dir = new DirectoryInfo("projects/" + Project.Name() + "/backup");
+
+                if (File.Exists(fileName))
+                    return;
 
                 if (dir.GetFiles().Length > 2)
                 {
@@ -55,12 +59,12 @@ namespace Lynx2DEngine.Classes
                     File.Delete(oldestFile.FullName);
                 }
 
-                File.Copy("projects/" + Project.Name() + "/state.bin", "projects/" + Project.Name() + "/backup/state (" + time + ").bin");
+                File.Copy("projects/" + Project.Name() + "/state.bin", fileName, true);
             }
             catch
             {
-                MessageBox.Show("An exception occurred while backing up the project state. Backup has been disabled.", "Lynx2D Engine - Exception");
                 Disable();
+                MessageBox.Show("An exception occurred while backing up the project state. Backup has been disabled.", "Lynx2D Engine - Exception");
             }
         }
     }

@@ -12,7 +12,7 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static readonly string version = "0.5.4";
+        private static readonly string version = "0.5.5";
         private static readonly string stage = "beta";
 
         private static bool extract = true;

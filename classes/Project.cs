@@ -55,14 +55,18 @@ namespace Lynx2DEngine
 
             try
             {
+                InstallEngineHTML();
+
                 if (!Engine.LoadEngineState())
                 {
                     cur = string.Empty;
+
+                    RemoveEngineHTML();
+
                     return;
                 }
 
                 gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(true); lx.Start(60);";
-                InstallEngineHTML();
 
                 Backup.Disable();
                 Backup.Enable();
@@ -101,6 +105,8 @@ namespace Lynx2DEngine
 
             if (Manager.CheckDirectory("projects/" + cur, false))
             {
+                MessageBox.Show("Project '" + cur + "' already exists.", "Lynx2D Engine - Exception");
+
                 Create();
                 return;
             }
@@ -377,7 +383,9 @@ namespace Lynx2DEngine
         
         public static void RemoveEngineHTML()
         {
-            if (!File.Exists("projects/" + cur + "/engine.html"))
+            if (cur == string.Empty ||
+                cur == "HAS_BEEN_CLOSED" || 
+                !File.Exists("projects/" + cur + "/engine.html"))
                 return;
 
             File.Delete("projects/" + cur + "/engine.html");

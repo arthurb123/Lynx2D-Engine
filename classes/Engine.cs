@@ -471,9 +471,7 @@ namespace Lynx2DEngine
 
         public static bool LoadEngineState()
         {
-            scenes = new Scene[0];
-            bSettings = new BuildSettings();
-            eSettings = new EngineSettings();
+            ClearEngine();
 
             try
             {

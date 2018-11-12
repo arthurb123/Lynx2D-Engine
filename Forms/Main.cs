@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using CefSharp;
@@ -100,6 +101,8 @@ namespace Lynx2DEngine
             if (!Feed.wantsToExtract)
                 Project.RequestSave();
 
+            Project.RemoveEngineHTML();
+
             Cef.Shutdown();
         }
 
@@ -118,6 +121,7 @@ namespace Lynx2DEngine
             buildToolStripMenuItem.Enabled = available;
             reloadFrameworkToolStripMenuItem.Enabled = available;
             reloadStandardResourcesToolStripMenuItem.Enabled = available;
+            restoreBackupToolStripMenuItem.Enabled = available;
             sceneToolStripMenuItem.Enabled = available;
             exportToolStripMenuItem.Enabled = available;
 
@@ -1157,6 +1161,40 @@ namespace Lynx2DEngine
         private void showChangelogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Feed.ShowChangelog(false);
+        }
+
+        private void restoreBackupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!Directory.Exists("projects/" + Project.Name() + "/backup/"))
+                {
+                    MessageBox.Show("No backups could be found to restore.", "Lynx2D Engine - Exception");
+                    return;
+                }
+
+                string[] backups = Manager.GetFilesFrom("projects/" + Project.Name() + "/backup/", new string[] { "bin" }, false);
+                if (backups.Length == 0)
+                {
+                    MessageBox.Show("No backups could be found to restore.", "Lynx2D Engine - Exception");
+                    return;
+                }
+
+                for (int i = 0; i < backups.Length; i++)
+                    backups[i] = backups[i].Substring(17 + Project.Name().Length, backups[i].Length - (21 + Project.Name().Length));
+
+                string backup = Input.Selection("Load an existing backup for '" + Project.Name() + "'", "Load Backup", backups);
+                
+                File.Copy("projects/" + Project.Name() + "/backup/" + backup + ".bin", "projects/" + Project.Name() + "/state.bin", true);
+
+                Engine.LoadEngineState();
+
+                SetStatus("Backup '" + backup + "' has been restored.", StatusType.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not restore backup: " + ex.Message, "Lynx2D Engine - Exception");
+            }
         }
         #endregion
 
