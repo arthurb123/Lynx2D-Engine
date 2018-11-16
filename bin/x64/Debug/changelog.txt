@@ -1,7 +1,12 @@
-+ Engine items can now be exported and imported for
-   use across various projects
++ Engine items can now be exported and imported 
+   for use across projects. These .lx2d packages 
+   also hold all necessary generic file data
+
 + Hierarchy drag and drop support for generic files
    (png, mp3, js, etc.)
-+ Backup bug fix
+
++ Fixed multiple tile placing bug
+
++ Fixed backup bug
+
 + Other small bug fixes
-    

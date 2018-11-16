@@ -78,7 +78,7 @@ namespace Lynx2DEngine
                                 build = true
                             };
 
-                            SetTile(x + xx, y + yy, tt, false);
+                            SetTile(x + this.x + xx, y + this.y + yy, tt, false);
                         }
 
                 if (converts) Tilemapper.ConvertAndSetMap(this);

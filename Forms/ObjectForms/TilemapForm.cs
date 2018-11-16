@@ -293,7 +293,7 @@ namespace Lynx2DEngine.forms
             resizing = false;
 
             if (selectedSize.Width != 1 || selectedSize.Height != -1)
-                Tilemapper.SelectTile(tm.id, selected.X * tm.tilesize, selected.Y * tm.tilesize, selectedSize.Width * tm.tilesize, selectedSize.Width * tm.tilesize);
+                Tilemapper.SelectTile(tm.id, selected.X * tm.tilesize, selected.Y * tm.tilesize, selectedSize.Width * tm.tilesize, selectedSize.Height * tm.tilesize);
         }
 
         private void label2_Click(object sender, EventArgs e)
