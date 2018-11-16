@@ -114,6 +114,7 @@ namespace Lynx2DEngine
             restoreBackupToolStripMenuItem.Enabled = available;
             sceneToolStripMenuItem.Enabled = available;
             exportToolStripMenuItem.Enabled = available;
+            managementToolStripMenuItem.Enabled = available;
 
             hierarchyObjects.Visible = available;
             hierarchyScenes.Visible = available;
@@ -144,7 +145,7 @@ namespace Lynx2DEngine
                        name = file.Substring(file.LastIndexOf('\\')+1, file.Length - ext.Length - file.LastIndexOf('\\') - 1),
                        dest;
 
-                int id;
+                int id, done = 0;
 
                 switch (ext)
                 {
@@ -162,8 +163,8 @@ namespace Lynx2DEngine
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].Rename(name);
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].source = dest;
 
-                        refreshBrowser();
-                        UpdateHierarchy();
+                        SetStatus("Imported Sprite from '" + name + ext + "'", StatusType.Message);
+                        done++;
 
                         break;
                     case ".mp3":
@@ -179,8 +180,8 @@ namespace Lynx2DEngine
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].Rename(name);
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].source = dest;
 
-                        refreshBrowser();
-                        UpdateHierarchy();
+                        SetStatus("Imported Sound from '" + name + ext + "'", StatusType.Message);
+                        done++;
 
                         break;
                     case ".txt":
@@ -195,10 +196,25 @@ namespace Lynx2DEngine
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].Rename(name);
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].code = File.ReadAllText("projects/" + Project.Name() + "/" + dest);
 
-                        refreshBrowser();
-                        UpdateHierarchy();
+                        SetStatus("Imported Script from '" + name + ext + "'", StatusType.Message);
+                        done++;
 
                         break;
+                    case ".lx2d":
+                        //Lynx2D Engine Object
+                        Engine.ImportEngineObject(file);
+                        done++;
+
+                        break;
+                    default:
+                        MessageBox.Show("This file format is not supported and can not be imported.", "Lynx2D Engine - Exception");
+                        break;
+                }
+
+                if (done != 0)
+                {
+                    UpdateHierarchy();
+                    refreshBrowser();
                 }
             }
         }
@@ -436,7 +452,10 @@ namespace Lynx2DEngine
 
         private void hierarchy_DragEnter(object sender, DragEventArgs e)
         {
-            e.Effect = DragDropEffects.Move;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.Move;
         }
 
         private void hierarchy_DragDrop(object sender, DragEventArgs e)
@@ -819,6 +838,35 @@ namespace Lynx2DEngine
         private void darkToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadTheme(Theme.Dark);
+        }
+
+        private void exportFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Point result = Input.HierarchySelection("Export", "Select an engine item to export");
+
+            if (result.X == -1 && result.Y == -1)
+                return;
+
+            Engine.SaveEngineObject(result.X, result.Y);
+        }
+
+        private void importFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Lynx2D Item|*.lx2d";
+            ofd.Title = "Import a Lynx2D item";
+            ofd.ShowDialog();
+
+            if (ofd.FileName == "" && ofd.FileNames.Length == 0)
+                return;
+
+            if (ofd.FileNames.Length != 0)
+                foreach (string file in ofd.FileNames)
+                    Engine.ImportEngineObject(file);
+            else Engine.ImportEngineObject(ofd.FileName);
+
+            UpdateHierarchy();
+            refreshBrowser();
         }
         #endregion
 

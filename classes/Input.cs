@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using Lynx2DEngine.InputForms;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Lynx2DEngine
 {
@@ -33,6 +35,15 @@ namespace Lynx2DEngine
             temp.SetSelectionContent(content);
 
             return temp.ShowDialog() == DialogResult.OK ? temp.Value() : "HAS_BEEN_CLOSED";
+        }
+
+        public static Point HierarchySelection(string text, string caption)
+        {
+            HierarchySelectionForm temp = new HierarchySelectionForm();
+            temp.SetTitle(text);
+            temp.SetCaption(caption);
+
+            return temp.ShowDialog() == DialogResult.OK ? temp.Value() : new Point(-1, -1);
         }
     }
 }

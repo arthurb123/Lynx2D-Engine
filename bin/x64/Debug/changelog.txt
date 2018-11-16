@@ -1,4 +1,7 @@
++ Engine items can now be exported and imported for
+   use across various projects
 + Hierarchy drag and drop support for generic files
    (png, mp3, js, etc.)
-+ Couple of bug fixes
++ Backup bug fix
++ Other small bug fixes
     

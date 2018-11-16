@@ -545,3 +545,4 @@ C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.pdb
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ChangelogForm.resources
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.SoundForm.resources
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.SelectionForm.resources
+C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.InputForms.HierarchySelectionForm.resources

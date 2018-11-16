@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine
@@ -118,6 +119,18 @@ namespace Lynx2DEngine
 
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
             }
+        }
+
+        public string[] GetUsedSprites()
+        {
+            List<string> used = new List<string>();
+
+            foreach (Tile t in map)
+                if (t != null && 
+                    t.build && 
+                    !used.Contains(t.sprite)) used.Add(t.sprite);
+
+            return used.ToArray();
         }
     }
 

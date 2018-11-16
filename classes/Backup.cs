@@ -54,7 +54,7 @@ namespace Lynx2DEngine.Classes
                 {
                     FileInfo oldestFile = dir.GetFiles()
                                  .OrderByDescending(f => f.LastWriteTime)
-                                 .First();
+                                 .Last();
 
                     File.Delete(oldestFile.FullName);
                 }

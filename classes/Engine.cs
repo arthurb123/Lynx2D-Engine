@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace Lynx2DEngine
 {
@@ -357,6 +358,14 @@ namespace Lynx2DEngine
             return null;
         }
 
+        public static EngineObject GetEngineObjectWithVarNameInScene(int scene, string variableName)
+        {
+            foreach (EngineObject obj in scenes[scene].objects)
+                if (obj != null && obj.Variable() == variableName) return obj;
+
+            return null;
+        }
+
         public static EngineObject[] GetEngineObjects()
         {
             return scenes[eSettings.currentScene].objects;
@@ -387,6 +396,196 @@ namespace Lynx2DEngine
                 MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
                 form.SetStatus("Exception occurred while saving engine state.", Main.StatusType.Warning);
             }
+        }
+
+        public static void SaveEngineObject(int scene, int engineId)
+        {
+            List<EngineObject> eol = new List<EngineObject>() {
+                scenes[scene].objects[engineId].Clone()
+            };
+
+            string tempEO = "projects/" + Project.Name() + "/item.eo",
+                   tempTM = "projects/" + Project.Name() + "/item.tm";
+
+            try
+            {
+                //Save Dialog
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Lynx2D Item|*.lx2d";
+                sfd.Title = "Export '" + eol[0].Variable() + "' as a Lynx2D item";
+                sfd.ShowDialog();
+
+                if (sfd.FileName == "")
+                    return;
+                else if (File.Exists(sfd.FileName))
+                    File.Delete(sfd.FileName);
+
+                //If tilemap, create tilemap object
+                if (eol[0].type == EngineObjectType.Tilemap)
+                    using (Stream stream = File.Open(tempTM, FileMode.Create))
+                    {
+                        Tilemap eoTM = scenes[scene].tilemaps[eol[0].tileMap];
+                        BinaryFormatter bf = new BinaryFormatter();
+
+                        bf.Serialize(stream, eoTM);
+                        stream.Close();
+                        stream.Dispose();
+
+                        //Add used sprites
+                        foreach (string sprite in eoTM.GetUsedSprites())
+                            eol.Add(GetEngineObjectWithVarNameInScene(scene, sprite).Clone());
+                    }
+
+                //If child available, add that child
+                if (eol[0].child != -1)
+                {
+                    eol.Add(scenes[scene].objects[eol[0].child].Clone());
+
+                    eol[0].child = 1;
+                    eol[1].parent = 0;
+                }
+
+                //Add Engine Objects
+                using (Stream stream = File.Open(tempEO, FileMode.Create))
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+
+                    bf.Serialize(stream, eol.ToArray());
+
+                    stream.Close();
+                    stream.Dispose();
+                }
+
+                //Archive
+                using (ZipArchive archive = ZipFile.Open(sfd.FileName, ZipArchiveMode.Create))
+                {
+                    //Add Engine Object
+                    archive.CreateEntryFromFile(tempEO, Path.GetFileName(tempEO));
+                    File.Delete(tempEO);
+
+                    //If tilemap, add that to the archive
+                    if (eol[0].type == EngineObjectType.Tilemap) {
+                        archive.CreateEntryFromFile(tempTM, Path.GetFileName(tempTM));
+                        File.Delete(tempTM);
+                    }
+
+                    //If source, add that to the archive
+                    foreach (EngineObject eo in eol)
+                        if (eo != null && eo.source != null && eo.source != string.Empty && eo.source.Length > 0)
+                            archive.CreateEntryFromFile(Manager.Root() + "projects/" + Project.Name() + "/" + eo.source, Path.GetFileName(Manager.Root() + "projects/" + Project.Name() + "/" + eo.source));
+
+                    archive.Dispose();
+
+                    form.SetStatus("'" + eol[0].Variable() + "' has been exported.", Main.StatusType.Message);
+                }
+            }
+            catch (Exception e)
+            {
+                if (File.Exists(tempEO))
+                    File.Delete(tempEO);
+                if (File.Exists(tempTM))
+                    File.Delete(tempTM);
+
+                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                form.SetStatus("Exception occurred while saving item.", Main.StatusType.Warning);
+            }
+        }
+
+        public static void ImportEngineObject(string source)
+        {
+            string extractDest = "projects/" + Project.Name() + "/temp";
+
+            try
+            {
+                if (!File.Exists(source))
+                    return;
+
+                //Extract data
+                using (ZipArchive archive = ZipFile.Open(source, ZipArchiveMode.Read))
+                {
+                    Manager.CheckDirectory(extractDest, true);
+                    archive.ExtractToDirectory(extractDest);
+
+                    archive.Dispose();
+                }
+
+                //Get Engine Objects
+                EngineObject[] eoa;
+
+                using (Stream stream = new FileStream(extractDest + "/item.eo", FileMode.Open))
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+
+                    eoa = (EngineObject[])bf.Deserialize(stream);
+
+                    stream.Close();
+                    stream.Dispose();
+                }
+
+                //Copy files
+                string[] genericFiles = Manager.GetFilesFrom(extractDest, new string[] { "png", "jpg", "bmp", "jpeg", "mp3", "wav", "ogg" }, false);
+
+                foreach (string file in genericFiles)
+                {
+                    string ext = file.Substring(file.IndexOf('.'), file.Length - file.IndexOf('.')).ToLower(),
+                           name = file.Substring(file.LastIndexOf('\\') + 1, file.Length - ext.Length - file.LastIndexOf('\\') - 1);
+
+                    Manager.CopyFile(file, "projects/" + Project.Name() + "/res/" + name + ext);
+                }
+
+                //Create all Engine Objects
+                foreach (EngineObject eo in eoa)
+                {
+                    if (eo == null || eo.parent != -1 || GetEngineObjectWithVarName(eo.Variable()) != null)
+                        continue;
+
+                    Point r = new Point(-1, -1);
+                    int result = -1;
+
+                    if (eo.child != -1)
+                    {
+                        r = AddExistingEngineObjectWithChild(eo, eoa[eo.child]);
+
+                        scenes[eSettings.currentScene].objects[r.X].child = r.Y;
+                        scenes[eSettings.currentScene].objects[r.Y].parent = r.X;
+
+                        scenes[eSettings.currentScene].objects[r.X].id = r.X;
+                        scenes[eSettings.currentScene].objects[r.Y].id = r.Y;
+
+                        result = r.X;
+                    }
+                    else
+                    {
+                        result = AddExistingEngineObject(eo);
+
+                        scenes[eSettings.currentScene].objects[result].id = result;
+                    }
+
+                    //If this is a tilemap, import this tilemap
+                    if (eo.type == EngineObjectType.Tilemap && File.Exists(extractDest + "/item.tm"))
+                    {
+                        using (Stream stream = new FileStream(extractDest + "/item.tm", FileMode.Open))
+                        {
+                            BinaryFormatter bf = new BinaryFormatter();
+
+                            scenes[eSettings.currentScene].objects[result].tileMap = Tilemapper.AddMap((Tilemap)bf.Deserialize(stream));
+                            
+                            stream.Close();
+                            stream.Dispose();
+                        }
+                    }
+                    
+                    scenes[eSettings.currentScene].hierarchy.AddItem(result);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                form.SetStatus("Exception occurred while importing item(s)", Main.StatusType.Warning);
+            }
+
+            if (Directory.Exists(extractDest))
+                Directory.Delete(extractDest, true);
         }
 
         public static string BuildEngineCode(bool stacks)
