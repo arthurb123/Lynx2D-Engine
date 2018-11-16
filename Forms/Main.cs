@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using CefSharp;
+using CefSharp.Enums;
 using CefSharp.WinForms;
 using Lynx2DEngine.classes;
 using Lynx2DEngine.forms;
@@ -36,7 +37,8 @@ namespace Lynx2DEngine
             console = new ConsoleForm();
 
             //Set events
-            FormClosing += Form1_FormClosing;
+            FormClosing += Main_FormClosing;
+
             hierarchy.NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler(hierarchy_MouseDoubleClick);
             hierarchy.KeyDown += new KeyEventHandler(hierarchy_KeyDown);
             hierarchy.AfterLabelEdit += new NodeLabelEditEventHandler(hierarchy_LabelEdit);
@@ -94,18 +96,6 @@ namespace Lynx2DEngine
             }
         }
 
-        private void Form1_FormClosing(object sender, CancelEventArgs e)
-        {
-            Engine.SaveEnginePreferences(true);
-
-            if (!Feed.wantsToExtract)
-                Project.RequestSave();
-
-            Project.RemoveEngineHTML();
-
-            Cef.Shutdown();
-        }
-
         public void SetTitle()
         {
             Text = "Lynx2D Engine - " + Project.Name() + " (" + Engine.scenes[Engine.eSettings.currentScene].Variable() + ")";
@@ -127,6 +117,90 @@ namespace Lynx2DEngine
 
             hierarchyObjects.Visible = available;
             hierarchyScenes.Visible = available;
+        }
+
+        private void Main_FormClosing(object sender, CancelEventArgs e)
+        {
+            Engine.SaveEnginePreferences(true);
+
+            if (!Feed.wantsToExtract)
+                Project.RequestSave();
+
+            Project.RemoveEngineHTML();
+
+            Cef.Shutdown();
+        }
+
+        private void DragDropFile(DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (string file in files)
+            {
+                if (!file.Contains('.'))
+                    continue;
+
+                string ext = file.Substring(file.IndexOf('.'), file.Length - file.IndexOf('.')).ToLower(),
+                       name = file.Substring(file.LastIndexOf('\\')+1, file.Length - ext.Length - file.LastIndexOf('\\') - 1),
+                       dest;
+
+                int id;
+
+                switch (ext)
+                {
+                    case ".png":
+                    case ".bmp":
+                    case ".jpg":
+                    case ".jpeg":
+                        //Sprite
+                        dest = "res/" + name + ext;
+
+                        Manager.CopyFile(file, "projects/" + Project.Name() + "/" + dest);
+
+                        id = AddSprite();
+
+                        Engine.scenes[Engine.eSettings.currentScene].objects[id].Rename(name);
+                        Engine.scenes[Engine.eSettings.currentScene].objects[id].source = dest;
+
+                        refreshBrowser();
+                        UpdateHierarchy();
+
+                        break;
+                    case ".mp3":
+                    case "wav":
+                    case "ogg":
+                        //Sound
+                        dest = "res/" + name + ext;
+
+                        Manager.CopyFile(file, "projects/" + Project.Name() + "/" + dest);
+
+                        id = AddSound();
+
+                        Engine.scenes[Engine.eSettings.currentScene].objects[id].Rename(name);
+                        Engine.scenes[Engine.eSettings.currentScene].objects[id].source = dest;
+
+                        refreshBrowser();
+                        UpdateHierarchy();
+
+                        break;
+                    case ".txt":
+                    case ".js":
+                        //Script
+                        dest = "res/" + name + ext;
+
+                        Manager.CopyFile(file, "projects/" + Project.Name() + "/" + dest);
+
+                        id = AddScript();
+
+                        Engine.scenes[Engine.eSettings.currentScene].objects[id].Rename(name);
+                        Engine.scenes[Engine.eSettings.currentScene].objects[id].code = File.ReadAllText("projects/" + Project.Name() + "/" + dest);
+
+                        refreshBrowser();
+                        UpdateHierarchy();
+
+                        break;
+                }
+            }
         }
         #endregion
 
@@ -369,6 +443,13 @@ namespace Lynx2DEngine
         {
             try
             {
+                if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                {
+                    DragDropFile(e);
+
+                    return;
+                }
+
                 Point targetPoint = hierarchy.PointToClient(new Point(e.X, e.Y));
 
                 TreeNode targetNode = hierarchy.GetNodeAt(targetPoint);
@@ -1184,6 +1265,8 @@ namespace Lynx2DEngine
                     backups[i] = backups[i].Substring(17 + Project.Name().Length, backups[i].Length - (21 + Project.Name().Length));
 
                 string backup = Input.Selection("Load an existing backup for '" + Project.Name() + "'", "Load Backup", backups);
+                if (backup == "HAS_BEEN_CLOSED")
+                    return;
                 
                 File.Copy("projects/" + Project.Name() + "/backup/" + backup + ".bin", "projects/" + Project.Name() + "/state.bin", true);
 
@@ -1243,6 +1326,8 @@ namespace Lynx2DEngine
                     BackgroundColor = Cef.ColorSetARGB(0, 255, 255, 255)
                 }
             };
+
+            browser.DragHandler = new CustomDragHandler();
 
             browser.LoadingStateChanged += OnBrowserLoadingStateChanged;
             browser.ConsoleMessage += OnBrowserConsoleMessage;
@@ -1433,5 +1518,18 @@ public class CustomMenuHandler : IContextMenuHandler
     public bool RunContextMenu(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model, IRunContextMenuCallback callback)
     {
         return false;
+    }
+}
+
+public class CustomDragHandler : IDragHandler
+{
+    public bool OnDragEnter(IWebBrowser chromiumWebBrowser, IBrowser browser, IDragData dragData, DragOperationsMask mask)
+    {
+        return true;
+    }
+
+    public void OnDraggableRegionsChanged(IWebBrowser chromiumWebBrowser, IBrowser browser, IList<DraggableRegion> regions)
+    {
+        //...
     }
 }

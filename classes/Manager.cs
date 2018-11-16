@@ -40,13 +40,33 @@ namespace Lynx2DEngine
         {
             try
             {
-                Process.Start(@Project.WorkDirectory());
+                Process.Start(path);
             }
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
                 Engine.form.SetStatus("Exception occurred while opening directory.", Main.StatusType.Warning);
             }
+        }
+
+        public static bool CopyFile(string source, string dest)
+        {
+            try
+            {
+                if (File.Exists(dest))
+                    return false;
+
+                File.Copy(source, dest, true);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                Engine.form.SetStatus("Exception occurred while copying file.", Main.StatusType.Warning);
+            }
+
+            return false;
         }
     }
 }
