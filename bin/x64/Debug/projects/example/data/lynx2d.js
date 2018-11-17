@@ -15,7 +15,6 @@ function Lynx2D() {
         COLLIDERS: [],
         LOOPS: [],
         LAYER_DRAW_EVENTS: [],
-        ENGINE_RENDER: [],
         INIT: function(FPS) {
             this.LOG.DATE = new Date().getSeconds();
             this.LOG.DATA.COUNTER = new lx.UIText('0 FPS | 0 UPS', 25, 35, 16);
@@ -62,6 +61,15 @@ function Lynx2D() {
         },
         CLEAR: function() {
             lx.CONTEXT.GRAPHICS.clearRect(0, 0, lx.CONTEXT.GRAPHICS.canvas.width, lx.CONTEXT.GRAPHICS.canvas.height);  
+        },
+        RESET: function() {
+            this.BUFFER = [];
+            this.EVENTS = [];
+            this.UI = [];
+            this.COLLIDERS = [];
+            this.LAYER_DRAW_EVENTS = [];
+            this.LOOPS = [];
+            this.FOCUS = undefined;
         },
         LOOP: function() {
             if (lx.GAME.RUNNING) {
@@ -147,12 +155,6 @@ function Lynx2D() {
             //Init 
             this.CLEAR();
             lx.CONTEXT.GRAPHICS.imageSmoothingEnabled = this.SETTINGS.AA;
-            
-            //Engine rendering (NOT NECESSARY WHEN ONLY USING THE FRAMEWORK)
-            if (this.ENGINE_RENDER != undefined) 
-                this.ENGINE_RENDER.forEach(function(eR) {
-                    if (eR != undefined) eR(lx.CONTEXT.GRAPHICS); 
-                });
             
             //Buffer
             for (var i = 0; i < this.BUFFER.length; i++) {
@@ -512,19 +514,17 @@ function Lynx2D() {
     
     this.LoadScene = function(scene) {
         //Clear previous data
-        this.GAME.BUFFER = [];
-        this.GAME.EVENTS = [];
-        this.GAME.UI = [];
-        this.GAME.COLLIDERS = [];
-        this.GAME.LAYER_DRAW_EVENTS = [];
-        this.GAME.LOOPS = [];
-        this.GAME.FOCUS = undefined;
+        this.GAME.RESET();
         
         //Create new controller
         this.CreateController();
         
         //Call new scene
         scene.CALLBACK();
+        
+        //[ENGINE-FEATURE] Notify engine of scene change
+        if (scene.ENGINE_ID != undefined)
+            console.log("ENGINE_INTERACTION_LOAD_SCENE(" + scene.ENGINE_ID + ")");
         
         return this;
     };

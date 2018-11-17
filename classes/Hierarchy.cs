@@ -52,13 +52,21 @@ namespace Lynx2DEngine
 
                 int result = 0;
 
-                if (temp.child == -1) result = Engine.AddExistingEngineObject(temp);
+                if (temp.child == -1)
+                {
+                    result = Engine.AddExistingEngineObject(temp);
+
+                    Engine.scenes[Engine.eSettings.currentScene].objects[result].id = result;
+                }
                 else
                 {
                     Point r = Engine.AddExistingEngineObjectWithChild(temp, tempChild);
 
                     Engine.scenes[Engine.eSettings.currentScene].objects[r.X].child = r.Y;
                     Engine.scenes[Engine.eSettings.currentScene].objects[r.Y].parent = r.X;
+
+                    Engine.scenes[Engine.eSettings.currentScene].objects[r.X].id = r.X;
+                    Engine.scenes[Engine.eSettings.currentScene].objects[r.Y].id = r.Y;
 
                     result = r.X;
                 }

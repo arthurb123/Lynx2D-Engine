@@ -20,6 +20,7 @@ namespace Lynx2DEngine
         public static EngineSettings eSettings = new EngineSettings();
         public static EnginePreferences ePreferences = new EnginePreferences();
 
+        #region "Engine Preferences"
         public static bool EvaluateEnginePreferences()
         {
             try
@@ -71,7 +72,9 @@ namespace Lynx2DEngine
                 form.SetStatus("Exception occurred while saving engine preferences.", Main.StatusType.Warning);
             }
         }
+        #endregion
 
+        #region "Engine Scenes"
         public static void LoadScene(int id)
         {
             if (id == -1 || eSettings.currentScene == -1)
@@ -153,7 +156,9 @@ namespace Lynx2DEngine
 
             form.refreshBrowser();
         }
+        #endregion
 
+        #region "Engine Object Management"
         public static int AddEngineObject(EngineObjectType type, string code, int child, int parent)
         {
             for (int i = 0; i < scenes[eSettings.currentScene].objects.Length + 1; i++)
@@ -223,6 +228,25 @@ namespace Lynx2DEngine
             return new Point(parent, child);
         }
 
+        public static int[] GetEmptyEnginePositions()
+        {
+            int[] temp = new int[0];
+
+            for (int i = 0; i < scenes[eSettings.currentScene].objects.Length; i++)
+            {
+                if (scenes[eSettings.currentScene].objects[i] == null)
+                {
+                    Array.Resize(ref temp, temp.Length + 1);
+                    temp[temp.Length - 1] = i;
+                }
+            }
+
+            Array.Resize(ref temp, temp.Length + 1);
+            temp[temp.Length - 1] = scenes[eSettings.currentScene].objects.Length;
+
+            return temp;
+        }
+
         public static void RemoveEngineObject(int id, bool refreshes, bool updates)
         {
             bool childRemoved = false;
@@ -255,96 +279,9 @@ namespace Lynx2DEngine
             if (updates || childRemoved)
                 form.UpdateHierarchy();
         }
+        #endregion
 
-        public static int[] GetEmptyEnginePositions()
-        {
-            int[] temp = new int[0];
-
-            for (int i = 0; i < scenes[eSettings.currentScene].objects.Length; i++)
-            {
-                if (scenes[eSettings.currentScene].objects[i] == null)
-                {
-                    Array.Resize(ref temp, temp.Length + 1);
-                    temp[temp.Length - 1] = i;
-                }
-            }
-
-            Array.Resize(ref temp, temp.Length + 1);
-            temp[temp.Length - 1] = scenes[eSettings.currentScene].objects.Length;
-
-            return temp;
-        }
-
-        private static void GenerateEngineObjectCode(int scene, int id)
-        {
-            string lineBreaks = new string('\n', bSettings.lineBreaks);
-            if (bSettings.obfuscates)
-                lineBreaks = "";
-
-            string variable = lineBreaks + scenes[scene].objects[id].Variable();
-
-            form.SetStatus("Building '" + scenes[scene].objects[id].Variable() + "'", Main.StatusType.Message);
-
-            if (scenes[scene].objects[id].type == EngineObjectType.GameObject)
-            {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.GameObject(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + "); ";
-
-                if (scenes[scene].objects[id].collider != string.Empty)
-                    scenes[scene].objects[id].buildCode += variable + ".ApplyCollider(" + scenes[scene].objects[id].collider + "); ";
-
-                if (scenes[scene].objects[id].visible)
-                    scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Sprite)
-            {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "'); ";
-
-                if (scenes[scene].objects[id].rotation > 0 && scenes[scene].objects[id].rotation < 360)
-                    scenes[scene].objects[id].buildCode += variable + ".Rotation(" + (scenes[scene].objects[id].rotation * Math.PI / 180) + "); ";
-
-                if (scenes[scene].objects[id].clipped)
-                    scenes[scene].objects[id].buildCode += variable + ".Clip(" + scenes[scene].objects[id].cx + ", " + scenes[scene].objects[id].cy + ", " + scenes[scene].objects[id].cw + ", " + scenes[scene].objects[id].ch + "); ";
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Collider)
-            {
-                string callback = "";
-                if (scenes[scene].objects[id].child != -1) callback = ", function(data) {" + scenes[scene].objects[scenes[scene].objects[id].child].code + "}";
-
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Collider(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + ", " + scenes[scene].objects[id].isStatic.ToString().ToLower() + callback + ");";
-                scenes[scene].objects[id].buildCode += variable + ".Solid(" + scenes[scene].objects[id].isSolid.ToString().ToLower() + "); ";
-
-                if (scenes[scene].objects[id].visible)
-                    scenes[scene].objects[id].buildCode += variable + ".Enable(); ";
-                else
-                    scenes[scene].objects[id].buildCode += variable + ".Disable(); ";
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Emitter)
-            {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Emitter(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].amount + ", " + scenes[scene].objects[id].duration + "); ";
-                scenes[scene].objects[id].buildCode += variable + ".Setup(" + scenes[scene].objects[id].minvx + ", " + scenes[scene].objects[id].maxvx + ", " + scenes[scene].objects[id].minvy + ", " + scenes[scene].objects[id].maxvy + ", " + scenes[scene].objects[id].minSize + ", " + scenes[scene].objects[id].maxSize + "); ";
-                scenes[scene].objects[id].buildCode += variable + ".Speed(" + scenes[scene].objects[id].speed + "); ";
-
-                if (scenes[scene].objects[id].visible)
-                    scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
-                else
-                    scenes[scene].objects[id].buildCode += variable + ".Hide(); ";
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Tilemap)
-            {
-                if (scene != eSettings.currentScene)
-                    scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), scenes[scene].tilemaps[scenes[scene].objects[id].tileMap]);
-                else
-                    scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), Tilemapper.maps[scenes[scene].objects[id].tileMap]);
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Sound)
-            {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sound('" + scenes[scene].objects[id].source + "', " + scenes[scene].objects[id].layer + "); ";
-                scenes[scene].objects[id].buildCode += variable + ".Position(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ");";
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Script)
-                scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code + "\n";
-        }
-
+        #region "Engine Object Inspection"
         public static EngineObject GetEngineObject(int id)
         {
             return scenes[eSettings.currentScene].objects[id];
@@ -379,6 +316,71 @@ namespace Lynx2DEngine
                 if (obj != null && obj.type == type) results.Add(obj);
 
             return results.ToArray();
+        }
+        #endregion
+
+        #region "Engine File Management"
+        public static bool LoadEngineState()
+        {
+            ClearEngine();
+
+            try
+            {
+                if (!File.Exists("projects/" + Project.Name() + "/state.bin"))
+                    return false;
+
+                Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.Open);
+                BinaryFormatter bf = new BinaryFormatter();
+
+                EngineState temp = ((EngineState)bf.Deserialize(stream));
+
+                if (temp != null)
+                {
+                    if (temp.scenes != null)
+                        scenes = temp.scenes;
+                    else
+                    {
+                        //Running pre-scene projects (running v0.3.3-alpha or earlier)
+                        MessageBox.Show("This project does not support scenes. Please open this project using version 0.3.3-alpha or earlier.", "Lynx2D Engine - Incompatible");
+
+                        return false;
+                    }
+
+                    if (temp.bSettings != null)
+                    {
+                        bSettings = temp.bSettings;
+
+                        if (bSettings.initialFramerate == 0)
+                        {
+                            //Initial setup of graphics build settings (running v0.4.5-beta or earlier)
+                            bSettings.initialFramerate = 60;
+                            bSettings.imageSmoothing = true;
+                        }
+                    }
+
+                    if (temp.eSettings != null)
+                    {
+                        eSettings = temp.eSettings;
+
+                        LoadScene(eSettings.currentScene);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Project could not be loaded, the engine state has been corrupted.", "Lynx2D Engine - Error");
+                    return false;
+                }
+
+                stream.Close();
+                stream.Dispose();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                form.SetStatus("Exception occurred while loading engine state.", Main.StatusType.Warning);
+            }
+
+            return true;
         }
 
         public static void SaveEngineState()
@@ -587,6 +589,78 @@ namespace Lynx2DEngine
             if (Directory.Exists(extractDest))
                 Directory.Delete(extractDest, true);
         }
+        #endregion
+
+        #region "Engine JavaScript IO"
+        private static void GenerateEngineObjectCode(int scene, int id)
+        {
+            string lineBreaks = new string('\n', bSettings.lineBreaks);
+            if (bSettings.obfuscates)
+                lineBreaks = "";
+
+            string variable = lineBreaks + scenes[scene].objects[id].Variable();
+
+            form.SetStatus("Building '" + scenes[scene].objects[id].Variable() + "'", Main.StatusType.Message);
+
+            if (scenes[scene].objects[id].type == EngineObjectType.GameObject)
+            {
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.GameObject(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + "); ";
+
+                if (scenes[scene].objects[id].collider != string.Empty)
+                    scenes[scene].objects[id].buildCode += variable + ".ApplyCollider(" + scenes[scene].objects[id].collider + "); ";
+
+                if (scenes[scene].objects[id].visible)
+                    scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
+            }
+            else if (scenes[scene].objects[id].type == EngineObjectType.Sprite)
+            {
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "'); ";
+
+                if (scenes[scene].objects[id].rotation > 0 && scenes[scene].objects[id].rotation < 360)
+                    scenes[scene].objects[id].buildCode += variable + ".Rotation(" + (scenes[scene].objects[id].rotation * Math.PI / 180) + "); ";
+
+                if (scenes[scene].objects[id].clipped)
+                    scenes[scene].objects[id].buildCode += variable + ".Clip(" + scenes[scene].objects[id].cx + ", " + scenes[scene].objects[id].cy + ", " + scenes[scene].objects[id].cw + ", " + scenes[scene].objects[id].ch + "); ";
+            }
+            else if (scenes[scene].objects[id].type == EngineObjectType.Collider)
+            {
+                string callback = "";
+                if (scenes[scene].objects[id].child != -1) callback = ", function(data) {" + scenes[scene].objects[scenes[scene].objects[id].child].code + "}";
+
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Collider(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + ", " + scenes[scene].objects[id].isStatic.ToString().ToLower() + callback + ");";
+                scenes[scene].objects[id].buildCode += variable + ".Solid(" + scenes[scene].objects[id].isSolid.ToString().ToLower() + "); ";
+
+                if (scenes[scene].objects[id].visible)
+                    scenes[scene].objects[id].buildCode += variable + ".Enable(); ";
+                else
+                    scenes[scene].objects[id].buildCode += variable + ".Disable(); ";
+            }
+            else if (scenes[scene].objects[id].type == EngineObjectType.Emitter)
+            {
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Emitter(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].amount + ", " + scenes[scene].objects[id].duration + "); ";
+                scenes[scene].objects[id].buildCode += variable + ".Setup(" + scenes[scene].objects[id].minvx + ", " + scenes[scene].objects[id].maxvx + ", " + scenes[scene].objects[id].minvy + ", " + scenes[scene].objects[id].maxvy + ", " + scenes[scene].objects[id].minSize + ", " + scenes[scene].objects[id].maxSize + "); ";
+                scenes[scene].objects[id].buildCode += variable + ".Speed(" + scenes[scene].objects[id].speed + "); ";
+
+                if (scenes[scene].objects[id].visible)
+                    scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
+                else
+                    scenes[scene].objects[id].buildCode += variable + ".Hide(); ";
+            }
+            else if (scenes[scene].objects[id].type == EngineObjectType.Tilemap)
+            {
+                if (scene != eSettings.currentScene)
+                    scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), scenes[scene].tilemaps[scenes[scene].objects[id].tileMap]);
+                else
+                    scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), Tilemapper.maps[scenes[scene].objects[id].tileMap]);
+            }
+            else if (scenes[scene].objects[id].type == EngineObjectType.Sound)
+            {
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sound('" + scenes[scene].objects[id].source + "', " + scenes[scene].objects[id].layer + "); ";
+                scenes[scene].objects[id].buildCode += variable + ".Position(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ");";
+            }
+            else if (scenes[scene].objects[id].type == EngineObjectType.Script)
+                scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code + "\n";
+        }
 
         public static string BuildEngineCode(bool stacks)
         {
@@ -605,6 +679,9 @@ namespace Lynx2DEngine
                             currentScene = BuildEngineScene(i, true);
 
                         buildScenes += BuildEngineScene(i, false);
+
+                        if (!stacks)
+                            buildScenes += scenes[i].Variable() + ".ENGINE_ID=" + i + ";";
                     }
 
                 //Check if build or export
@@ -668,77 +745,6 @@ namespace Lynx2DEngine
                 return (sprites + tilemaps + colliders + gameobjects + sounds + emitters + scripts);
         }
 
-        public static bool LoadEngineState()
-        {
-            ClearEngine();
-
-            try
-            {
-                if (!File.Exists("projects/" + Project.Name() + "/state.bin"))
-                    return false;
-
-                Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.Open);
-                BinaryFormatter bf = new BinaryFormatter();
-
-                EngineState temp = ((EngineState)bf.Deserialize(stream));
-
-                if (temp != null)
-                {
-                    if (temp.scenes != null)
-                        scenes = temp.scenes;
-                    else
-                    {
-                        //Running pre-scene projects (running v0.3.3-alpha or earlier)
-                        MessageBox.Show("This project does not support scenes. Please open this project using version 0.3.3-alpha or earlier.", "Lynx2D Engine - Incompatible");
-
-                        return false;
-                    }
-
-                    if (temp.bSettings != null)
-                    {
-                        bSettings = temp.bSettings;
-
-                        if (bSettings.initialFramerate == 0)
-                        {
-                            //Initial setup of graphics build settings (running v0.4.5-beta or earlier)
-                            bSettings.initialFramerate = 60;
-                            bSettings.imageSmoothing = true;
-                        }
-                    }
-
-                    if (temp.eSettings != null)
-                    {
-                        eSettings = temp.eSettings;
-
-                        LoadScene(eSettings.currentScene);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Project could not be loaded, the engine state has been corrupted.", "Lynx2D Engine - Error");
-                    return false;
-                }
-
-                stream.Close();
-                stream.Dispose();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while loading engine state.", Main.StatusType.Warning);
-            }
-
-            return true;
-        }
-
-        public static void ClearEngine()
-        {
-            scenes = new Scene[0];
-            bSettings = new BuildSettings();
-            eSettings = new EngineSettings();
-            Tilemapper.Clear();
-        }
-
         public static async void ExecuteScript(string script)
         {
             JavascriptResponse response = await form.browser.EvaluateScriptAsync(script);
@@ -760,6 +766,20 @@ namespace Lynx2DEngine
 
             return response.Result.ToString();
         }
+
+        public static void HandleConsoleInteraction(string msg)
+        {
+            if (msg.Contains("LOAD_SCENE"))
+            {
+                int.TryParse(msg.Substring(11, 1), out int sceneEngineID);
+
+                if (sceneEngineID != eSettings.currentScene) form.canViewObjects = false;
+                else form.canViewObjects = true;
+
+                form.UpdateHierarchy();
+            }
+        }
+        #endregion
 
         #region "Engine Object Interaction"
         public static void SetEngineObject(int id, EngineObject obj)
@@ -968,6 +988,14 @@ namespace Lynx2DEngine
             form.refreshBrowser();
         }
         #endregion
+
+        public static void ClearEngine()
+        {
+            scenes = new Scene[0];
+            bSettings = new BuildSettings();
+            eSettings = new EngineSettings();
+            Tilemapper.Clear();
+        }
     }
 
     [Serializable]

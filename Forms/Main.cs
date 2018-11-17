@@ -20,6 +20,8 @@ namespace Lynx2DEngine
 
         public ConsoleForm console;
         private bool consoleVisible;
+
+        public bool canViewObjects = true;
         private HierarchyState hierarchyView = HierarchyState.Objects;
 
         public ImageList hierarchyList;
@@ -176,7 +178,7 @@ namespace Lynx2DEngine
                         Manager.CopyFile(file, "projects/" + Project.Name() + "/" + dest);
 
                         id = AddSound();
-
+                    
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].Rename(name);
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].source = dest;
 
@@ -304,23 +306,31 @@ namespace Lynx2DEngine
             return true;
         }
 
+        delegate void UpdateHierarchyCallback();
+
         public void UpdateHierarchy()
         {
             try
             {
-                hierarchy.Nodes.Clear();
-
-                switch (hierarchyView)
+                if (hierarchy.InvokeRequired)
                 {
-                    case HierarchyState.Objects:
-                        UpdateHierarchyWithObjects();
-                        break;
-                    case HierarchyState.Scenes:
-                        UpdateHierarchyWithScenes();
-                        break;
+                    UpdateHierarchyCallback d = new UpdateHierarchyCallback(UpdateHierarchy);
+                    Invoke(d);
                 }
+                else
+                {
+                    hierarchy.Nodes.Clear();
 
-                //hierarchy.Refresh();
+                    switch (hierarchyView)
+                    {
+                        case HierarchyState.Objects:
+                            if (canViewObjects) UpdateHierarchyWithObjects();
+                            break;
+                        case HierarchyState.Scenes:
+                            UpdateHierarchyWithScenes();
+                            break;
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -521,7 +531,8 @@ namespace Lynx2DEngine
 
             try
             {
-                EngineObject obj = Engine.GetEngineObjects()[(int)e.Node.Tag];
+                int id = (int)e.Node.Tag;
+                EngineObject obj = Engine.GetEngineObjects()[id];
 
                 switch (obj.type)
                 {
@@ -532,7 +543,7 @@ namespace Lynx2DEngine
                         go.FormClosed += new FormClosedEventHandler(removePointerInjection);
 
                         go.Show();
-                        go.Initialize(obj.id);
+                        go.Initialize(id);
 
                         Engine.ExecuteScript(obj.Variable() + ".Focus();");
                         Pointer.Inject(obj.Variable());
@@ -546,10 +557,19 @@ namespace Lynx2DEngine
 
                         break;
                     case EngineObjectType.Script:
+                        ScriptForm eChild = (ScriptForm)checkChild(obj.Variable());
+
+                        if (eChild != null && eChild.engineId == id)
+                        {
+                            eChild.Focus();
+
+                            break;
+                        }
+
                         ScriptForm script = new ScriptForm();
 
                         script.Show();
-                        script.Initialize(obj.id);
+                        script.Initialize(id);
 
                         break;
                     case EngineObjectType.Collider:
@@ -562,7 +582,7 @@ namespace Lynx2DEngine
                         coll.FormClosed += new FormClosedEventHandler(drawCollidersToolStripMenuItem_Click);
 
                         coll.Show();
-                        coll.Initialize(obj.id);
+                        coll.Initialize(id);
 
                         Engine.ExecuteScript("lx.GAME.FOCUS = " + obj.Variable());
                         Pointer.Inject(obj.Variable());
@@ -585,7 +605,7 @@ namespace Lynx2DEngine
                         TilemapForm tilemap = new TilemapForm();
 
                         tilemap.Show();
-                        tilemap.Initialize(obj.id);
+                        tilemap.Initialize(id);
                         
                         break;
                     case EngineObjectType.Sound:
@@ -595,7 +615,7 @@ namespace Lynx2DEngine
                         sound.FormClosed += new FormClosedEventHandler(removePointerInjection);
 
                         sound.Show();
-                        sound.Initialize(obj.id);
+                        sound.Initialize(id);
 
                         Engine.ExecuteScript("lx.GAME.FOCUS = " + obj.Variable());
                         Pointer.Inject(obj.Variable());
@@ -874,6 +894,8 @@ namespace Lynx2DEngine
         private void addSceneToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Engine.CreateScene(true);
+
+            killChildren();
 
             SetTitle();
 
@@ -1354,6 +1376,8 @@ namespace Lynx2DEngine
                 Tilemapper.ResetInjections();
 
                 browser.Load(Project.WorkDirectory() + "/engine.html");
+
+                canViewObjects = true;
             }
             catch (Exception e)
             {
@@ -1415,6 +1439,7 @@ namespace Lynx2DEngine
 
                 //Post msg to all console message handlers
                 Tilemapper.HandleConsoleInteraction(msg);
+                Engine.HandleConsoleInteraction(msg);
 
                 return;
             }
@@ -1422,11 +1447,21 @@ namespace Lynx2DEngine
             AddToConsole(args.Message);
         }
 
+        delegate void AddToConsoleCallback(string msg);
+
         public void AddToConsole(string msg)
         {
-            CheckConsoleVisibility();
-            
-            console.AddOutput(msg);
+            if (console.InvokeRequired)
+            {
+                AddToConsoleCallback d = new AddToConsoleCallback(AddToConsole);
+                Invoke(d, new object[] { msg });
+            }
+            else
+            {
+                CheckConsoleVisibility();
+
+                console.AddOutput(msg);
+            }
         }
 
         private void CheckConsoleVisibility()
@@ -1467,6 +1502,24 @@ namespace Lynx2DEngine
                 SetStatus("Could not close all children.", StatusType.Warning);
                 MessageBox.Show(e.Message);
             }
+        }
+
+        public Form checkChild(string text)
+        {
+            try
+            {
+                FormCollection fc = Application.OpenForms;
+
+                foreach (Form frm in fc.Cast<Form>().ToList())
+                    if (frm.Text == text) return frm;
+            }
+            catch (Exception e)
+            {
+                SetStatus("Could not check engine child.", StatusType.Warning);
+                MessageBox.Show(e.Message);
+            }
+
+            return null;
         }
 
         public void LoadTheme(Theme t)
@@ -1528,7 +1581,6 @@ namespace Lynx2DEngine
                 ForeColor = DarkTheme.font;
             }
         }
-        #endregion
 
         private void timer2_Tick(object sender, EventArgs e)
         {
@@ -1536,6 +1588,7 @@ namespace Lynx2DEngine
 
             Feed.CheckVersion(false);
         }
+        #endregion
     }
 }
 
