@@ -134,9 +134,9 @@ namespace Lynx2DEngine
             Cef.Shutdown();
         }
 
-        private void DragDropFile(DragEventArgs e)
+        private bool DragDropFile(string[] files)
         {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            int done = 0;
 
             foreach (string file in files)
             {
@@ -147,7 +147,7 @@ namespace Lynx2DEngine
                        name = file.Substring(file.LastIndexOf('\\')+1, file.Length - ext.Length - file.LastIndexOf('\\') - 1),
                        dest;
 
-                int id, done = 0;
+                int id;
 
                 switch (ext)
                 {
@@ -212,13 +212,17 @@ namespace Lynx2DEngine
                         MessageBox.Show("This file format is not supported and can not be imported.", "Lynx2D Engine - Exception");
                         break;
                 }
-
-                if (done != 0)
-                {
-                    UpdateHierarchy();
-                    refreshBrowser();
-                }
             }
+
+            if (done != 0)
+            {
+                UpdateHierarchy();
+                refreshBrowser();
+
+                return true;
+            }
+
+            return false;
         }
         #endregion
 
@@ -474,7 +478,7 @@ namespace Lynx2DEngine
             {
                 if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 {
-                    DragDropFile(e);
+                    DragDropFile((string[])e.Data.GetData(DataFormats.FileDrop));
 
                     return;
                 }
@@ -873,20 +877,37 @@ namespace Lynx2DEngine
         private void importFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Lynx2D Item|*.lx2d";
+            ofd.Filter = "Lynx2D Item (*.lx2d)|*.lx2d|Generic Files (*.*)|*.*";
             ofd.Title = "Import a Lynx2D item";
+            ofd.Multiselect = true;
             ofd.ShowDialog();
 
             if (ofd.FileName == "" && ofd.FileNames.Length == 0)
                 return;
 
-            if (ofd.FileNames.Length != 0)
+            if (ofd.FileNames.Length > 1)
+            {
                 foreach (string file in ofd.FileNames)
-                    Engine.ImportEngineObject(file);
-            else Engine.ImportEngineObject(ofd.FileName);
+                    if (file.Contains(".lx2d"))
+                        Engine.ImportEngineObject(file);
 
-            UpdateHierarchy();
-            refreshBrowser();
+                DragDropFile(ofd.FileNames);
+
+                UpdateHierarchy();
+                refreshBrowser();
+            }
+            else
+            {
+                if (ofd.FileName.Contains(".lx2d"))
+                {
+                    Engine.ImportEngineObject(ofd.FileName);
+
+                    UpdateHierarchy();
+                    refreshBrowser();
+                }
+                else
+                    DragDropFile(new string[] { ofd.FileName });
+            }
         }
         #endregion
 
