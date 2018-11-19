@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -10,6 +11,11 @@ namespace Lynx2DEngine.forms
         private EngineObject obj;
         private bool saved = true;
         private bool startup = true;
+
+        private int prevLine = -1;
+        private int prevStart = -1;
+        private int prevLength = -1;
+        private Color prevForeColor;
 
         public int id;
         public int engineId;
@@ -24,6 +30,15 @@ namespace Lynx2DEngine.forms
             scriptCode.VScroll += new EventHandler(scriptCode_VScroll);
             scriptCode.KeyDown += new KeyEventHandler(checkKeys);
 
+            scriptCode.Click += new EventHandler((object sender, EventArgs e) =>
+            {
+                if (searchPanel.Visible) ClearPrevHighlight();
+
+                searchPanel.Visible = false;
+            });
+
+            search.KeyDown += new KeyEventHandler(search_KeyDown);
+
             Resize += new EventHandler(updateNumberLabel);
         }
 
@@ -37,6 +52,12 @@ namespace Lynx2DEngine.forms
 
             if (ModifierKeys.HasFlag(Keys.Control) && e.KeyCode == Keys.Z)
                 scriptCode.Undo();
+
+            if (ModifierKeys.HasFlag(Keys.Control) && e.KeyCode == Keys.F)
+            {
+                searchPanel.Visible = true;
+                search.Focus();
+            }
         }
 
         public void Initialize(int engineId)
@@ -77,6 +98,8 @@ namespace Lynx2DEngine.forms
                 menuStrip1.Renderer = new ToolStripProfessionalRenderer(new classes.DarkThemeColorTable());
                 menuStrip1.BackColor = classes.DarkTheme.menuBackground;
                 menuStrip1.ForeColor = classes.DarkTheme.font;
+
+                searchPanel.BackColor = classes.DarkTheme.mainBackground;
             }
         }
 
@@ -239,6 +262,62 @@ namespace Lynx2DEngine.forms
         {
             this.saved = saved;
             saveToolStripMenuItem.Enabled = !saved;
+        }
+
+        private void search_TextChanged(object sender, EventArgs e)
+        {
+            SearchText(false);
+        }
+
+        private void search_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SearchText(true);
+        }
+
+        private void SearchText(bool skipPrev)
+        {
+            for (int i = 0; i < scriptCode.Lines.Length; i++)
+            {
+                if (skipPrev && i <= prevLine) continue;
+
+                if (scriptCode.Lines[i].Contains(search.Text))
+                {
+                    ClearPrevHighlight();
+
+                    numberLabel.Focus();
+
+                    prevStart = scriptCode.SelectionStart = scriptCode.Find(scriptCode.Lines[i]) + scriptCode.Lines[i].IndexOf(search.Text);
+                    prevLength = scriptCode.SelectionLength = search.Text.Length;
+                    prevForeColor = scriptCode.SelectionColor;
+
+                    scriptCode.SelectionBackColor = Color.LightYellow;
+                    scriptCode.SelectionColor = Color.Black;
+
+                    if (prevLine != i)
+                        scriptCode.ScrollToCaret();
+
+                    prevLine = i;
+                    search.Focus();
+
+                    break;
+                }
+            }
+        }
+
+        private void ClearPrevHighlight()
+        {
+            if (prevStart != -1 && prevLength != -1)
+            {
+                numberLabel.Focus();
+
+                scriptCode.SelectionStart = prevStart;
+                scriptCode.SelectionLength = prevLength;
+                scriptCode.SelectionBackColor = scriptCode.BackColor;
+                scriptCode.SelectionColor = prevForeColor;
+
+                search.Focus();
+            }
         }
     }
 }

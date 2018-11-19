@@ -36,7 +36,12 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchPanel = new System.Windows.Forms.Panel();
+            this.search = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
+            this.searchPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // scriptCode
@@ -121,11 +126,41 @@
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Visible = false;
             // 
+            // searchPanel
+            // 
+            this.searchPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.searchPanel.Controls.Add(this.pictureBox1);
+            this.searchPanel.Controls.Add(this.search);
+            this.searchPanel.Location = new System.Drawing.Point(324, 0);
+            this.searchPanel.Name = "searchPanel";
+            this.searchPanel.Size = new System.Drawing.Size(160, 24);
+            this.searchPanel.TabIndex = 37;
+            this.searchPanel.Visible = false;
+            // 
+            // search
+            // 
+            this.search.Location = new System.Drawing.Point(26, 2);
+            this.search.Name = "search";
+            this.search.Size = new System.Drawing.Size(131, 20);
+            this.search.TabIndex = 0;
+            this.search.TextChanged += new System.EventHandler(this.search_TextChanged);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::Lynx2DEngine.Properties.Resources.search;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Location = new System.Drawing.Point(6, 4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.TabIndex = 38;
+            this.pictureBox1.TabStop = false;
+            // 
             // ScriptForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 261);
+            this.Controls.Add(this.searchPanel);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.scriptCode);
@@ -141,6 +176,9 @@
             this.Load += new System.EventHandler(this.ScriptForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.searchPanel.ResumeLayout(false);
+            this.searchPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -155,5 +193,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.Panel searchPanel;
+        private System.Windows.Forms.TextBox search;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

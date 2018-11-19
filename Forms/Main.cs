@@ -198,6 +198,8 @@ namespace Lynx2DEngine
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].Rename(name);
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].code = File.ReadAllText("projects/" + Project.Name() + "/" + dest);
 
+                        File.Delete("projects/" + Project.Name() + "/" + dest);
+
                         SetStatus("Imported Script from '" + name + ext + "'", StatusType.Message);
                         done++;
 

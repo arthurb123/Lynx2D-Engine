@@ -216,7 +216,8 @@ namespace Lynx2DEngine
             Engine.ExecuteScript("var engineTileMapperRenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + selectedLayer + ", function(gfx) {});" +
                                  "var engineTileMapperTileSize = " + maps[map].tilesize*maps[map].scale + ";" +
                                  "var engineTileSelectionRotation = 0; " +
-                                 "var engineTileSelectionRotationEvent = lx.GAME.ADD_EVENT('mousebutton', 1, function() { " +
+                                 "var engineTileSelectionRotationEvent = lx.GAME.ADD_EVENT('mousebutton', 1, function(data) { " +
+                                    "if (data.state == 0) return;" +
                                     "engineTileSelectionRotation += 90; " +
                                     "if (engineTileSelectionRotation >= 360) " +
                                         "engineTileSelectionRotation = 0; " +

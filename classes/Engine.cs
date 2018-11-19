@@ -413,7 +413,12 @@ namespace Lynx2DEngine
             {
                 //Save Dialog
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "Lynx2D Item|*.lx2d";
+
+                if (eol[0].type == EngineObjectType.Script)
+                    sfd.Filter = "JavaScript (*.js)|*.js|Lynx2D Item (*.lx2d)|*.lx2d";
+                else 
+                    sfd.Filter = "Lynx2D Item (*.lx2d)|*.lx2d";
+
                 sfd.Title = "Export '" + eol[0].Variable() + "' as a Lynx2D item";
                 sfd.ShowDialog();
 
@@ -421,6 +426,19 @@ namespace Lynx2DEngine
                     return;
                 else if (File.Exists(sfd.FileName))
                     File.Delete(sfd.FileName);
+
+                //If script and needs to be javascript, export as javascript
+                if (eol[0].type == EngineObjectType.Script)
+                    using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
+                    {
+                        StreamWriter sw = new StreamWriter(stream);
+                        sw.Write(eol[0].code);
+                        sw.Dispose();
+
+                        form.SetStatus("'" + eol[0].Variable() + "' has been exported.", Main.StatusType.Message);
+
+                        return;
+                    }
 
                 //If tilemap, create tilemap object
                 if (eol[0].type == EngineObjectType.Tilemap)

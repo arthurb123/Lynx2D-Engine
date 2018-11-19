@@ -1,6 +1,3 @@
-+ Script forms now get focussed 
-   after reopening
-+ Objects now get hidden when
-   switching scenes in-game
-+ Console freeze bug fixed
-+ Various bug fixes
++ Scripts can now be exported as a
+   JavaScript file
++ CefSharp updated
