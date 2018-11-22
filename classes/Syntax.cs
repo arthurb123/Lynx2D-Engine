@@ -4,7 +4,7 @@ namespace Lynx2DEngine
 {
     class Syntax
     {
-        private static string keywords = @"\b(function|var|for|while|let|const|else|if|new|in|end|return|break|true|false|" +
+        private static string keywords = @"\b(this|function|var|for|while|let|const|else|if|new|in|end|return|break|true|false|" +
                                          @"undefined|null|NaN|Infinity|eval|uneval|isFinity|isNaN|parseFloat|parseInt)\b";
         private static string methods = @"\b(.Initialize|.Start|.Smoothing|.Framerate|.GetDimensions|.Background|.OnKey|.OnMouse|.StopKey|.StopMouse|.MouseMove|" +
                                         @".ClearMouse|.RemoveMouse|.ParticleLimit|.ClearLoops|.ClearLayerDraw|.ResetCentering|.ResetLayerDraw|.ChannelVolume|" +

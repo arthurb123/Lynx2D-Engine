@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -32,7 +31,8 @@ namespace Lynx2DEngine.forms
 
             scriptCode.Click += new EventHandler((object sender, EventArgs e) =>
             {
-                if (searchPanel.Visible) ClearPrevHighlight();
+                if (searchPanel.Visible)
+                    ClearPrevHighlight(true);
 
                 searchPanel.Visible = false;
             });
@@ -68,7 +68,6 @@ namespace Lynx2DEngine.forms
             id = obj.id;
 
             scriptCode.Text = obj.code;
-
         }
 
         private void UpdateTitle()
@@ -277,27 +276,39 @@ namespace Lynx2DEngine.forms
 
         private void SearchText(bool skipPrev)
         {
+            int originalIndex = scriptCode.SelectionStart;
+            int originalLength = scriptCode.SelectionLength;
+            Color originalColor = Color.Black;
+
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+                originalColor = classes.DarkTheme.font;
+           
             for (int i = 0; i < scriptCode.Lines.Length; i++)
             {
                 if (skipPrev && i <= prevLine) continue;
 
                 if (scriptCode.Lines[i].Contains(search.Text))
                 {
-                    ClearPrevHighlight();
+                    ClearPrevHighlight(false);
 
                     numberLabel.Focus();
-
+                    
                     prevStart = scriptCode.SelectionStart = scriptCode.Find(scriptCode.Lines[i]) + scriptCode.Lines[i].IndexOf(search.Text);
                     prevLength = scriptCode.SelectionLength = search.Text.Length;
                     prevForeColor = scriptCode.SelectionColor;
 
-                    scriptCode.SelectionBackColor = Color.LightYellow;
                     scriptCode.SelectionColor = Color.Black;
+                    scriptCode.SelectionBackColor = Color.LightYellow;
+
+                    scriptCode.SelectionStart = originalIndex;
+                    scriptCode.SelectionLength = originalLength;
+                    scriptCode.SelectionColor = originalColor;
 
                     if (prevLine != i)
                         scriptCode.ScrollToCaret();
 
                     prevLine = i;
+
                     search.Focus();
 
                     break;
@@ -305,19 +316,36 @@ namespace Lynx2DEngine.forms
             }
         }
 
-        private void ClearPrevHighlight()
+        private void ClearPrevHighlight(bool whole)
         {
-            if (prevStart != -1 && prevLength != -1)
-            {
-                numberLabel.Focus();
+            int originalIndex = scriptCode.SelectionStart;
+            int originalLength = scriptCode.SelectionLength;
+            Color originalColor = Color.Black;
 
+            if (Engine.ePreferences.theme == classes.Theme.Dark)
+                originalColor = classes.DarkTheme.font;
+
+            if (!whole && prevStart != -1 && prevLength != -1)
+            {
                 scriptCode.SelectionStart = prevStart;
                 scriptCode.SelectionLength = prevLength;
                 scriptCode.SelectionBackColor = scriptCode.BackColor;
                 scriptCode.SelectionColor = prevForeColor;
-
-                search.Focus();
             }
+            else if (prevStart != -1)
+            {
+                scriptCode.SelectionStart = prevStart;
+                scriptCode.SelectionLength = search.Text.Length;
+                scriptCode.SelectionBackColor = scriptCode.BackColor;
+                scriptCode.SelectionColor = prevForeColor;
+            }
+
+            scriptCode.SelectionStart = originalIndex;
+            scriptCode.SelectionLength = originalLength;
+            scriptCode.SelectionColor = originalColor;
+
+            if (!whole) search.Focus();
+            else scriptCode.Focus();
         }
     }
 }

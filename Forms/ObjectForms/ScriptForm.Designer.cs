@@ -37,8 +37,8 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchPanel = new System.Windows.Forms.Panel();
-            this.search = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.search = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.searchPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -128,6 +128,7 @@
             // 
             // searchPanel
             // 
+            this.searchPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.searchPanel.BackColor = System.Drawing.SystemColors.Control;
             this.searchPanel.Controls.Add(this.pictureBox1);
             this.searchPanel.Controls.Add(this.search);
@@ -136,14 +137,6 @@
             this.searchPanel.Size = new System.Drawing.Size(160, 24);
             this.searchPanel.TabIndex = 37;
             this.searchPanel.Visible = false;
-            // 
-            // search
-            // 
-            this.search.Location = new System.Drawing.Point(26, 2);
-            this.search.Name = "search";
-            this.search.Size = new System.Drawing.Size(131, 20);
-            this.search.TabIndex = 0;
-            this.search.TextChanged += new System.EventHandler(this.search_TextChanged);
             // 
             // pictureBox1
             // 
@@ -154,6 +147,14 @@
             this.pictureBox1.Size = new System.Drawing.Size(16, 16);
             this.pictureBox1.TabIndex = 38;
             this.pictureBox1.TabStop = false;
+            // 
+            // search
+            // 
+            this.search.Location = new System.Drawing.Point(26, 2);
+            this.search.Name = "search";
+            this.search.Size = new System.Drawing.Size(131, 20);
+            this.search.TabIndex = 0;
+            this.search.TextChanged += new System.EventHandler(this.search_TextChanged);
             // 
             // ScriptForm
             // 

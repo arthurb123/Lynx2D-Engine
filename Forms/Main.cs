@@ -30,6 +30,8 @@ namespace Lynx2DEngine
         private HierarchyFolder copiedFolder = null;
         private int copiedFromScene = 0;
 
+        private Dictionary<string, bool> registeredConsoleOutput = new Dictionary<string, bool>();
+
         #region "Main Stuff"
         public Main()
         {
@@ -1398,6 +1400,8 @@ namespace Lynx2DEngine
                 Tilemapper.StopEditing();
                 Tilemapper.ResetInjections();
 
+                registeredConsoleOutput = new Dictionary<string, bool>();
+
                 browser.Load(Project.WorkDirectory() + "/engine.html");
 
                 canViewObjects = true;
@@ -1481,9 +1485,13 @@ namespace Lynx2DEngine
             }
             else
             {
+                if (registeredConsoleOutput.ContainsKey(msg) && registeredConsoleOutput[msg]) return;
+
                 CheckConsoleVisibility();
 
                 console.AddOutput(msg);
+
+                registeredConsoleOutput.Add(msg, true);
             }
         }
 
@@ -1491,6 +1499,7 @@ namespace Lynx2DEngine
         {
             if (!consoleVisible)
             {
+                registeredConsoleOutput = new Dictionary<string, bool>();
                 consoleVisible = true;
 
                 console = new ConsoleForm();
