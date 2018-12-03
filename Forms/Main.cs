@@ -132,6 +132,7 @@ namespace Lynx2DEngine
                 Project.RequestSave();
 
             Project.RemoveEngineHTML();
+            Manager.ClearAppData();
 
             Cef.Shutdown();
         }

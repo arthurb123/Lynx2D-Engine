@@ -68,5 +68,13 @@ namespace Lynx2DEngine
 
             return false;
         }
+
+        public static void ClearAppData()
+        {
+            string appdataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/lynx2d/";
+
+            if (Directory.Exists(appdataDir))
+                Directory.Delete(appdataDir, true);
+        }
     }
 }

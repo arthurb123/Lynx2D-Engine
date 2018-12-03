@@ -607,6 +607,43 @@ namespace Lynx2DEngine
             if (Directory.Exists(extractDest))
                 Directory.Delete(extractDest, true);
         }
+
+        public static void CreateSpecificFileWatcher(string path, string fileName)
+        {
+            FileSystemWatcher watcher = new FileSystemWatcher()
+            {
+                Path = path,
+                NotifyFilter = NotifyFilters.LastWrite,
+                Filter = fileName + ".js"
+            };
+
+            watcher.Changed += (object o, FileSystemEventArgs e) =>
+            {
+                string name = e.Name.Substring(0, e.Name.IndexOf('.'));
+
+                try
+                {
+                    EngineObject eo = GetEngineObjectWithVarName(name);
+
+                    eo.code = File.ReadAllText(e.FullPath);
+
+                    form.refreshBrowser();
+                }
+                catch (Exception exc)
+                {
+                    form.SetStatus("Could not load external script changes", Main.StatusType.Warning);
+                    MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                }
+            };
+
+            watcher.Deleted += (object o, FileSystemEventArgs e) =>
+            {
+                watcher.Dispose();
+            };
+
+            // Begin watching.
+            watcher.EnableRaisingEvents = true;
+        }
         #endregion
 
         #region "Engine JavaScript IO"

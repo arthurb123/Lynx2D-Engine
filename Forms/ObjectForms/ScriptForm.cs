@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -66,6 +67,8 @@ namespace Lynx2DEngine.forms
             UpdateTitle();
 
             id = obj.id;
+
+            CheckExternalEditing();
 
             scriptCode.Text = obj.code;
         }
@@ -346,6 +349,51 @@ namespace Lynx2DEngine.forms
 
             if (!whole) search.Focus();
             else scriptCode.Focus();
+        }
+
+        private void openExternallyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/lynx2d/",
+                       appdataFile = appdataPath + "/" + obj.Variable() + ".js";
+
+                Directory.CreateDirectory(appdataPath);
+
+                if (!File.Exists(appdataFile))
+                    using (Stream stream = File.Open(appdataFile, FileMode.Create))
+                    {
+                        StreamWriter sw = new StreamWriter(stream);
+                        sw.Write(obj.code);
+                        sw.Dispose();
+                    }
+
+                System.Diagnostics.Process.Start(appdataFile);
+
+                Engine.CreateSpecificFileWatcher(appdataPath, obj.Variable());
+
+                Close();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+            }
+        }
+
+        private void CheckExternalEditing()
+        {
+            try
+            {
+                string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/lynx2d/",
+                           appdataFile = appdataPath + "/" + obj.Variable() + ".js";
+
+                if (File.Exists(appdataFile))
+                    File.Delete(appdataFile);
+            }
+            catch
+            {
+                //...
+            }
         }
     }
 }

@@ -1,4 +1,2 @@
-+ Scripts can now be exported as a
-   JavaScript file
-+ Engine output system improved
-+ CefSharp updated
++ Scripts can now be edited in the 
+   default external editor

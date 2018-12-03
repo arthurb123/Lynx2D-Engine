@@ -97,11 +97,16 @@ function Lynx2D() {
                 if (obj != undefined) {
                     if (obj.TYPE == 'key' && lx.CONTEXT.CONTROLLER.KEYS[obj.EVENT] || obj.TYPE == 'mousebutton' && lx.CONTEXT.CONTROLLER.MOUSE.BUTTONS[obj.EVENT]) {
                         for (var i = 0; i < obj.CALLBACK.length; i++) {
-                            if (obj.CALLBACK[i] != undefined) 
-                                obj.CALLBACK[i]({ 
-                                    mousePosition: lx.CONTEXT.CONTROLLER.MOUSE.POS, 
-                                    state: 1 
-                                });
+                            if (obj.CALLBACK[i] != undefined) {
+                                try {
+                                    obj.CALLBACK[i]({ 
+                                        mousePosition: lx.CONTEXT.CONTROLLER.MOUSE.POS, 
+                                        state: 1 
+                                    });
+                                } catch (err) {
+                                    console.log(err)
+                                };
+                            }
                         }   
                     }
                 }
@@ -110,7 +115,13 @@ function Lynx2D() {
             //GameObjects
             this.BUFFER.forEach(function(layer) {
                 if (layer != undefined) layer.forEach(function(obj) {
-                    if (obj != undefined && obj.UPDATES) obj.UPDATE();
+                    if (obj != undefined && obj.UPDATES) {
+                        try {
+                            obj.UPDATE();
+                        } catch (err) {
+                            console.log(err);
+                        };
+                    }
                 });
             });
             
@@ -118,30 +129,41 @@ function Lynx2D() {
             this.COLLIDERS.forEach(function(coll1) {
                 if (coll1 != undefined) lx.GAME.COLLIDERS.forEach(function(coll2) {
                     if (coll2 != undefined && coll1.COLLIDER_ID != coll2.COLLIDER_ID) {
-                        var collision = coll2.CheckCollision(coll1);
-                        
-                        if (collision != false) {
-                             coll1.OnCollide({
-                                self: coll1,
-                                trigger: coll2,
-                                direction: collision.direction,
-                                static: coll2.Static(),
-                                solid: coll2.Solid()
-                            });
-                        }
+                        try {
+                            var collision = coll2.CheckCollision(coll1);
+
+                            if (collision != false) {
+                                 coll1.OnCollide({
+                                    self: coll1,
+                                    trigger: coll2,
+                                    direction: collision.direction,
+                                    static: coll2.Static(),
+                                    solid: coll2.Solid()
+                                });
+                            }
+                        } catch (err) {
+                            console.log(err);
+                        };
                     }
                 });
             });
     
             //Loop
-            if (this.LOOPS.length > 0) 
-                this.LOOPS.forEach(function(loop) {
+            this.LOOPS.forEach(function(loop) {
+                try {
                     if (loop != undefined) loop(); 
+                } catch (err) {
+                    console.log(err);  
+                };
             });
             
             //UI
             this.UI.forEach(function(element) {
-                if (element != undefined) element.UPDATE();
+                try {
+                    if (element != undefined) element.UPDATE();
+                } catch (err) {
+                    console.log(err);  
+                };
             });
             
             //Audio
@@ -158,14 +180,18 @@ function Lynx2D() {
             
             //Buffer
             for (var i = 0; i < this.BUFFER.length; i++) {
-                if (this.BUFFER[i] != undefined) this.BUFFER[i].forEach(function(obj) {
-                    if (obj != undefined) obj.RENDER();
-                });
-                
-                if (this.LAYER_DRAW_EVENTS[i] != undefined) {
-                    for (var ii = 0; ii < this.LAYER_DRAW_EVENTS[i].length; ii++)
-                        if (this.LAYER_DRAW_EVENTS[i][ii] != undefined) this.LAYER_DRAW_EVENTS[i][ii](lx.CONTEXT.GRAPHICS);
-                }
+                try {
+                    if (this.BUFFER[i] != undefined) this.BUFFER[i].forEach(function(obj) {
+                        if (obj != undefined) obj.RENDER();
+                    });
+
+                    if (this.LAYER_DRAW_EVENTS[i] != undefined) {
+                        for (var ii = 0; ii < this.LAYER_DRAW_EVENTS[i].length; ii++)
+                            if (this.LAYER_DRAW_EVENTS[i][ii] != undefined) this.LAYER_DRAW_EVENTS[i][ii](lx.CONTEXT.GRAPHICS);
+                    }
+                } catch (err) {
+                    console.log(err);
+                };
             }
             
             //Debug
@@ -383,6 +409,8 @@ function Lynx2D() {
                 return VOL;
             },
             UPDATE: function () {
+                if (!this.CAN_PLAY) return;
+                
                 for (var i = 0; i < this.SOUNDS.length; i++) {
                     if (this.SOUNDS[i] == undefined) 
                         continue;
@@ -469,12 +497,9 @@ function Lynx2D() {
         //Setup canvas
         this.CONTEXT.CANVAS = document.createElement('canvas');
         this.CONTEXT.CANVAS.id = 'lynx-canvas';
-        this.CONTEXT.CANVAS.style = 'background-color: #282828; position: absolute; top: 0px; left: 0px;'
-        window.onresize = function() {
-            lx.CONTEXT.CANVAS.width = self.innerWidth;
-            lx.CONTEXT.CANVAS.height = self.innerHeight;
-        };
-
+        this.CONTEXT.CANVAS.style = 'background-color: #282828; position: absolute; top: 0px; left: 0px;';
+        this.CONTEXT.CANVAS.oncontextmenu = function(e) { e.preventDefault(); return false; };
+        
         //Setup graphics
         this.CONTEXT.GRAPHICS = this.CONTEXT.CANVAS.getContext('2d');
 
@@ -483,6 +508,10 @@ function Lynx2D() {
         if (title != undefined) document.title = title;
         
         //Setup window
+        window.onresize = function() {
+            lx.CONTEXT.CANVAS.width = self.innerWidth;
+            lx.CONTEXT.CANVAS.height = self.innerHeight;
+        };
         window.onresize();
         
         return this;
@@ -580,8 +609,6 @@ function Lynx2D() {
         });
         
         document.addEventListener('mousemove', function(EVENT) { 
-            lx.GAME.AUDIO.CAN_PLAY = true; 
-            
             lx.CONTEXT.CONTROLLER.MOUSE.POS = { X: EVENT.pageX, Y: EVENT.pageY }; 
             if (lx.CONTEXT.CONTROLLER.MOUSE.ON_HOVER != undefined) lx.CONTEXT.CONTROLLER.MOUSE.ON_HOVER(lx.CONTEXT.CONTROLLER.MOUSE.POS); 
         });
@@ -763,7 +790,7 @@ function Lynx2D() {
         for (var i = 0; i < this.GAME.BUFFER.length; i++) {
             if (this.GAME.BUFFER[i] != undefined) {
                 for (var ii = 0; ii < this.GAME.BUFFER[i].length; ii++) {
-                    if (this.GAME.BUFFER[i][ii] != undefined && this.GAME.BUFFER[i][ii].ID != undefined && this.GAME.BUFFER[i][ii].COLLIDER.ID == identifier) return this.GAME.BUFFER[i][ii];
+                    if (this.GAME.BUFFER[i][ii] != undefined && this.GAME.BUFFER[i][ii].ID != undefined && this.GAME.BUFFER[i][ii].ID == identifier) return this.GAME.BUFFER[i][ii];
                 }
             }   
         }
@@ -1004,8 +1031,14 @@ function Lynx2D() {
         this.Clip = function(c_x, c_y, c_w, c_h) {
             if (this.SPRITE == undefined || this.SPRITE == null) return -1;
             
-            if (c_x == undefined || c_y == undefined || c_w == undefined || c_h == undefined) return this.SPRITE.Clip();
-            else this.SPRITE.Clip(c_x, c_y, c_w, c_h);   
+            if (this.ANIMATION == undefined) {
+                if (c_x == undefined || c_y == undefined || c_w == undefined || c_h == undefined) return this.SPRITE.Clip();
+                else this.SPRITE.Clip(c_x, c_y, c_w, c_h);   
+            }
+            else {
+                if (c_x == undefined || c_y == undefined || c_w == undefined || c_h == undefined) return this.ANIMATION.GET_CURRENT_FRAME().Clip();
+                else console.log('ClippingError: Clipping while an animation is playing is not possible');
+            }
             
             return this;
         }
@@ -1112,8 +1145,8 @@ function Lynx2D() {
             return this;
         };
         
-        this.CreateCollider = function(static, callback) {
-            this.COLLIDER = new lx.Collider(this.Position().X, this.Position().Y, this.Size().W, this.Size().H, static, callback);
+        this.CreateCollider = function(is_static, callback) {
+            this.COLLIDER = new lx.Collider(this.Position().X, this.Position().Y, this.Size().W, this.Size().H, is_static, callback);
             this.COLLIDER.OFFSET = {
                 X: 0,
                 Y: 0
@@ -1208,20 +1241,25 @@ function Lynx2D() {
         };
         
         if (w != undefined && h != undefined) this.Size(w, h);
-        else console.log(lx.GAME.LOG.TIMEFORMAT() + 'Created a GameObject without a specified size, autosizing is not available yet.');
+        else console.log('GameObjectError: Created a GameObject without a specified size.');
     };
     
-    this.Collider = function (x, y, w, h, static, callback) {
+    this.Collider = function (x, y, w, h, is_static, callback) {
         this.POS = {
             X: x,
             Y: y
+        };
+        this.OFFSET = {
+            X: 0,
+            Y: 0
         };
         this.SIZE = {
             W: w,
             H: h
         };
-        this.STATIC = static;
+        this.STATIC = is_static;
         this.SOLID = true;
+        this.ENABLED = false;
         
         this.Size = function(width, height) {
             if (width == undefined || height == undefined) return this.SIZE;
@@ -1289,6 +1327,9 @@ function Lynx2D() {
         else this.OnCollide = function() {};
         
         this.CheckCollision = function(collider) {
+            //If the collider has not been fully initialized yet, stop collision detection.
+            if (this.POS.X != 0 && this.POS.Y != 0 && this.POS.X == this.OFFSET.X && this.POS.Y == this.OFFSET.Y) return false;
+            
             var result = !(((collider.POS.Y + collider.SIZE.H) < (this.POS.Y)) || (collider.POS.Y > (this.POS.Y + this.SIZE.H)) || ((collider.POS.X + collider.SIZE.W) < this.POS.X) || (collider.POS.X > (this.POS.X + this.SIZE.W)));
             
             if (result) {
@@ -1340,7 +1381,7 @@ function Lynx2D() {
             } else return result;
         };
         
-        if (this.STATIC) this.Enable();
+        if (is_static) this.Enable();
     };
     
     this.Animation = function (sprite_collection, speed) {
@@ -1355,7 +1396,7 @@ function Lynx2D() {
         this.BUFFER_LAYER = 0;
         this.UPDATES = true;
         
-        this.Show = function(layer, x, y, w, h) {
+        this.Show = function(layer, x, y, w, h, amount) {
             if (this.BUFFER_ID != -1) this.Hide();
             
             this.POS = {
@@ -1368,6 +1409,9 @@ function Lynx2D() {
             };
             this.BUFFER_ID = lx.GAME.ADD_TO_BUFFER(this, layer);
             this.BUFFER_LAYER = layer;
+            
+            if (amount != undefined) 
+                this.MAX_AMOUNT = amount;
             
             return this;
         };
@@ -1389,6 +1433,10 @@ function Lynx2D() {
             return this;
         };
         
+        this.GET_CURRENT_FRAME = function() {
+              return this.SPRITES[this.FRAME];
+        };
+        
         this.RENDER = function(POS, SIZE) {
             if (this.BUFFER_ID == -1) this.SPRITES[this.FRAME].RENDER(POS, SIZE);
             else this.SPRITES[this.FRAME].RENDER(lx.GAME.TRANSLATE_FROM_FOCUS(this.POS), this.SIZE);
@@ -1401,7 +1449,16 @@ function Lynx2D() {
                 this.TIMER.CURRENT = 0;
                 this.FRAME++;
                 
-                if (this.FRAME >= this.MAX_FRAMES) this.FRAME = 0;
+                if (this.FRAME >= this.MAX_FRAMES) {
+                    this.FRAME = 0;
+                    
+                    if (this.MAX_AMOUNT != undefined) {
+                        if (this.MAX_AMOUNT == 0) {
+                            this.MAX_AMOUNT = undefined;
+                            this.Hide();
+                        } else this.MAX_AMOUNT--;
+                    }
+                }
             }
         };
     };
@@ -1589,7 +1646,10 @@ function Lynx2D() {
         this.Hide = function() {
             if (this.BUFFER_ID == -1) return;
             
-            lx.GAME.BUFFER[this.BUFFER_LAYER][this.BUFFER_ID] = undefined;  
+            lx.GAME.BUFFER[this.BUFFER_LAYER][this.BUFFER_ID] = undefined; 
+            
+            this.BUFFER_ID = -1;
+            this.BUFFER_LAYER = 0;
             
             return this;
         };
@@ -1597,6 +1657,7 @@ function Lynx2D() {
         this.Emit = function(layer, amount) {
             this.TIMER.CURRENT = this.TIMER.STANDARD;
             this.HIDES_AFTER_AMOUNT = amount;
+            
             this.Show(layer);
             
             return this;

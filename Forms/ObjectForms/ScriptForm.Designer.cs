@@ -39,6 +39,7 @@
             this.searchPanel = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.search = new System.Windows.Forms.TextBox();
+            this.openExternallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.searchPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -104,7 +105,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.openExternallyToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(484, 24);
@@ -156,6 +158,13 @@
             this.search.TabIndex = 0;
             this.search.TextChanged += new System.EventHandler(this.search_TextChanged);
             // 
+            // openExternallyToolStripMenuItem
+            // 
+            this.openExternallyToolStripMenuItem.Name = "openExternallyToolStripMenuItem";
+            this.openExternallyToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
+            this.openExternallyToolStripMenuItem.Text = "Open Externally";
+            this.openExternallyToolStripMenuItem.Click += new System.EventHandler(this.openExternallyToolStripMenuItem_Click);
+            // 
             // ScriptForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -197,5 +206,6 @@
         private System.Windows.Forms.Panel searchPanel;
         private System.Windows.Forms.TextBox search;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ToolStripMenuItem openExternallyToolStripMenuItem;
     }
 }
