@@ -12,7 +12,7 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static readonly string version = "0.6.2";
+        private static readonly string version = "0.6.3";
         private static readonly string stage = "beta";
 
         private static bool extract = true;
@@ -27,7 +27,6 @@ namespace Lynx2DEngine
                 WebResponse response = webRequest.GetResponse();
 
                 response.Close();
-                response.Dispose();
 
                 return true;
             }
@@ -48,13 +47,9 @@ namespace Lynx2DEngine
                 WebRequest webRequest = WebRequest.Create(@"http://www.lynx2d.com/engine/version.txt");
 
                 using (WebResponse response = webRequest.GetResponse())
-                    using (Stream content = response.GetResponseStream())
-                        using (StreamReader reader = new StreamReader(content))
-                        {
-                            onlineVersion = reader.ReadToEnd();
-                            reader.Dispose();
-                            content.Dispose();
-                        }
+                using (Stream content = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(content))
+                    onlineVersion = reader.ReadToEnd();
             }
             catch
             {

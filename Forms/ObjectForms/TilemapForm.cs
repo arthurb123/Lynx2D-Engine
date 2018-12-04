@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine.forms
@@ -73,7 +74,7 @@ namespace Lynx2DEngine.forms
             {
                 if (setsSprite) tm.curSprite = sprite.Text;
 
-                cur = Image.FromFile(Manager.Root() + "/projects/" + Project.Name() + "/" + Engine.GetEngineObjectWithVarName(tm.curSprite).source);
+                cur = Image.FromFile(Manager.Root() + "/projects/" + Project.Name() + Path.DirectorySeparatorChar + Engine.GetEngineObjectWithVarName(tm.curSprite).source);
 
                 drawTimer.Enabled = true;
             }

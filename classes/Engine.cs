@@ -32,7 +32,6 @@ namespace Lynx2DEngine
 
                     ePreferences = ((EnginePreferences)bf.Deserialize(stream));
                     stream.Close();
-                    stream.Dispose();
 
                     return true;
                 } else
@@ -64,7 +63,6 @@ namespace Lynx2DEngine
                 bf.Serialize(stream, temp);
 
                 stream.Close();
-                stream.Dispose();
             }
             catch (Exception e)
             {
@@ -372,7 +370,6 @@ namespace Lynx2DEngine
                 }
 
                 stream.Close();
-                stream.Dispose();
             }
             catch (Exception e)
             {
@@ -429,16 +426,20 @@ namespace Lynx2DEngine
 
                 //If script and needs to be javascript, export as javascript
                 if (eol[0].type == EngineObjectType.Script)
+                {
                     using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
                     {
                         StreamWriter sw = new StreamWriter(stream);
                         sw.Write(eol[0].code);
-                        sw.Dispose();
+
+                        sw.Close();
+                        stream.Close();
 
                         form.SetStatus("'" + eol[0].Variable() + "' has been exported.", Main.StatusType.Message);
-
-                        return;
                     }
+
+                    return;
+                }
 
                 //If tilemap, create tilemap object
                 if (eol[0].type == EngineObjectType.Tilemap)
@@ -448,12 +449,12 @@ namespace Lynx2DEngine
                         BinaryFormatter bf = new BinaryFormatter();
 
                         bf.Serialize(stream, eoTM);
-                        stream.Close();
-                        stream.Dispose();
 
                         //Add used sprites
                         foreach (string sprite in eoTM.GetUsedSprites())
                             eol.Add(GetEngineObjectWithVarNameInScene(scene, sprite).Clone());
+
+                        stream.Close();
                     }
 
                 //If child available, add that child
@@ -473,7 +474,6 @@ namespace Lynx2DEngine
                     bf.Serialize(stream, eol.ToArray());
 
                     stream.Close();
-                    stream.Dispose();
                 }
 
                 //Archive
@@ -492,9 +492,7 @@ namespace Lynx2DEngine
                     //If source, add that to the archive
                     foreach (EngineObject eo in eol)
                         if (eo != null && eo.source != null && eo.source != string.Empty && eo.source.Length > 0)
-                            archive.CreateEntryFromFile(Manager.Root() + "projects/" + Project.Name() + "/" + eo.source, Path.GetFileName(Manager.Root() + "projects/" + Project.Name() + "/" + eo.source));
-
-                    archive.Dispose();
+                            archive.CreateEntryFromFile(Manager.Root() + "projects/" + Project.Name() + Path.DirectorySeparatorChar + eo.source, Path.GetFileName(Manager.Root() + "projects/" + Project.Name() + Path.DirectorySeparatorChar + eo.source));
 
                     form.SetStatus("'" + eol[0].Variable() + "' has been exported.", Main.StatusType.Message);
                 }
@@ -525,8 +523,6 @@ namespace Lynx2DEngine
                 {
                     Manager.CheckDirectory(extractDest, true);
                     archive.ExtractToDirectory(extractDest);
-
-                    archive.Dispose();
                 }
 
                 //Get Engine Objects
@@ -539,7 +535,6 @@ namespace Lynx2DEngine
                     eoa = (EngineObject[])bf.Deserialize(stream);
 
                     stream.Close();
-                    stream.Dispose();
                 }
 
                 //Copy files
@@ -589,9 +584,8 @@ namespace Lynx2DEngine
                             BinaryFormatter bf = new BinaryFormatter();
 
                             scenes[eSettings.currentScene].objects[result].tileMap = Tilemapper.AddMap((Tilemap)bf.Deserialize(stream));
-                            
+
                             stream.Close();
-                            stream.Dispose();
                         }
                     }
                     
@@ -909,8 +903,6 @@ namespace Lynx2DEngine
             if (scenes[eSettings.currentScene].objects[id] == null) return;
 
             scenes[eSettings.currentScene].objects[id].code = script;
-
-            form.refreshBrowser();
         }
 
         public static void SetEngineObjectSprite(int id, string sprite)

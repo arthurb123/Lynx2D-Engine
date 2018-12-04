@@ -1,2 +1,3 @@
 + Scripts can now be edited in the 
    default external editor
++ Small bug fixes

@@ -351,6 +351,22 @@ namespace Lynx2DEngine.forms
             else scriptCode.Focus();
         }
 
+        private void CheckExternalEditing()
+        {
+            try
+            {
+                string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/lynx2d/",
+                           appdataFile = appdataPath + Path.DirectorySeparatorChar + obj.Variable() + ".js";
+
+                if (File.Exists(appdataFile))
+                    File.Delete(appdataFile);
+            }
+            catch
+            {
+                //...
+            }
+        }
+
         private void openExternallyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -365,7 +381,8 @@ namespace Lynx2DEngine.forms
                     {
                         StreamWriter sw = new StreamWriter(stream);
                         sw.Write(obj.code);
-                        sw.Dispose();
+
+                        sw.Close();
                     }
 
                 System.Diagnostics.Process.Start(appdataFile);
@@ -377,22 +394,6 @@ namespace Lynx2DEngine.forms
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-            }
-        }
-
-        private void CheckExternalEditing()
-        {
-            try
-            {
-                string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/lynx2d/",
-                           appdataFile = appdataPath + "/" + obj.Variable() + ".js";
-
-                if (File.Exists(appdataFile))
-                    File.Delete(appdataFile);
-            }
-            catch
-            {
-                //...
             }
         }
     }

@@ -68,6 +68,7 @@ namespace Lynx2DEngine
 
                 gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(true); lx.Start(60);";
 
+                Manager.ClearAppData();
                 Backup.Disable();
                 Backup.Enable();
 
@@ -158,36 +159,34 @@ namespace Lynx2DEngine
             gameCode += "lx.Start(" + Engine.bSettings.initialFramerate + ")";
 
             using (FileStream fs = new FileStream("projects/" + cur + "/data/game.js", FileMode.Create))
+            using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
             {
-                using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
+                if (Engine.bSettings.obfuscates)
                 {
-                    if (Engine.bSettings.obfuscates)
+                    if (!Feed.CheckOnline())
+                        form.SetStatus("Game obfuscation requires a internet connection.", Main.StatusType.Warning);
+                    else
                     {
-                        if (!Feed.CheckOnline())
-                            form.SetStatus("Game obfuscation requires a internet connection.", Main.StatusType.Warning);
-                        else
+                        form.SetStatus("Obfuscating game code.", Main.StatusType.Message);
+
+                        try
                         {
-                            form.SetStatus("Obfuscating game code.", Main.StatusType.Message);
+                            string r = await Obfuscator.Encode(gameCode);
+                            gameCode = r;
 
-                            try
-                            {
-                                string r = await Obfuscator.Encode(gameCode);
-                                gameCode = r;
-
-                                obfuscated = true;
-                            }
-                            catch
-                            {
-                                form.SetStatus("Could not obfuscate game code.", Main.StatusType.Warning);
-                            }
+                            obfuscated = true;
+                        }
+                        catch
+                        {
+                            form.SetStatus("Could not obfuscate game code.", Main.StatusType.Warning);
                         }
                     }
-
-                    w.Write(gameCode);
-
-                    w.Dispose();
-                    fs.Dispose();
                 }
+
+                w.Write(gameCode);
+
+                w.Close();
+                fs.Close();
             }
 
             gameCode = "lx.Initialize('" + cur + "'); lx.Smoothing(true); lx.Start(60);";
@@ -236,13 +235,12 @@ namespace Lynx2DEngine
                 ExportHTML();
 
                 using (FileStream fs = new FileStream("projects/" + cur + "/data/game.js", FileMode.Create))
+                using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
                 {
-                    using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
-                    {
-                        w.Write("lx.Initialize('" + cur + "'); lx.Smoothing(false); lx.Start(60);");
-                        w.Dispose();
-                        fs.Dispose();
-                    }
+                    w.Write("lx.Initialize('" + cur + "'); lx.Smoothing(false); lx.Start(60);");
+
+                    w.Close();
+                    fs.Close();
                 }
 
                 DownloadFramework(false);
@@ -371,13 +369,12 @@ namespace Lynx2DEngine
                 return;
 
             using (FileStream fs = new FileStream("projects/" + cur + "/engine.html", FileMode.Create))
+            using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
             {
-                using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
-                {
-                    w.Write("<html>\n<head>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='#282828'>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  </body>\n</html>");
-                    w.Dispose();
-                    fs.Dispose();
-                }
+                w.Write("<html>\n<head>\n  <meta charset='utf-8'/>\n</head>\n<body bgcolor='#282828'>\n  <script type='text/javascript' src='data/lynx2d.js'></script>\n  </body>\n</html>");
+
+                w.Close();
+                fs.Close();
             }
         }
         

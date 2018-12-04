@@ -161,7 +161,7 @@ namespace Lynx2DEngine
                         //Sprite
                         dest = "res/" + name + ext;
 
-                        Manager.CopyFile(file, "projects/" + Project.Name() + "/" + dest);
+                        Manager.CopyFile(file, "projects/" + Project.Name() + Path.DirectorySeparatorChar + dest);
 
                         id = AddSprite();
 
@@ -178,7 +178,7 @@ namespace Lynx2DEngine
                         //Sound
                         dest = "res/" + name + ext;
 
-                        Manager.CopyFile(file, "projects/" + Project.Name() + "/" + dest);
+                        Manager.CopyFile(file, "projects/" + Project.Name() + Path.DirectorySeparatorChar + dest);
 
                         id = AddSound();
                     
@@ -194,14 +194,14 @@ namespace Lynx2DEngine
                         //Script
                         dest = "res/" + name + ext;
 
-                        Manager.CopyFile(file, "projects/" + Project.Name() + "/" + dest);
+                        Manager.CopyFile(file, "projects/" + Project.Name() + Path.DirectorySeparatorChar + dest);
 
                         id = AddScript();
 
                         Engine.scenes[Engine.eSettings.currentScene].objects[id].Rename(name);
-                        Engine.scenes[Engine.eSettings.currentScene].objects[id].code = File.ReadAllText("projects/" + Project.Name() + "/" + dest);
+                        Engine.scenes[Engine.eSettings.currentScene].objects[id].code = File.ReadAllText("projects/" + Project.Name() + Path.DirectorySeparatorChar + dest);
 
-                        File.Delete("projects/" + Project.Name() + "/" + dest);
+                        File.Delete("projects/" + Project.Name() + Path.DirectorySeparatorChar + dest);
 
                         SetStatus("Imported Script from '" + name + ext + "'", StatusType.Message);
                         done++;
@@ -1441,6 +1441,13 @@ namespace Lynx2DEngine
         {
             if (!args.IsLoading && Project.Name() != string.Empty)
             {
+                if (!canViewObjects)
+                {
+                    canViewObjects = true;
+
+                    UpdateHierarchy();
+                }
+
                 Project.Build();
 
                 checkCameraInjection(sender, args);

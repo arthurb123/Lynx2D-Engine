@@ -10,10 +10,10 @@ namespace Lynx2DEngine
     {
         public static bool CheckDirectory(string path, bool creates)
         {
-            bool exists = Directory.Exists(Root() + "/" + path);
+            bool exists = Directory.Exists(Root() + Path.DirectorySeparatorChar + path);
             if (!exists && creates)
             {
-                Directory.CreateDirectory(Root() + "/" + path);
+                Directory.CreateDirectory(Root() + Path.DirectorySeparatorChar + path);
                 exists = true;
             }
 
@@ -22,7 +22,7 @@ namespace Lynx2DEngine
 
         public static string Root()
         {
-            return Directory.GetCurrentDirectory() + "/";
+            return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar;
         }
 
         public static String[] GetFilesFrom(String searchFolder, String[] filters, bool isRecursive)

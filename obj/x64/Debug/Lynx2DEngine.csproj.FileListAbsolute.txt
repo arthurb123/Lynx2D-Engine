@@ -431,7 +431,6 @@ D:\lynx2d engine\obj\x64\Debug\Lynx2DEngine.forms.TilemapForm.resources
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.EmitterForm.resources
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.TilemapForm.resources
 C:\Users\Arthur\Desktop\Personal\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ExportSettingsForm.resources
-C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.csprojAssemblyReference.cache
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.AboutForm.resources
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ChangelogForm.resources
 C:\Users\Arthur\Desktop\lynx2d\Lynx2D-Engine\obj\x64\Debug\Lynx2DEngine.forms.ExportSettingsForm.resources

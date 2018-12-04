@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine.InputForms
@@ -26,7 +27,7 @@ namespace Lynx2DEngine.InputForms
                 string tag = hierarchy.SelectedNode.Tag.ToString();
 
                 int.TryParse(tag.Substring(0, tag.IndexOf("/")), out scene);
-                int.TryParse(tag.Substring(tag.IndexOf("/")+1, tag.Length-tag.IndexOf("/")-1), out engineId);
+                int.TryParse(tag.Substring(tag.IndexOf("/") +1, tag.Length-tag.IndexOf("/") -1), out engineId);
 
                 DialogResult = DialogResult.OK;
 
