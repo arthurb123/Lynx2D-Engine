@@ -239,24 +239,15 @@ namespace Lynx2DEngine
             {
                 try
                 {
-                    MailMessage mail = new MailMessage(
-                        "lynx2dfeedback@gmail.com",
-                        "arthurbaars@outlook.com",
-                        "[Lynx2D Engine Feedback] " + type,
-                        "An exception occured of type '" + type + "' - " + msg
-                    );
-                    mail.BodyEncoding = Encoding.UTF8;
+                    using (WebClient client = new WebClient())
+                    {
+                        string s = client.DownloadString("http://www.lynx2d.com:5318/?title=[Lynx2D Engine Feedback] " + type + " Exception&body=" + msg);
 
-                    SmtpClient client = new SmtpClient();
-
-                    client.Port = 587;
-                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.EnableSsl = true;
-                    client.UseDefaultCredentials = false;
-                    client.Credentials = new NetworkCredential("lynx2dfeedback@gmail.com", "AZdu6g@U7mQ7K%Q3");
-                    client.Host = "smtp.gmail.com";
-
-                    client.Send(mail);
+                        if (s == string.Empty || s == "wrong usage")
+                            form.SetStatus("Could not submit the exception online.", Main.StatusType.Message);
+                        else if (s == "success")
+                            form.SetStatus("The exception has been submitted.", Main.StatusType.Message);
+                    }
                 }
                 catch (Exception e)
                 {

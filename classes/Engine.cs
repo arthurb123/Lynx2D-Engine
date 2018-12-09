@@ -323,7 +323,10 @@ namespace Lynx2DEngine
             try
             {
                 if (!File.Exists("projects/" + Project.Name() + "/state.bin"))
-                    throw new Exception("The project savestate could not be found.");
+                {
+                    MessageBox.Show("The project savestate could not be found.", "Lynx2D Engine - Message");
+                    return false;
+                }
 
                 Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.Open);
                 BinaryFormatter bf = new BinaryFormatter();
