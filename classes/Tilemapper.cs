@@ -313,12 +313,7 @@ namespace Lynx2DEngine
 
             if (editing == -1) return;
             if (x < maps[editing].x || y < maps[editing].y)
-            {
-                Engine.ExecuteScript("lx.StopMouse(0);");
-
-                MessageBox.Show("Tilemaps do not support negative values (yet). Try changing the position of the tilemap.", "Lynx2D Engine - Exception");
                 return;
-            }
 
             selected.r = r;
 
@@ -329,12 +324,7 @@ namespace Lynx2DEngine
         {
             if (editing == -1) return;
             if (x < maps[editing].x || y < maps[editing].y)
-            {
-                Engine.ExecuteScript("lx.StopMouse(2);");
-
-                MessageBox.Show("Tilemaps do not support negative values (yet). Try changing the position of the tilemap.", "Lynx2D Engine - Exception");
                 return;
-            }
 
             maps[editing].RemoveTile(x, y, selected.cW, selected.cH, true);
         }

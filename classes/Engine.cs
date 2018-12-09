@@ -43,8 +43,7 @@ namespace Lynx2DEngine
             }   
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while loading engine preferences.", Main.StatusType.Warning);
+                Feed.GiveException("Preferences Load", e.Message);
             }
 
             return false;
@@ -66,8 +65,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while saving engine preferences.", Main.StatusType.Warning);
+                Feed.GiveException("Preferences Save", e.Message);
             }
         }
         #endregion
@@ -107,7 +105,7 @@ namespace Lynx2DEngine
 
             if (id == bSettings.standardScene)
             {
-                MessageBox.Show("Could not remove '" + scenes[id].Variable() + "', as this is the standard scene of the project.", "Lynx2D Engine - Exception");
+                MessageBox.Show("Could not remove '" + scenes[id].Variable() + "', as this is the standard scene of the project.", "Lynx2D Engine - Message");
                 return;
             }
 
@@ -325,7 +323,7 @@ namespace Lynx2DEngine
             try
             {
                 if (!File.Exists("projects/" + Project.Name() + "/state.bin"))
-                    return false;
+                    throw new Exception("The project savestate could not be found.");
 
                 Stream stream = File.Open("projects/" + Project.Name() + "/state.bin", FileMode.Open);
                 BinaryFormatter bf = new BinaryFormatter();
@@ -365,7 +363,7 @@ namespace Lynx2DEngine
                 }
                 else
                 {
-                    MessageBox.Show("Project could not be loaded, the engine state has been corrupted.", "Lynx2D Engine - Error");
+                    MessageBox.Show("Project could not be loaded, the engine savestate has been corrupted. Try restoring a backup manually.", "Lynx2D Engine - Message");
                     return false;
                 }
 
@@ -373,8 +371,9 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while loading engine state.", Main.StatusType.Warning);
+                Feed.GiveException("State Load", e.Message);
+
+                return false;
             }
 
             return true;
@@ -392,8 +391,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while saving engine state.", Main.StatusType.Warning);
+                Feed.GiveException("State Save", e.Message);
             }
         }
 
@@ -504,8 +502,7 @@ namespace Lynx2DEngine
                 if (File.Exists(tempTM))
                     File.Delete(tempTM);
 
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while saving item.", Main.StatusType.Warning);
+                Feed.GiveException("Item Save", e.Message);
             }
         }
 
@@ -594,8 +591,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while importing item(s)", Main.StatusType.Warning);
+                Feed.GiveException("Item Import", e.Message);
             }
 
             if (Directory.Exists(extractDest))
@@ -625,8 +621,7 @@ namespace Lynx2DEngine
                 }
                 catch (Exception exc)
                 {
-                    form.SetStatus("Could not load external script changes", Main.StatusType.Warning);
-                    MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                    Feed.GiveException("External Change", exc.Message);
                 }
             };
 
@@ -749,8 +744,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Could not build project code.", Main.StatusType.Alert);
+                Feed.GiveException("Project Build", e.Message);
             }
 
             return string.Empty;
@@ -915,7 +909,7 @@ namespace Lynx2DEngine
 
                 if (filler.Length == 0)
                 {
-                    MessageBox.Show(scenes[eSettings.currentScene].objects[id].Variable() + " could not be assigned a existing sprite. Please refer to a existing sprite.", "Lynx2D Engine - Exception");
+                    MessageBox.Show(scenes[eSettings.currentScene].objects[id].Variable() + " could not be assigned a existing sprite. Please refer to a existing sprite.", "Lynx2D Engine - Message");
                     return;
                 }
 
@@ -935,7 +929,7 @@ namespace Lynx2DEngine
 
                 if (filler.Length == 0)
                 {
-                    MessageBox.Show(scenes[eSettings.currentScene].objects[id].Variable() + " could not be assigned a existing collider. Please refer to a existing collider.", "Lynx2D Engine - Exception");
+                    MessageBox.Show(scenes[eSettings.currentScene].objects[id].Variable() + " could not be assigned a existing collider. Please refer to a existing collider.", "Lynx2D Engine - Message");
                     return;
                 }
 
@@ -1049,6 +1043,7 @@ namespace Lynx2DEngine
     class EnginePreferences
     {
         public Theme theme = Theme.Light;
+        public bool suppressExceptions = false;
     }
 
     [Serializable]

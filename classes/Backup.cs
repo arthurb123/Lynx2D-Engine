@@ -61,10 +61,13 @@ namespace Lynx2DEngine.Classes
 
                 File.Copy("projects/" + Project.Name() + "/state.bin", fileName, true);
             }
-            catch
+            catch (Exception exc)
             {
                 Disable();
-                MessageBox.Show("An exception occurred while backing up the project state. Backup has been disabled.", "Lynx2D Engine - Exception");
+
+                Feed.GiveException("Backup", exc.Message);
+
+                MessageBox.Show("An exception occurred while backing up the project state. Automatic backup has been disabled.", "Lynx2D Engine - Message");
             }
         }
     }

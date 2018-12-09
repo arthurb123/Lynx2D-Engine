@@ -257,6 +257,8 @@ namespace Lynx2DEngine.forms
         {
             Engine.SetEngineObjectScript(engineId, scriptCode.Text);
 
+            Engine.form.refreshBrowser();
+
             setSaved(true);
         }
 

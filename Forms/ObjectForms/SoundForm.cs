@@ -84,7 +84,7 @@ namespace Lynx2DEngine.forms
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Channel Change", exc.Message);
             }
         }
 
@@ -112,7 +112,7 @@ namespace Lynx2DEngine.forms
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Position Change", e.Message);
             }
         }
 
@@ -158,7 +158,7 @@ namespace Lynx2DEngine.forms
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Source Change", exc.Message);
             }
         }
     }

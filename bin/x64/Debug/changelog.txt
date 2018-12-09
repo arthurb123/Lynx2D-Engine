@@ -1,3 +1,5 @@
-+ Scripts can now be edited in the 
-   default external editor
-+ Small bug fixes
++ Improved error handling when editing
+   negative tiles in tilemaps
++ Exception handling improved, now 
+   features optional submission
++ Exceptions can now be suppressed

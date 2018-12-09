@@ -93,9 +93,11 @@ namespace Lynx2DEngine
         private void EngineStartup()
         {
             bool hasPreferences = Engine.EvaluateEnginePreferences();
+
             if (hasPreferences)
             {
                 LoadTheme(Engine.ePreferences.theme);
+                showExceptionsToolStripMenuItem.Checked = Engine.ePreferences.suppressExceptions;
                 //...
             }
         }
@@ -214,7 +216,7 @@ namespace Lynx2DEngine
 
                         break;
                     default:
-                        MessageBox.Show("This file format is not supported and can not be imported.", "Lynx2D Engine - Exception");
+                        MessageBox.Show("This file format is not supported and can not be imported.", "Lynx2D Engine - Message");
                         break;
                 }
             }
@@ -343,8 +345,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while updating hierarchy.", Main.StatusType.Warning);
+                Feed.GiveException("Hierarchy", e.Message);
             }
         }
 
@@ -516,10 +517,9 @@ namespace Lynx2DEngine
                     targetNode.Expand();
                 }
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
-                SetStatus("Could not move hierarchy item", StatusType.Warning);
-                MessageBox.Show(ex.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Hierarchy Management", exc.Message);
             }
         }
 
@@ -634,8 +634,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while opening engine object.", StatusType.Warning);
+                Feed.GiveException("Hierarchy Open", exc.Message);
             }
         }
 
@@ -796,8 +795,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while pasting copied object(s).", StatusType.Warning);
+                Feed.GiveException("Hierarchy Pasting", exc.Message);
             }
         }
 
@@ -822,8 +820,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while renaming item", StatusType.Warning);
+                Feed.GiveException("Hierarchy Renaming", exc.Message);
             }
         }
 
@@ -914,6 +911,11 @@ namespace Lynx2DEngine
                     DragDropFile(new string[] { ofd.FileName });
             }
         }
+
+        private void showExceptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Engine.ePreferences.suppressExceptions = showExceptionsToolStripMenuItem.Checked;
+        }
         #endregion
 
         #region "Scene Toolstrip Stuff"
@@ -952,8 +954,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while adding GameObject", StatusType.Warning);
+                Feed.GiveException("GameObject Creation", exc.Message);
             }
         }
 
@@ -967,8 +968,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while adding Sound", Main.StatusType.Warning);
+                Feed.GiveException("Sound Creation", exc.Message);
             }
         }
 
@@ -983,8 +983,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while adding Sprite", Main.StatusType.Warning);
+                Feed.GiveException("Sprite Creation", exc.Message);
             }
         }
 
@@ -998,8 +997,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while adding Sprite", Main.StatusType.Warning);
+                Feed.GiveException("Script Creation", exc.Message);
             }
         }
 
@@ -1014,8 +1012,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while adding Collider", Main.StatusType.Warning);
+                Feed.GiveException("Collider Creation", exc.Message);
             }
         }
 
@@ -1029,8 +1026,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while adding Emitter", Main.StatusType.Warning);
+                Feed.GiveException("Emitter Creation", exc.Message);
             }
         }
 
@@ -1044,8 +1040,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while adding Tilemap", Main.StatusType.Warning);
+                Feed.GiveException("Tilemap Creation", exc.Message);
             }
         }
 
@@ -1301,8 +1296,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                SetStatus("Exception occurred while opening documentation", StatusType.Warning);
+                Feed.GiveException("Documentation", exc.Message);
             }
         }
 
@@ -1346,14 +1340,14 @@ namespace Lynx2DEngine
             {
                 if (!Directory.Exists("projects/" + Project.Name() + "/backup/"))
                 {
-                    MessageBox.Show("No backups could be found to restore.", "Lynx2D Engine - Exception");
+                    MessageBox.Show("No backups could be found to restore.", "Lynx2D Engine - Message");
                     return;
                 }
 
                 string[] backups = Manager.GetFilesFrom("projects/" + Project.Name() + "/backup/", new string[] { "bin" }, false);
                 if (backups.Length == 0)
                 {
-                    MessageBox.Show("No backups could be found to restore.", "Lynx2D Engine - Exception");
+                    MessageBox.Show("No backups could be found to restore.", "Lynx2D Engine - Message");
                     return;
                 }
 
@@ -1370,9 +1364,9 @@ namespace Lynx2DEngine
 
                 SetStatus("Backup '" + backup + "' has been restored.", StatusType.Message);
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
-                MessageBox.Show("Could not restore backup: " + ex.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Backup Restore", exc.Message);
             }
         }
         #endregion
@@ -1409,8 +1403,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                SetStatus("Exception occurred during game refresh.", StatusType.Warning);
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Game Refresh", e.Message);
             }
         }
 

@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lynx2DEngine.exe" size="1578432">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lynx2DEngine.exe" size="1578944">
       <assemblyIdentity name="Lynx2DEngine" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ubNsY2JEzqZrqw1rXD+VuX8Ul9R6oJq4IVPYaPMfbug=</dsig:DigestValue>
+        <dsig:DigestValue>grsCojeW3TCvB9/z3JOwYSEk/g6A64h/g5hnYed9J6o=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

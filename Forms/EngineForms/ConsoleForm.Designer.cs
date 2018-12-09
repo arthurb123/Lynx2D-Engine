@@ -36,7 +36,9 @@
             // 
             this.outputText.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.outputText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.outputText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.outputText.Location = new System.Drawing.Point(0, 0);
+            this.outputText.Margin = new System.Windows.Forms.Padding(8, 3, 3, 3);
             this.outputText.Name = "outputText";
             this.outputText.ReadOnly = true;
             this.outputText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;

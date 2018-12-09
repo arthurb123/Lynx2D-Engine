@@ -86,8 +86,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occured while loading '" + cur + "'", Main.StatusType.Warning);
+                Feed.GiveException("Project Load", e.Message);
             }
         }
 
@@ -95,7 +94,7 @@ namespace Lynx2DEngine
         {
             if (!Feed.CheckOnline())
             {
-                MessageBox.Show("Creating a project requires a valid internet connection. The Lynx2D framework could not be downloaded.", "Lynx2D Engine - Exception");
+                MessageBox.Show("Creating a project requires a valid internet connection. The Lynx2D framework could not be downloaded.", "Lynx2D Engine - Message");
                 return;
             }
 
@@ -106,7 +105,7 @@ namespace Lynx2DEngine
 
             if (Manager.CheckDirectory("projects/" + cur, false))
             {
-                MessageBox.Show("Project '" + cur + "' already exists.", "Lynx2D Engine - Exception");
+                MessageBox.Show("Project '" + cur + "' already exists.", "Lynx2D Engine - Message");
 
                 Create();
                 return;
@@ -251,8 +250,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while creating project canon.", Main.StatusType.Warning);
+                Feed.GiveException("Canon Creation", e.Message);
             }
             finally
             {
@@ -291,7 +289,7 @@ namespace Lynx2DEngine
         {
             if (!Feed.CheckOnline())
             {
-                MessageBox.Show("Reloading the framework requires a valid internet connection. The Lynx2D framework could not be downloaded.", "Lynx2D Engine - Exception");
+                MessageBox.Show("Reloading the framework requires a valid internet connection. The Lynx2D framework could not be downloaded.", "Lynx2D Engine - Message");
                 return;
             }
 
@@ -316,8 +314,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while reloading framework.", Main.StatusType.Warning);
+                Feed.GiveException("Framework Reload", e.Message);
             }
         }
 
@@ -358,8 +355,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while reloading resources", Main.StatusType.Warning);
+                Feed.GiveException("Resources Reload", e.Message);
             }
         }
 

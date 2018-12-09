@@ -10,9 +10,15 @@ namespace Lynx2DEngine
             InitializeComponent();
         }
 
-        public void SetTitle(string text)
+        public void SetText(string text)
         {
             label1.Text = text;
+
+            System.Drawing.Size s = new System.Drawing.Size(Width, 90 + label1.Size.Height);
+
+            MaximumSize = s;
+            MinimumSize = s;
+            Size = s;
         }
 
         public void SetCaption(string text)
@@ -20,13 +26,20 @@ namespace Lynx2DEngine
             Text = text;
         }
 
+        public void DisableYes()
+        {
+            button1.Enabled = false;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.Yes;
             Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.No;
             Close();
         }
 

@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine
@@ -157,8 +159,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred trying to open downloads.", Main.StatusType.Warning);
+                GiveException("Update Evaluation", exc.Message);
             }
         }
 
@@ -187,8 +188,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                form.SetStatus("Exception occurred while starting updater.", Main.StatusType.Warning);
+                GiveException("Updater", exc.Message);
             }
         }
 
@@ -219,6 +219,50 @@ namespace Lynx2DEngine
         public static string Version()
         {
             return version + "-" + stage;
+        }
+
+        public static void GiveException(string type, string msg)
+        {
+            form.SetStatus(type + " Exception occured.", Main.StatusType.Warning);
+
+            if (Engine.ePreferences != null && Engine.ePreferences.suppressExceptions)
+                return;
+
+            bool r = false;
+
+            if (type != "Submit")
+                r = Input.YesNo(msg + "\n\nDo you want to submit this exception?", type + " Exception");
+            else
+                Input.No(msg + "\n\nDo you want to submit this exception?", type + " Exception");
+
+            if (r)
+            {
+                try
+                {
+                    MailMessage mail = new MailMessage(
+                        "lynx2dfeedback@gmail.com",
+                        "arthurbaars@outlook.com",
+                        "[Lynx2D Engine Feedback] " + type,
+                        "An exception occured of type '" + type + "' - " + msg
+                    );
+                    mail.BodyEncoding = Encoding.UTF8;
+
+                    SmtpClient client = new SmtpClient();
+
+                    client.Port = 587;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.EnableSsl = true;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential("lynx2dfeedback@gmail.com", "AZdu6g@U7mQ7K%Q3");
+                    client.Host = "smtp.gmail.com";
+
+                    client.Send(mail);
+                }
+                catch (Exception e)
+                {
+                    GiveException("Submit", e.Message);
+                }
+            }
         }
     }
 }

@@ -44,6 +44,7 @@
             this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showExceptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addSceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeSceneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -173,21 +174,22 @@
             // exportFileToolStripMenuItem
             // 
             this.exportFileToolStripMenuItem.Name = "exportFileToolStripMenuItem";
-            this.exportFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportFileToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.exportFileToolStripMenuItem.Text = "Export Item";
             this.exportFileToolStripMenuItem.Click += new System.EventHandler(this.exportFileToolStripMenuItem_Click);
             // 
             // importFilesToolStripMenuItem
             // 
             this.importFilesToolStripMenuItem.Name = "importFilesToolStripMenuItem";
-            this.importFilesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importFilesToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.importFilesToolStripMenuItem.Text = "Import Item";
             this.importFilesToolStripMenuItem.Click += new System.EventHandler(this.importFilesToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem2
             // 
             this.settingsToolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.themeToolStripMenuItem});
+            this.themeToolStripMenuItem,
+            this.showExceptionsToolStripMenuItem});
             this.settingsToolStripMenuItem2.Name = "settingsToolStripMenuItem2";
             this.settingsToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem2.Text = "Preferences";
@@ -198,7 +200,7 @@
             this.lightToolStripMenuItem,
             this.darkToolStripMenuItem});
             this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
-            this.themeToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.themeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.themeToolStripMenuItem.Text = "Theme";
             // 
             // lightToolStripMenuItem
@@ -220,6 +222,15 @@
             this.darkToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.darkToolStripMenuItem.Text = "Dark";
             this.darkToolStripMenuItem.Click += new System.EventHandler(this.darkToolStripMenuItem_Click);
+            // 
+            // showExceptionsToolStripMenuItem
+            // 
+            this.showExceptionsToolStripMenuItem.CheckOnClick = true;
+            this.showExceptionsToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.showExceptionsToolStripMenuItem.Name = "showExceptionsToolStripMenuItem";
+            this.showExceptionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showExceptionsToolStripMenuItem.Text = "Suppress Exceptions";
+            this.showExceptionsToolStripMenuItem.Click += new System.EventHandler(this.showExceptionsToolStripMenuItem_Click);
             // 
             // sceneToolStripMenuItem
             // 
@@ -692,6 +703,7 @@
         private System.Windows.Forms.ToolStripMenuItem managementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importFilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showExceptionsToolStripMenuItem;
     }
 }
 

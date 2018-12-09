@@ -18,13 +18,22 @@ namespace Lynx2DEngine
         public static bool YesNo(string text, string caption)
         {
             YesNoForm temp = new YesNoForm();
-            temp.SetTitle(text);
+            temp.SetText(text);
             temp.SetCaption(caption);
 
-            DialogResult result = temp.ShowDialog();
-            if (result == DialogResult.Yes) return true;
+            if (temp.ShowDialog() == DialogResult.Yes) return true;
 
             return false;
+        }
+
+        public static void No(string text, string caption)
+        {
+            YesNoForm temp = new YesNoForm();
+            temp.SetText(text);
+            temp.SetCaption(caption);
+            temp.DisableYes();
+
+            temp.ShowDialog();
         }
 
         public static string Selection(string text, string caption, string[] content)

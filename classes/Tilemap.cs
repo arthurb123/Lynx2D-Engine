@@ -47,6 +47,9 @@ namespace Lynx2DEngine
 
             try
             {
+                if (x < 0 || y < 0)
+                    return;
+
                 if (x >= map.GetLength(0))
                     Resize(x+1, map.GetLength(1));
                 if (y >= map.GetLength(1))
@@ -87,7 +90,7 @@ namespace Lynx2DEngine
             {
                 Engine.ExecuteScript("lx.StopMouse(0);");
 
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Tile Set", e.Message);
             }
         }
 
@@ -98,6 +101,9 @@ namespace Lynx2DEngine
 
             try
             {
+                if (x < 0 ||  y < 0)
+                    return;
+
                 if (w == tilesize && h == tilesize)
                 {
                     if (map[x, y] != null && !map[x, y].build)
@@ -117,7 +123,7 @@ namespace Lynx2DEngine
             {
                 Engine.ExecuteScript("lx.StopMouse(2);");
 
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Tile Remove", e.Message);
             }
         }
 

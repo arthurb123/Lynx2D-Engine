@@ -37,9 +37,13 @@
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(14, 9);
+            this.label1.MaximumSize = new System.Drawing.Size(320, 0);
             this.label1.MinimumSize = new System.Drawing.Size(320, 35);
             this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(0, 6, 0, 6);
             this.label1.Size = new System.Drawing.Size(320, 35);
             this.label1.TabIndex = 2;
             this.label1.Text = "YesNo Content";
@@ -47,6 +51,7 @@
             // 
             // button1
             // 
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Yes;
             this.button1.Location = new System.Drawing.Point(81, 48);
             this.button1.Name = "button1";
@@ -58,6 +63,7 @@
             // 
             // button2
             // 
+            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.button2.DialogResult = System.Windows.Forms.DialogResult.No;
             this.button2.Location = new System.Drawing.Point(185, 48);
             this.button2.Name = "button2";
@@ -85,6 +91,7 @@
             this.TopMost = true;
             this.Load += new System.EventHandler(this.YesNoForm_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

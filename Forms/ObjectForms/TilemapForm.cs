@@ -80,7 +80,7 @@ namespace Lynx2DEngine.forms
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Editor Sprite", e.Message);
             }
         }
 
@@ -169,10 +169,11 @@ namespace Lynx2DEngine.forms
                 if (selected.X != -1 && selected.Y != -1)
                     g.DrawRectangle(Pens.WhiteSmoke, new Rectangle(selected.X * tm.tilesize * tm.scale + tilesetOffset.X, selected.Y * tm.tilesize * tm.scale + tilesetOffset.Y, selectedSize.Width * tm.tilesize * tm.scale, selectedSize.Height * tm.tilesize * tm.scale));
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
                 drawTimer.Enabled = false;
-                MessageBox.Show(ex.Message, "Lynx2D Engine - Exception");
+
+                Feed.GiveException("Editor Draw", exc.Message);
             }
         }
 
@@ -193,9 +194,9 @@ namespace Lynx2DEngine.forms
 
                 Tilemapper.SelectTile(tm.id, selected.X * tm.tilesize, selected.Y * tm.tilesize, selectedSize.Width*tm.tilesize, selectedSize.Width * tm.tilesize);
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
-                MessageBox.Show(ex.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Tile Selection", exc.Message);
             }
         }
 

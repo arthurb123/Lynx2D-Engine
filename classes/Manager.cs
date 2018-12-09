@@ -42,10 +42,9 @@ namespace Lynx2DEngine
             {
                 Process.Start(path);
             }
-            catch (Exception exc)
+            catch (Exception e)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
-                Engine.form.SetStatus("Exception occurred while opening directory.", Main.StatusType.Warning);
+                Feed.GiveException("Directory", e.Message);
             }
         }
 
@@ -62,8 +61,7 @@ namespace Lynx2DEngine
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Lynx2D Engine - Exception");
-                Engine.form.SetStatus("Exception occurred while copying file.", Main.StatusType.Warning);
+                Feed.GiveException("File Copy", e.Message);
             }
 
             return false;
