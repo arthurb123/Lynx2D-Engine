@@ -62,7 +62,7 @@ namespace Lynx2DEngine
 
             Feed.EvaluateStartup();
 
-            timer2.Enabled = true;
+            VersionTimer.Enabled = true;
 
             CefSettings settings = new CefSettings()
             {
@@ -135,7 +135,7 @@ namespace Lynx2DEngine
 
             Project.RemoveEngineHTML();
             Manager.ClearAppData();
-
+            
             Cef.Shutdown();
         }
 
@@ -224,7 +224,7 @@ namespace Lynx2DEngine
             if (done != 0)
             {
                 UpdateHierarchy();
-                refreshBrowser();
+                RefreshBrowser();
 
                 return true;
             }
@@ -254,7 +254,7 @@ namespace Lynx2DEngine
                 statusLabel.Visible = true;
                 statusLabel.Text = text;
 
-                timer1.Enabled = true;
+                StatusTimer.Enabled = true;
             }
             catch
             {
@@ -271,7 +271,7 @@ namespace Lynx2DEngine
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            timer1.Enabled = false;
+            StatusTimer.Enabled = false;
             statusLabel.Visible = false;
         }
         #endregion
@@ -343,9 +343,9 @@ namespace Lynx2DEngine
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Hierarchy", e.Message);
+                Feed.GiveException("Hierarchy", exc);
             }
         }
 
@@ -519,7 +519,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Hierarchy Management", exc.Message);
+                Feed.GiveException("Hierarchy Management", exc);
             }
         }
 
@@ -634,7 +634,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Hierarchy Open", exc.Message);
+                Feed.GiveException("Hierarchy Open", exc);
             }
         }
 
@@ -712,7 +712,7 @@ namespace Lynx2DEngine
                         Engine.scenes[Engine.eSettings.currentScene].hierarchy.CopyFolder(copiedFromScene, copiedFolder);
 
                         UpdateHierarchy();
-                        refreshBrowser();
+                        RefreshBrowser();
                     }
 
                     return;
@@ -790,12 +790,12 @@ namespace Lynx2DEngine
 
                 SetStatus("'" + temp.Variable() + "' has been pasted.", StatusType.Message);
 
-                refreshBrowser();
+                RefreshBrowser();
                 UpdateHierarchy();
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Hierarchy Pasting", exc.Message);
+                Feed.GiveException("Hierarchy Pasting", exc);
             }
         }
 
@@ -820,7 +820,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Hierarchy Renaming", exc.Message);
+                Feed.GiveException("Hierarchy Renaming", exc);
             }
         }
 
@@ -896,7 +896,7 @@ namespace Lynx2DEngine
                 DragDropFile(ofd.FileNames);
 
                 UpdateHierarchy();
-                refreshBrowser();
+                RefreshBrowser();
             }
             else
             {
@@ -905,7 +905,7 @@ namespace Lynx2DEngine
                     Engine.ImportEngineObject(ofd.FileName);
 
                     UpdateHierarchy();
-                    refreshBrowser();
+                    RefreshBrowser();
                 }
                 else
                     DragDropFile(new string[] { ofd.FileName });
@@ -954,7 +954,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("GameObject Creation", exc.Message);
+                Feed.GiveException("GameObject Creation", exc);
             }
         }
 
@@ -968,7 +968,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Sound Creation", exc.Message);
+                Feed.GiveException("Sound Creation", exc);
             }
         }
 
@@ -983,7 +983,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Sprite Creation", exc.Message);
+                Feed.GiveException("Sprite Creation", exc);
             }
         }
 
@@ -997,7 +997,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Script Creation", exc.Message);
+                Feed.GiveException("Script Creation", exc);
             }
         }
 
@@ -1012,7 +1012,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Collider Creation", exc.Message);
+                Feed.GiveException("Collider Creation", exc);
             }
         }
 
@@ -1026,7 +1026,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Emitter Creation", exc.Message);
+                Feed.GiveException("Emitter Creation", exc);
             }
         }
 
@@ -1040,7 +1040,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Tilemap Creation", exc.Message);
+                Feed.GiveException("Tilemap Creation", exc);
             }
         }
 
@@ -1214,7 +1214,7 @@ namespace Lynx2DEngine
         #region "Build Toolstrip Stuff"
         private void buildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            refreshBrowser();
+            RefreshBrowser();
         }
         #endregion
 
@@ -1236,7 +1236,7 @@ namespace Lynx2DEngine
         {
             Engine.eSettings.camera = cameraToolStripMenuItem.Checked;
 
-            refreshBrowser();
+            RefreshBrowser();
         }
 
         private void checkCameraInjection(object sender, EventArgs e)
@@ -1296,7 +1296,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Documentation", exc.Message);
+                Feed.GiveException("Documentation", exc);
             }
         }
 
@@ -1366,7 +1366,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Backup Restore", exc.Message);
+                Feed.GiveException("Backup Restore", exc);
             }
         }
         #endregion
@@ -1381,7 +1381,7 @@ namespace Lynx2DEngine
             gridToolStripMenuItem.Checked = Engine.eSettings.grid;
         }
 
-        public void refreshBrowser()
+        public void RefreshBrowser()
         {
             if (browser == null || !Cef.IsInitialized)
                 return;
@@ -1396,18 +1396,18 @@ namespace Lynx2DEngine
                 Tilemapper.ResetInjections();
 
                 registeredConsoleOutput = new Dictionary<string, bool>();
-
+                
                 browser.Load(Project.WorkDirectory() + "/engine.html");
 
                 canViewObjects = true;
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Game Refresh", e.Message);
+                Feed.GiveException("Game Refresh", exc);
             }
         }
 
-        public void createBrowser()
+        public void CreateBrowser()
         {
             if (browser != null || !Cef.IsInitialized)
                 return;
@@ -1566,9 +1566,9 @@ namespace Lynx2DEngine
                 darkToolStripMenuItem.Checked = false;
                 lightToolStripMenuItem.Checked = true;
 
-                menuStrip1.Renderer = new ToolStripProfessionalRenderer();
-                menuStrip1.BackColor = LightTheme.menuBackground;
-                menuStrip1.ForeColor = LightTheme.font;
+                MenuStrip.Renderer = new ToolStripProfessionalRenderer();
+                MenuStrip.BackColor = LightTheme.menuBackground;
+                MenuStrip.ForeColor = LightTheme.font;
  
                 statusLabel.BackColor = LightTheme.menuBackground;
 
@@ -1589,9 +1589,9 @@ namespace Lynx2DEngine
                 darkToolStripMenuItem.Checked = true;
                 lightToolStripMenuItem.Checked = false;
 
-                menuStrip1.Renderer = new ToolStripProfessionalRenderer(new DarkThemeColorTable());
-                menuStrip1.BackColor = DarkTheme.menuBackground;
-                menuStrip1.ForeColor = DarkTheme.font;
+                MenuStrip.Renderer = new ToolStripProfessionalRenderer(new DarkThemeColorTable());
+                MenuStrip.BackColor = DarkTheme.menuBackground;
+                MenuStrip.ForeColor = DarkTheme.font;
 
                 statusLabel.BackColor = DarkTheme.menuBackground;
 
@@ -1617,7 +1617,7 @@ namespace Lynx2DEngine
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            timer2.Enabled = false;
+            VersionTimer.Enabled = false;
 
             Feed.CheckVersion(false);
         }

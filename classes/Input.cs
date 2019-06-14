@@ -11,8 +11,9 @@ namespace Lynx2DEngine
             PromptForm temp = new PromptForm();
             temp.SetTitle(text);
             temp.SetCaption(caption);
+            DialogResult dr = temp.ShowDialog();
 
-            return temp.ShowDialog() == DialogResult.OK ? temp.Value() : "HAS_BEEN_CLOSED";
+            return dr == DialogResult.OK ? temp.Value() : "HAS_BEEN_CLOSED";
         }
 
         public static bool YesNo(string text, string caption)
@@ -20,8 +21,9 @@ namespace Lynx2DEngine
             YesNoForm temp = new YesNoForm();
             temp.SetText(text);
             temp.SetCaption(caption);
+            DialogResult dr = temp.ShowDialog();
 
-            if (temp.ShowDialog() == DialogResult.Yes) return true;
+            if (dr == DialogResult.Yes) return true;
 
             return false;
         }

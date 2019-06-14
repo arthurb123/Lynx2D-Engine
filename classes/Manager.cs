@@ -42,9 +42,9 @@ namespace Lynx2DEngine
             {
                 Process.Start(path);
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Directory", e.Message);
+                Feed.GiveException("Directory", exc);
             }
         }
 
@@ -59,9 +59,9 @@ namespace Lynx2DEngine
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("File Copy", e.Message);
+                Feed.GiveException("File Copy", exc);
             }
 
             return false;

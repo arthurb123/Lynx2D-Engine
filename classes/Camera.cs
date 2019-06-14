@@ -13,11 +13,13 @@
             }
 
             Engine.ExecuteScript("lx.CreateController();" +
-                                "var engineCamera = new lx.GameObject(undefined, 0, 0, 1, 1).Show(0).Focus();" +
-                                "lx.OnKey('W', function() { engineCamera.Focus(); engineCamera.Position().Y-=3; });" +
-                                "lx.OnKey('A', function() { engineCamera.Focus(); engineCamera.Position().X-=3; });" +
-                                "lx.OnKey('S', function() { engineCamera.Focus(); engineCamera.Position().Y+=3; });" +
-                                "lx.OnKey('D', function() { engineCamera.Focus(); engineCamera.Position().X+=3; });");
+                                "let engineCamera = new lx.GameObject(undefined, 0, 0, 1, 1).Show(0).Focus();" +
+                                "let engineCameraSpeed = 4;" +
+                                "lx.OnKey(16, function() { engineCameraSpeed = 6; });" +
+                                "lx.OnKey('W', function() { engineCamera.Focus(); engineCamera.Position().Y-=engineCameraSpeed; engineCameraSpeed = 4; });" +
+                                "lx.OnKey('A', function() { engineCamera.Focus(); engineCamera.Position().X-=engineCameraSpeed; engineCameraSpeed = 4; });" +
+                                "lx.OnKey('S', function() { engineCamera.Focus(); engineCamera.Position().Y+=engineCameraSpeed; engineCameraSpeed = 4; });" +
+                                "lx.OnKey('D', function() { engineCamera.Focus(); engineCamera.Position().X+=engineCameraSpeed; engineCameraSpeed = 4; });");
 
             injected = true;
         }

@@ -23,7 +23,7 @@ namespace Lynx2DEngine
             if (injected)
                 return;
 
-            Engine.ExecuteScript("var script = document.createElement('script');" +
+            Engine.ExecuteScript("let script = document.createElement('script');" +
                                  "script.src = 'https://cdn.jsdelivr.net/npm/javascript-obfuscator/dist/index.browser.js';" +
                                  "script.id = 'obfuscationScript';" +
                                  "document.body.appendChild(script);");
@@ -36,7 +36,7 @@ namespace Lynx2DEngine
             if (!injected)
                 return;
 
-            Engine.ExecuteScript("var el = document.getElementById('obfuscationScript');" +
+            Engine.ExecuteScript("let el = document.getElementById('obfuscationScript');" +
                                  "if (typeof(el) != 'undefined' && el != undefined)" +
                                      "document.body.removeChild(el);");
 

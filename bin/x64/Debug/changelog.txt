@@ -1,5 +1,0 @@
-+ Improved error handling when editing
-   negative tiles in tilemaps
-+ Exception handling improved, now 
-   features optional submission
-+ Exceptions can now be suppressed

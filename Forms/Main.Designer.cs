@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,22 +81,22 @@
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusLabel = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
             this.browserContainer = new System.Windows.Forms.Panel();
             this.hierarchy = new System.Windows.Forms.TreeView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.hierarchyScenes = new System.Windows.Forms.Button();
             this.hierarchyObjects = new System.Windows.Forms.Button();
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.menuStrip1.SuspendLayout();
+            this.VersionTimer = new System.Windows.Forms.Timer(this.components);
+            this.MenuStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // MenuStrip
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuStrip.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.MenuStrip.ImageScalingSize = new System.Drawing.Size(28, 28);
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.sceneToolStripMenuItem,
             this.gameToolStripMenuItem,
@@ -104,13 +104,13 @@
             this.exportToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(2, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
+            this.MenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MenuStrip.Name = "MenuStrip";
+            this.MenuStrip.Padding = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.MenuStrip.Size = new System.Drawing.Size(784, 24);
+            this.MenuStrip.TabIndex = 1;
+            this.MenuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -129,14 +129,14 @@
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.newProjectToolStripMenuItem.Text = "New Project";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // loadProjectToolStripMenuItem
             // 
             this.loadProjectToolStripMenuItem.Name = "loadProjectToolStripMenuItem";
-            this.loadProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadProjectToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.loadProjectToolStripMenuItem.Text = "Load Project";
             this.loadProjectToolStripMenuItem.Click += new System.EventHandler(this.loadProjectToolStripMenuItem_Click);
             // 
@@ -144,7 +144,7 @@
             // 
             this.saveProjectToolStripMenuItem.Enabled = false;
             this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
-            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.saveProjectToolStripMenuItem.Text = "Save Project";
             this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.saveProjectToolStripMenuItem_Click);
             // 
@@ -152,14 +152,14 @@
             // 
             this.showProjectToolStripMenuItem.Enabled = false;
             this.showProjectToolStripMenuItem.Name = "showProjectToolStripMenuItem";
-            this.showProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showProjectToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.showProjectToolStripMenuItem.Text = "Show Project";
             this.showProjectToolStripMenuItem.Click += new System.EventHandler(this.showProjectToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(142, 6);
             // 
             // managementToolStripMenuItem
             // 
@@ -168,7 +168,7 @@
             this.importFilesToolStripMenuItem});
             this.managementToolStripMenuItem.Enabled = false;
             this.managementToolStripMenuItem.Name = "managementToolStripMenuItem";
-            this.managementToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.managementToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.managementToolStripMenuItem.Text = "Management";
             // 
             // exportFileToolStripMenuItem
@@ -191,7 +191,7 @@
             this.themeToolStripMenuItem,
             this.showExceptionsToolStripMenuItem});
             this.settingsToolStripMenuItem2.Name = "settingsToolStripMenuItem2";
-            this.settingsToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.settingsToolStripMenuItem2.Size = new System.Drawing.Size(145, 22);
             this.settingsToolStripMenuItem2.Text = "Preferences";
             // 
             // themeToolStripMenuItem
@@ -537,10 +537,10 @@
             this.statusLabel.Text = "No project opened yet.";
             this.statusLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // timer1
+            // StatusTimer
             // 
-            this.timer1.Interval = 8000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.StatusTimer.Interval = 8000;
+            this.StatusTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // browserContainer
             // 
@@ -615,10 +615,10 @@
             this.hierarchyObjects.Visible = false;
             this.hierarchyObjects.Click += new System.EventHandler(this.hierarchyObjects_Click);
             // 
-            // timer2
+            // VersionTimer
             // 
-            this.timer2.Interval = 1500;
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            this.VersionTimer.Interval = 1500;
+            this.VersionTimer.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Main
             // 
@@ -629,16 +629,16 @@
             this.Controls.Add(this.browserContainer);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.MenuStrip);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
+            this.MainMenuStrip = this.MenuStrip;
             this.MinimumSize = new System.Drawing.Size(797, 580);
             this.Name = "Main";
             this.Text = "Lynx2D Engine";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.MenuStrip.ResumeLayout(false);
+            this.MenuStrip.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -646,7 +646,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newProjectToolStripMenuItem;
@@ -658,7 +658,7 @@
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showProjectToolStripMenuItem;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer StatusTimer;
         private System.Windows.Forms.ToolStripMenuItem addSpriteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
@@ -694,7 +694,7 @@
         private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
-        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Timer VersionTimer;
         private System.Windows.Forms.ToolStripMenuItem restoreBackupToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;

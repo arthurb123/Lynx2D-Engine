@@ -257,7 +257,7 @@ namespace Lynx2DEngine.forms
         {
             Engine.SetEngineObjectScript(engineId, scriptCode.Text);
 
-            Engine.form.refreshBrowser();
+            Engine.form.RefreshBrowser();
 
             setSaved(true);
         }
@@ -385,13 +385,13 @@ namespace Lynx2DEngine.forms
                         sw.Write(obj.code);
 
                         sw.Close();
+
+                        System.Diagnostics.Process.Start(appdataFile);
+
+                        Engine.CreateSpecificFileWatcher(appdataPath, obj.Variable());
+
+                        Close();
                     }
-
-                System.Diagnostics.Process.Start(appdataFile);
-
-                Engine.CreateSpecificFileWatcher(appdataPath, obj.Variable());
-
-                Close();
             }
             catch (Exception exc)
             {

@@ -1,2 +1,0 @@
-D:\lynx2d engine\obj\Debug\Lynx2DEngine.exe
-D:\lynx2d engine\obj\Debug\Lynx2DEngine.pdb

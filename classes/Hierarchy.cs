@@ -114,7 +114,7 @@ namespace Lynx2DEngine
 
                 folders.RemoveAt(id);
 
-                Engine.form.refreshBrowser();
+                Engine.form.RefreshBrowser();
             }
             else
             {

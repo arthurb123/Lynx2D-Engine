@@ -65,9 +65,9 @@ namespace Lynx2DEngine.Classes
             {
                 Disable();
 
-                Feed.GiveException("Backup", exc.Message);
-
                 MessageBox.Show("An exception occurred while backing up the project state. Automatic backup has been disabled.", "Lynx2D Engine - Message");
+
+                Feed.GiveException("Backup", exc);
             }
         }
     }

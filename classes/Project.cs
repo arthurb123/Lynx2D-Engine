@@ -72,7 +72,7 @@ namespace Lynx2DEngine
                 Backup.Disable();
                 Backup.Enable();
 
-                form.createBrowser();
+                form.CreateBrowser();
 
                 form.LoadEngineSettings();
 
@@ -80,13 +80,13 @@ namespace Lynx2DEngine
                 form.SetStatus("'" + cur + "' has been loaded.", Main.StatusType.Message);
 
                 form.SetGameAvailability(true);
-                form.refreshBrowser();
+                form.RefreshBrowser();
 
                 Feed.CheckFrameworkDate();
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Project Load", e.Message);
+                Feed.GiveException("Project Load", exc);
             }
         }
 
@@ -248,9 +248,9 @@ namespace Lynx2DEngine
                 Engine.ClearEngine();
                 Engine.SaveEngineState();
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Canon Creation", e.Message);
+                Feed.GiveException("Canon Creation", exc);
             }
             finally
             {
@@ -303,7 +303,7 @@ namespace Lynx2DEngine
                         {
                             form.SetStatus("The Lynx2D framework has been reloaded.", Main.StatusType.Message);
 
-                            form.refreshBrowser();
+                            form.RefreshBrowser();
                         }
 
                         client.Dispose();
@@ -312,9 +312,9 @@ namespace Lynx2DEngine
                     client.DownloadFile(new Uri("http://www.lynx2d.com/res/lynx2d.js"), "projects/" + cur + "/data/lynx2d.js");
                 }
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Framework Reload", e.Message);
+                Feed.GiveException("Framework Reload", exc);
             }
         }
 
@@ -353,9 +353,9 @@ namespace Lynx2DEngine
                         form.SetStatus("No Lynx2D resources are missing.", Main.StatusType.Message);
                 }
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Resources Reload", e.Message);
+                Feed.GiveException("Resources Reload", exc);
             }
         }
 

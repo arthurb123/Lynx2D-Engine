@@ -78,9 +78,9 @@ namespace Lynx2DEngine.forms
 
                 drawTimer.Enabled = true;
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Editor Sprite", e.Message);
+                Feed.GiveException("Editor Sprite", exc);
             }
         }
 
@@ -173,7 +173,7 @@ namespace Lynx2DEngine.forms
             {
                 drawTimer.Enabled = false;
 
-                Feed.GiveException("Editor Draw", exc.Message);
+                Feed.GiveException("Editor Draw", exc);
             }
         }
 
@@ -196,7 +196,7 @@ namespace Lynx2DEngine.forms
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Tile Selection", exc.Message);
+                Feed.GiveException("Tile Selection", exc);
             }
         }
 
@@ -331,7 +331,7 @@ namespace Lynx2DEngine.forms
             if (tm.collides)
                 Tilemapper.ConvertAndSetMap(tm);
             else
-                Engine.form.refreshBrowser();
+                Engine.form.RefreshBrowser();
         }
     }
 }

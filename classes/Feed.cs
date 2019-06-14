@@ -14,8 +14,8 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static readonly string version = "0.6.3";
-        private static readonly string stage = "beta";
+        private static readonly string version = "1.0.0";
+        private static readonly string stage = "official";
 
         private static bool extract = true;
         public static bool wantsToExtract = false;
@@ -159,7 +159,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                GiveException("Update Evaluation", exc.Message);
+                GiveException("Update Evaluation", exc);
             }
         }
 
@@ -188,7 +188,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                GiveException("Updater", exc.Message);
+                GiveException("Updater", exc);
             }
         }
 
@@ -221,39 +221,51 @@ namespace Lynx2DEngine
             return version + "-" + stage;
         }
 
-        public static void GiveException(string type, string msg)
+        private delegate void GiveExceptionCallback(string type, string msg, string stack);
+
+        public static void GiveException(string type, string msg, string stack)
         {
-            form.SetStatus(type + " Exception occured.", Main.StatusType.Warning);
-
-            if (Engine.ePreferences != null && Engine.ePreferences.suppressExceptions)
-                return;
-
-            bool r = false;
-
-            if (type != "Submit")
-                r = Input.YesNo(msg + "\n\nDo you want to submit this exception?", type + " Exception");
+            if (form.InvokeRequired)
+                form.Invoke(new GiveExceptionCallback(GiveException), new object[] { type, msg, stack });
             else
-                Input.No(msg + "\n\nDo you want to submit this exception?", type + " Exception");
-
-            if (r)
             {
-                try
-                {
-                    using (WebClient client = new WebClient())
-                    {
-                        string s = client.DownloadString("http://www.lynx2d.com:5318/?title=[Lynx2D Engine Feedback] " + type + " Exception&body=" + msg);
+                form.SetStatus(type + " Exception occured.", Main.StatusType.Warning);
 
-                        if (s == string.Empty || s == "wrong usage")
-                            form.SetStatus("Could not submit the exception online.", Main.StatusType.Message);
-                        else if (s == "success")
-                            form.SetStatus("The exception has been submitted.", Main.StatusType.Message);
+                if (Engine.ePreferences != null && Engine.ePreferences.suppressExceptions)
+                    return;
+
+                bool r = false;
+
+                if (type != "Submit")
+                    r = Input.YesNo(msg + "\n\nDo you want to submit this exception?", type + " Exception");
+                else
+                    Input.No(msg + "\n\nDo you want to submit this exception?", type + " Exception");
+
+                if (r)
+                {
+                    try
+                    {
+                        using (WebClient client = new WebClient())
+                        {
+                            string s = client.DownloadString("http://www.lynx2d.com:5318/?title=[Lynx2D Engine Feedback] " + type + " Exception&body=" + (msg + " \n(stack:" + stack + ")"));
+
+                            if (s == string.Empty || s == "wrong usage")
+                                form.SetStatus("Could not submit the exception online.", Main.StatusType.Message);
+                            else if (s == "success")
+                                form.SetStatus("The exception has been submitted.", Main.StatusType.Message);
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        GiveException("Submit", exc);
                     }
                 }
-                catch (Exception e)
-                {
-                    GiveException("Submit", e.Message);
-                }
             }
+        }
+
+        public static void GiveException(string type, Exception exc)
+        {
+            GiveException(type, exc.Message, exc.StackTrace);
         }
     }
 }

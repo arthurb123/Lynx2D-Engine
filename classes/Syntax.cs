@@ -9,12 +9,13 @@ namespace Lynx2DEngine
         private static string methods = @"\b(.Initialize|.Start|.Smoothing|.Framerate|.GetDimensions|.Background|.OnKey|.OnMouse|.StopKey|.StopMouse|.MouseMove|" +
                                         @".ClearMouse|.RemoveMouse|.ParticleLimit|.ClearLoops|.ClearLayerDraw|.ResetCentering|.ResetLayerDraw|.ChannelVolume|" +
                                         @".FindGameObjectWithIdentifier|.FindGameObjectsWithIdentifier|.FindGameObjectWithCollider|" +
-                                        @".DrawSprite|.OnLayerDraw|.Loops|.CreateCollider|.Show|.Hide|.Focus|.Setup|.Text|.Color|" +
+                                        @".CreateHorizontalTileSheet|.CreateVerticalTileSheet|.Direction|.Cast|.CastPoint|.CastPoints|.CastPointRadially|.CastPointsRadially|" +
+                                        @".CastPointRadiallyMultiple|.DrawSprite|.OnLayerDraw|.Loops|.CreateCollider|.Show|.Hide|.Focus|.Setup|.Text|.Color|" +
                                         @".Position|.Size|.Draws|.Rotation|.Clip|.MaxVelocity|.AddVelocity|.Alignment|.Movement|.ShowAnimation|.ClearAnimation|" +
                                         @".MovementDecelerates|.SetTopDownController|.SetSideWaysController|.ApplyCollider|.ClearCollider|" +
                                         @".Follows|.StopFollowing|.Emit|.Speed|.Solid|.Static|.Enable|.Disable|.Identifier|.Play|.PlaySpatial|.LoadScene|.Save|.Restore)\b";
-        private static string lxTypes = @"\b(lx.GameObject|lx.Sprite|lx.Collider|lx.Emitter|lx.Animation|lx.Scene|lx.Audio|lx.UIText|lx.UIRichText|lx.UITexture)\b";
-        private static string types = @"\b(Math|Array|Object|Date|Function|Boolean|Symbol|JSON)\b";
+        private static string lxTypes = @"\b(lx.GameObject|lx.Sprite|lx.Collider|lx.Emitter|lx.Animation|lx.Scene|lx.Audio|lx.UIText|lx.UIRichText|lx.UITexture|lx.Ray)\b";
+        private static string types = @"\b(Math|Array|Object|Date|Function|Boolean|Symbol|JSON|String|lx)\b";
         private static string comments = @"(\/\/.+?$|\/\*.+?\*\/)";
         private static string strings = "\".+?\"|'.+?'";
         private static string numbers = @"\d+";

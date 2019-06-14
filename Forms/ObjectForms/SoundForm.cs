@@ -84,7 +84,7 @@ namespace Lynx2DEngine.forms
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Channel Change", exc.Message);
+                Feed.GiveException("Channel Change", exc);
             }
         }
 
@@ -110,9 +110,9 @@ namespace Lynx2DEngine.forms
 
                 Engine.ExecuteScript(obj.Variable() + ".Position(" + x.Value + ", " + y.Value + ");");
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Position Change", e.Message);
+                Feed.GiveException("Position Change", exc);
             }
         }
 
@@ -158,7 +158,7 @@ namespace Lynx2DEngine.forms
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Source Change", exc.Message);
+                Feed.GiveException("Source Change", exc);
             }
         }
     }

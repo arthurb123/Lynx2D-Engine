@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Lynx2DEngine")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Lynx2D Engine")]
+[assembly: AssemblyDescription("An engine designed around the Lynx2D framework")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Arthur Baars")]
 [assembly: AssemblyProduct("Lynx2DEngine")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

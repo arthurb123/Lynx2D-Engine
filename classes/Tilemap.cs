@@ -86,11 +86,11 @@ namespace Lynx2DEngine
 
                 if (converts) Tilemapper.ConvertAndSetMap(this);
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
                 Engine.ExecuteScript("lx.StopMouse(0);");
 
-                Feed.GiveException("Tile Set", e.Message);
+                Feed.GiveException("Tile Set", exc);
             }
         }
 
@@ -119,11 +119,11 @@ namespace Lynx2DEngine
                 if (converts)
                     Tilemapper.ConvertAndSetMap(this);
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
                 Engine.ExecuteScript("lx.StopMouse(2);");
 
-                Feed.GiveException("Tile Remove", e.Message);
+                Feed.GiveException("Tile Remove", exc);
             }
         }
 

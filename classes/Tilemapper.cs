@@ -42,8 +42,15 @@ namespace Lynx2DEngine
         {
             tm.colliders = new bool[tm.map.GetLength(0), tm.map.GetLength(1)];
 
-            string r = "var " + var + " = lx.GAME.ADD_LAYER_DRAW_EVENT(" + tm.layer + ", function(gfx) {",
-                   c = "\n";
+            string c = "\n",
+                   r = "";
+
+            //Cache tilemap
+
+            int tilemapWidth = tm.map.GetLength(0) * tm.tilesize * tm.scale,
+                tilemapHeight = tm.map.GetLength(0) * tm.tilesize * tm.scale;
+
+            r += "let cached" + var + " = new lx.Canvas(" + tilemapWidth + ", " + tilemapHeight + ");";
 
             for (int i = 0; i < tm.map.GetLength(0); i++)
                 for (int j = 0; j < tm.map.GetLength(1); j++)
@@ -52,16 +59,27 @@ namespace Lynx2DEngine
 
                     if (el != null && el.build)
                     {
-                        r += BuildTile(i, j, tm, el);
+                        string t = "cached" + var + 
+                            ".DrawSprite(" + el.sprite + ".Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + "), " +
+                            (i * tm.scale * tm.tilesize) + ", " + (j * tm.scale * tm.tilesize) + ", " + (el.cW * tm.scale) + ", " + (el.cH * tm.scale) + ");";
 
                         if (tm.collides && !tm.colliders[i, j])
                             c += GenerateCollider(tm, i, j);
+
+                        r += t;
                     }
                 }
 
-            r += "});";
+            r += "cached" + var + " = new lx.Sprite(cached" + var + "); ";
 
-            return r + c + (c.Length != 0 ? "\n" : "");
+            //Add drawing loop
+
+            r += "let " + var + " = lx.GAME.ADD_LAYER_DRAW_EVENT(" + tm.layer + ", function() {" +
+                    "if (cached" + var + ".RENDER != undefined && cached" + var + ".Clip != undefined)" +
+                        "lx.DrawSprite(cached" + var + ", " + (tm.x * tm.scale * tm.tilesize) + ", " + (tm.y * tm.scale * tm.tilesize) + ", " + tilemapWidth + ", " + tilemapHeight + "); " +
+                 "});";
+
+            return c + (c.Length != 0 ? "\n" : "") + r + "\n";
         }
 
         public static void Clear()
@@ -119,7 +137,7 @@ namespace Lynx2DEngine
 
             maps[map].colliders = new bool[maps[map].map.GetLength(0), maps[map].map.GetLength(1)];
             Engine.ExecuteScript("if (lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] == undefined) lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] = [];" +
-                                 "var engineTileMap" + map + "RenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + maps[map].layer + ", function(gfx) {});");
+                                 "let engineTileMap" + map + "RenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + maps[map].layer + ", function(gfx) {});");
             injected[map] = true;
 
             ConvertAndSetMap(maps[map]);
@@ -189,8 +207,15 @@ namespace Lynx2DEngine
             if (tm.scale == 0)
                 tm.scale = 1;
 
-            return "lx.DrawSprite(" + el.sprite + ".Rotation(" + el.r + ").Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + ")," +
-                                (i + tm.x) * tm.scale * tm.tilesize + ", " + (j + tm.y) * tm.scale * tm.tilesize + ", " + (el.cW * tm.scale) + ", " + (el.cH * tm.scale) + ");";
+            string r = "lx.DrawSprite(" + el.sprite;
+
+            if (el.r != 0)
+                r += ".Rotation(" + el.r + ")";
+
+            r += ".Clip(" + el.cX + ", " + el.cY + ", " + el.cW + ", " + el.cH + "), " +
+                 (i + tm.x) * tm.scale * tm.tilesize + ", " + (j + tm.y) * tm.scale * tm.tilesize + ", " + (el.cW * tm.scale) + ", " + (el.cH * tm.scale) + ");";
+
+            return r;
         }
 
         public static void RemoveMap(int map)
@@ -206,7 +231,8 @@ namespace Lynx2DEngine
 
         public static void BeginEditing(int map)
         {
-            if (editing != -1) return;
+            if (editing != -1)
+                return;
 
             if (!injected[map])
                 InjectMap(map);
@@ -279,7 +305,7 @@ namespace Lynx2DEngine
                                     "gfx.imageSmoothing = lx.GAME.SETTINGS.AA;" +
                                     "gfx.lineWidth = 2;" +
                                     "gfx.strokeStyle = 'purple';" +
-                                    "var tPos = { X: " + (maps[editing].x * maps[editing].tilesize * maps[editing].scale) + ", Y: " + (maps[editing].y * maps[editing].tilesize * maps[editing].scale) + " };" +
+                                    "let tPos = { X: " + (maps[editing].x * maps[editing].tilesize * maps[editing].scale) + ", Y: " + (maps[editing].y * maps[editing].tilesize * maps[editing].scale) + " };" +
                                     "if (lx.GAME.FOCUS != undefined) " +
                                         "tPos = lx.GAME.TRANSLATE_FROM_FOCUS(tPos);" +
                                     "gfx.strokeRect(tPos.X, tPos.Y, " + (maps[editing].map.GetLength(0)*maps[editing].tilesize*maps[editing].scale) + ", " + (maps[editing].map.GetLength(1) * maps[editing].tilesize * maps[editing].scale) + ");" +

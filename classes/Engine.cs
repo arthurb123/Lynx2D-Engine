@@ -8,6 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Compression;
+using System.Text;
 
 namespace Lynx2DEngine
 {
@@ -41,9 +42,9 @@ namespace Lynx2DEngine
                     return true;
                 }
             }   
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Preferences Load", e.Message);
+                Feed.GiveException("Preferences Load", exc);
             }
 
             return false;
@@ -63,9 +64,9 @@ namespace Lynx2DEngine
 
                 stream.Close();
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Preferences Save", e.Message);
+                Feed.GiveException("Preferences Save", exc);
             }
         }
         #endregion
@@ -80,7 +81,7 @@ namespace Lynx2DEngine
                 eSettings.currentScene = id;
                 Tilemapper.LoadFromScene(eSettings.currentScene);
 
-                form.refreshBrowser();
+                form.RefreshBrowser();
             }
 
             //We want to make sure a hierarchy exists (migrating from 0.4.0-beta)
@@ -150,7 +151,7 @@ namespace Lynx2DEngine
 
             scenes[id].Rename(name);
 
-            form.refreshBrowser();
+            form.RefreshBrowser();
         }
         #endregion
 
@@ -270,7 +271,7 @@ namespace Lynx2DEngine
             scenes[eSettings.currentScene].hierarchy.RemoveItem(id, true);
 
             if (refreshes)
-                form.refreshBrowser();
+                form.RefreshBrowser();
 
             if (updates || childRemoved)
                 form.UpdateHierarchy();
@@ -372,9 +373,9 @@ namespace Lynx2DEngine
 
                 stream.Close();
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("State Load", e.Message);
+                Feed.GiveException("State Load", exc);
 
                 return false;
             }
@@ -392,9 +393,9 @@ namespace Lynx2DEngine
                 bf.Serialize(stream, new EngineState(scenes, bSettings, eSettings));
                 stream.Close();
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("State Save", e.Message);
+                Feed.GiveException("State Save", exc);
             }
         }
 
@@ -498,14 +499,14 @@ namespace Lynx2DEngine
                     form.SetStatus("'" + eol[0].Variable() + "' has been exported.", Main.StatusType.Message);
                 }
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
                 if (File.Exists(tempEO))
                     File.Delete(tempEO);
                 if (File.Exists(tempTM))
                     File.Delete(tempTM);
 
-                Feed.GiveException("Item Save", e.Message);
+                Feed.GiveException("Item Save", exc);
             }
         }
 
@@ -592,9 +593,9 @@ namespace Lynx2DEngine
                     scenes[eSettings.currentScene].hierarchy.AddItem(result);
                 }
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Item Import", e.Message);
+                Feed.GiveException("Item Import", exc);
             }
 
             if (Directory.Exists(extractDest))
@@ -618,13 +619,17 @@ namespace Lynx2DEngine
                 {
                     EngineObject eo = GetEngineObjectWithVarName(name);
 
-                    eo.code = File.ReadAllText(e.FullPath);
+                    using (FileStream fs = File.Open(e.FullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
+                    {
+                        eo.code = sr.ReadToEnd();
 
-                    form.refreshBrowser();
+                        form.RefreshBrowser();
+                    }
                 }
                 catch (Exception exc)
                 {
-                    Feed.GiveException("External Change", exc.Message);
+                    Feed.GiveException("External Change", exc);
                 }
             };
 
@@ -661,7 +666,7 @@ namespace Lynx2DEngine
             }
             else if (scenes[scene].objects[id].type == EngineObjectType.Sprite)
             {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "'); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "', ON_SPRITE_LOAD); ";
 
                 if (scenes[scene].objects[id].rotation > 0 && scenes[scene].objects[id].rotation < 360)
                     scenes[scene].objects[id].buildCode += variable + ".Rotation(" + (scenes[scene].objects[id].rotation * Math.PI / 180) + "); ";
@@ -745,9 +750,9 @@ namespace Lynx2DEngine
 
                 form.SetStatus("'" + Project.cur + "' has been build.", Main.StatusType.Alert);
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                Feed.GiveException("Project Build", e.Message);
+                Feed.GiveException("Project Build", exc);
             }
 
             return string.Empty;
@@ -765,6 +770,8 @@ namespace Lynx2DEngine
             string sprites = "";
             string tilemaps = "";
             string sounds = "";
+
+            int amountOfSprites = 0;
             
             for (int i = 0; i < scenes[id].objects.Length; i++)
             {
@@ -774,7 +781,7 @@ namespace Lynx2DEngine
 
                 EngineObject eo = scenes[id].objects[i];
 
-                if (eo.type == EngineObjectType.Sprite) sprites += eo.buildCode;
+                if (eo.type == EngineObjectType.Sprite) { sprites += eo.buildCode; amountOfSprites++; }
                 else if (eo.type == EngineObjectType.GameObject) gameobjects += eo.buildCode;
                 else if (eo.type == EngineObjectType.Script && eo.parent == -1) scripts += eo.buildCode;
                 else if (eo.type == EngineObjectType.Collider) colliders += eo.buildCode;
@@ -785,10 +792,36 @@ namespace Lynx2DEngine
                 scenes[id].objects[i].buildCode = "";
             }
 
+            string spritesInit = "AMOUNT_OF_SPRITES = " + amountOfSprites + "; CUR_SPRITES = 0;\n",
+                   spritesInv = "function ON_SPRITE_LOAD() { " +
+                                    "CUR_SPRITES++;" +
+                                    "if (CUR_SPRITES === AMOUNT_OF_SPRITES) {";
+
             if (!globalScope)
-                return ("var " + scenes[id].Variable() + " = new lx.Scene(function() {" + sprites + tilemaps + colliders + gameobjects + sounds + emitters + scripts + "});");
+                return "var " + scenes[id].Variable() + " = new lx.Scene(function() {\n" + 
+                    spritesInit +
+                    spritesInv +
+                    tilemaps + 
+                    colliders + 
+                    gameobjects + 
+                    sounds + 
+                    emitters + 
+                    scripts +
+                "}};" +
+                    sprites + 
+                "});";
             else
-                return (sprites + tilemaps + colliders + gameobjects + sounds + emitters + scripts);
+                return 
+                    spritesInit +
+                    spritesInv +
+                    tilemaps + 
+                    colliders + 
+                    gameobjects + 
+                    sounds + 
+                    emitters + 
+                    scripts +
+                    "}};" +
+                    sprites;
         }
 
         public static async void ExecuteScript(string script)
@@ -1029,7 +1062,7 @@ namespace Lynx2DEngine
             if (updates)
                 form.UpdateHierarchy();
 
-            form.refreshBrowser();
+            form.RefreshBrowser();
         }
         #endregion
 
