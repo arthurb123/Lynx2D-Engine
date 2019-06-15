@@ -41,7 +41,7 @@ namespace Lynx2DEngine
         {
             if (!injected) return;
 
-            Engine.ExecuteScript("enginePointer.Hide(); enginePointerText.Hide(); lx.ClearLoop(enginePointerLoopID); enginePointer = undefined; enginePointerText = undefined; enginePointerLoopID = undefined;");
+            Engine.ExecuteScript("enginePointer.Hide(); enginePointerText.Hide(); lx.GAME.LOOPS[enginePointerLoopID] = undefined; enginePointer = undefined; enginePointerText = undefined; enginePointerLoopID = undefined;");
 
             injected = false;
         }

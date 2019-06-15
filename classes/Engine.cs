@@ -644,7 +644,7 @@ namespace Lynx2DEngine
         #endregion
 
         #region "Engine JavaScript IO"
-        private static void GenerateEngineObjectCode(int scene, int id)
+        private static void GenerateEngineObjectCode(int scene, int id, bool globalScope)
         {
             string lineBreaks = new string('\n', bSettings.lineBreaks);
             if (bSettings.obfuscates)
@@ -666,7 +666,7 @@ namespace Lynx2DEngine
             }
             else if (scenes[scene].objects[id].type == EngineObjectType.Sprite)
             {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "', ON_SPRITE_LOAD); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "'" + (!globalScope ? ", ON_SPRITE_LOAD" : "") + "); ";
 
                 if (scenes[scene].objects[id].rotation > 0 && scenes[scene].objects[id].rotation < 360)
                     scenes[scene].objects[id].buildCode += variable + ".Rotation(" + (scenes[scene].objects[id].rotation * Math.PI / 180) + "); ";
@@ -777,7 +777,7 @@ namespace Lynx2DEngine
             {
                 if (scenes[id].objects[i] == null) continue;
 
-                GenerateEngineObjectCode(id, i);
+                GenerateEngineObjectCode(id, i, globalScope);
 
                 EngineObject eo = scenes[id].objects[i];
 
@@ -797,31 +797,32 @@ namespace Lynx2DEngine
                                     "CUR_SPRITES++;" +
                                     "if (CUR_SPRITES === AMOUNT_OF_SPRITES) {";
 
+            if (amountOfSprites == 0)
+                spritesInit = spritesInv = string.Empty;
+
             if (!globalScope)
-                return "var " + scenes[id].Variable() + " = new lx.Scene(function() {\n" + 
+                return "const " + scenes[id].Variable() + " = new lx.Scene(function() {\n" +
                     spritesInit +
                     spritesInv +
-                    tilemaps + 
-                    colliders + 
-                    gameobjects + 
-                    sounds + 
-                    emitters + 
+                (spritesInit == string.Empty ? sprites : "") +
+                    tilemaps +
+                    colliders +
+                    gameobjects +
+                    sounds +
+                    emitters +
                     scripts +
-                "}};" +
-                    sprites + 
+                 (spritesInit != string.Empty ? "}};" : "") +
+                 (spritesInit != string.Empty ? sprites : "") +
                 "});";
             else
-                return 
-                    spritesInit +
-                    spritesInv +
-                    tilemaps + 
-                    colliders + 
-                    gameobjects + 
-                    sounds + 
-                    emitters + 
-                    scripts +
-                    "}};" +
-                    sprites;
+                return
+                    sprites +
+                    tilemaps +
+                    colliders +
+                    gameobjects +
+                    sounds +
+                    emitters +
+                    scripts;
         }
 
         public static async void ExecuteScript(string script)

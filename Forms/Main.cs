@@ -1412,13 +1412,7 @@ namespace Lynx2DEngine
             if (browser != null || !Cef.IsInitialized)
                 return;
 
-            browser = new ChromiumWebBrowser("about:blank")
-            {
-                BrowserSettings = new BrowserSettings()
-                {
-                    BackgroundColor = Cef.ColorSetARGB(0, 255, 255, 255)
-                }
-            };
+            browser = new ChromiumWebBrowser("about:blank");
 
             browser.DragHandler = new CustomDragHandler();
 
