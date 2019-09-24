@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine
@@ -25,6 +24,12 @@ namespace Lynx2DEngine
         {
             try
             {
+                //Format error text
+
+                msg = msg.Replace("%c", "");
+
+                //Give error text
+
                 outputText.Text += TimeFormat() + msg + "\n";
             }
             catch

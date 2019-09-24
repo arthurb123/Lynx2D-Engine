@@ -656,7 +656,7 @@ namespace Lynx2DEngine
 
             if (scenes[scene].objects[id].type == EngineObjectType.GameObject)
             {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.GameObject(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + "); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.GameObject(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + "); ";
 
                 if (scenes[scene].objects[id].collider != string.Empty)
                     scenes[scene].objects[id].buildCode += variable + ".ApplyCollider(" + scenes[scene].objects[id].collider + "); ";
@@ -666,7 +666,7 @@ namespace Lynx2DEngine
             }
             else if (scenes[scene].objects[id].type == EngineObjectType.Sprite)
             {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "'" + (!globalScope ? ", ON_SPRITE_LOAD" : "") + "); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "'" + (!globalScope ? ", ON_SPRITE_LOAD" : "") + "); ";
 
                 if (scenes[scene].objects[id].rotation > 0 && scenes[scene].objects[id].rotation < 360)
                     scenes[scene].objects[id].buildCode += variable + ".Rotation(" + (scenes[scene].objects[id].rotation * Math.PI / 180) + "); ";
@@ -679,7 +679,7 @@ namespace Lynx2DEngine
                 string callback = "";
                 if (scenes[scene].objects[id].child != -1) callback = ", function(data) {" + scenes[scene].objects[scenes[scene].objects[id].child].code + "}";
 
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Collider(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + ", " + scenes[scene].objects[id].isStatic.ToString().ToLower() + callback + ");";
+                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Collider(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + ", " + scenes[scene].objects[id].isStatic.ToString().ToLower() + callback + ");";
                 scenes[scene].objects[id].buildCode += variable + ".Solid(" + scenes[scene].objects[id].isSolid.ToString().ToLower() + "); ";
 
                 if (scenes[scene].objects[id].visible)
@@ -689,7 +689,7 @@ namespace Lynx2DEngine
             }
             else if (scenes[scene].objects[id].type == EngineObjectType.Emitter)
             {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Emitter(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].amount + ", " + scenes[scene].objects[id].duration + "); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Emitter(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].amount + ", " + scenes[scene].objects[id].duration + "); ";
                 scenes[scene].objects[id].buildCode += variable + ".Setup(" + scenes[scene].objects[id].minvx + ", " + scenes[scene].objects[id].maxvx + ", " + scenes[scene].objects[id].minvy + ", " + scenes[scene].objects[id].maxvy + ", " + scenes[scene].objects[id].minSize + ", " + scenes[scene].objects[id].maxSize + "); ";
                 scenes[scene].objects[id].buildCode += variable + ".Speed(" + scenes[scene].objects[id].speed + "); ";
 
@@ -707,7 +707,7 @@ namespace Lynx2DEngine
             }
             else if (scenes[scene].objects[id].type == EngineObjectType.Sound)
             {
-                scenes[scene].objects[id].buildCode = lineBreaks + "var " + scenes[scene].objects[id].Variable() + " = new lx.Sound('" + scenes[scene].objects[id].source + "', " + scenes[scene].objects[id].layer + "); ";
+                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Sound('" + scenes[scene].objects[id].source + "', " + scenes[scene].objects[id].layer + "); ";
                 scenes[scene].objects[id].buildCode += variable + ".Position(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ");";
             }
             else if (scenes[scene].objects[id].type == EngineObjectType.Script)
@@ -781,13 +781,33 @@ namespace Lynx2DEngine
 
                 EngineObject eo = scenes[id].objects[i];
 
-                if (eo.type == EngineObjectType.Sprite) { sprites += eo.buildCode; amountOfSprites++; }
-                else if (eo.type == EngineObjectType.GameObject) gameobjects += eo.buildCode;
-                else if (eo.type == EngineObjectType.Script && eo.parent == -1) scripts += eo.buildCode;
-                else if (eo.type == EngineObjectType.Collider) colliders += eo.buildCode;
-                else if (eo.type == EngineObjectType.Emitter) emitters += eo.buildCode;
-                else if (eo.type == EngineObjectType.Tilemap && !globalScope) tilemaps += eo.buildCode;
-                else if (eo.type == EngineObjectType.Sound) sounds += eo.buildCode;
+                switch (eo.type)
+                {
+                    case EngineObjectType.Sprite:
+                        sprites += eo.buildCode;
+                        amountOfSprites++;
+                        break;
+                    case EngineObjectType.GameObject:
+                        gameobjects += eo.buildCode;
+                        break;
+                    case EngineObjectType.Script:
+                        if (eo.parent == -1)
+                            scripts += eo.buildCode;
+                        break;
+                    case EngineObjectType.Collider:
+                        colliders += eo.buildCode;
+                        break;
+                    case EngineObjectType.Emitter:
+                        emitters += eo.buildCode;
+                        break;
+                    case EngineObjectType.Tilemap:
+                        if (!globalScope)
+                            tilemaps += eo.buildCode;
+                        break;
+                    case EngineObjectType.Sound:
+                        sounds += eo.buildCode;
+                        break;
+                };
 
                 scenes[id].objects[i].buildCode = "";
             }
@@ -828,21 +848,11 @@ namespace Lynx2DEngine
         public static async void ExecuteScript(string script)
         {
             JavascriptResponse response = await form.browser.EvaluateScriptAsync(script);
-
-            /*if (response.Message != null && response.Message != string.Empty)
-            {
-                form.AddToConsole(response.Message);
-            }*/
         }
 
         public static async Task<string> ExecuteScriptWithResult(string script)
         {
             JavascriptResponse response = await form.browser.EvaluateScriptAsync(script);
-
-            /*if (response.Message != null && response.Message != string.Empty)
-            {
-                form.AddToConsole(response.Message);
-            }*/
 
             return response.Result.ToString();
         }

@@ -1,0 +1,3 @@
++ Usage of the new icon
++ Slight changes to code generation
++ Slight build speed increase

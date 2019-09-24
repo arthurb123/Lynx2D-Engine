@@ -13,8 +13,9 @@ namespace Lynx2DEngine
                                         @".CastPointRadiallyMultiple|.DrawSprite|.OnLayerDraw|.Loops|.CreateCollider|.Show|.Hide|.Focus|.Setup|.Text|.Color|" +
                                         @".Position|.Size|.Draws|.Rotation|.Clip|.MaxVelocity|.AddVelocity|.Alignment|.Movement|.ShowAnimation|.ClearAnimation|" +
                                         @".MovementDecelerates|.SetTopDownController|.SetSideWaysController|.ApplyCollider|.ClearCollider|" +
-                                        @".Follows|.StopFollowing|.Emit|.Speed|.Solid|.Static|.Enable|.Disable|.Identifier|.Play|.PlaySpatial|.LoadScene|.Save|.Restore)\b";
-        private static string lxTypes = @"\b(lx.GameObject|lx.Sprite|lx.Collider|lx.Emitter|lx.Animation|lx.Scene|lx.Audio|lx.UIText|lx.UIRichText|lx.UITexture|lx.Ray)\b";
+                                        @".Follows|.StopFollowing|.Emit|.Speed|.Solid|.Static|.Enable|.Disable|.Identifier|.Play|.PlaySpatial|.LoadScene|.Save|.Restore|" +
+                                        @".OnClick|.ShowAmount)\b";
+        private static string lxTypes = @"\b(lx.GameObject|lx.Sprite|lx.Collider|lx.Emitter|lx.Animation|lx.Scene|lx.Audio|lx.UIText|lx.UIRichText|lx.UITexture|lx.UIButton|lx.Ray)\b";
         private static string types = @"\b(Math|Array|Object|Date|Function|Boolean|Symbol|JSON|String|lx)\b";
         private static string comments = @"(\/\/.+?$|\/\*.+?\*\/)";
         private static string strings = "\".+?\"|'.+?'";

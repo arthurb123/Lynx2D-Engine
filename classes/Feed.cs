@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Net.Mail;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Lynx2DEngine
@@ -14,7 +12,7 @@ namespace Lynx2DEngine
     {
         public static Main form;
 
-        private static readonly string version = "1.0.0";
+        private static readonly string version = "1.0.1";
         private static readonly string stage = "official";
 
         private static bool extract = true;
@@ -74,7 +72,7 @@ namespace Lynx2DEngine
             if (!CheckOnline())
                 return;
 
-            HttpWebRequest frameworkFile = (HttpWebRequest)WebRequest.Create(@"http://www.lynx2d.com/res/lynx2d.js");
+            HttpWebRequest frameworkFile = (HttpWebRequest)WebRequest.Create(@"http://www.lynx2d.com/res/lynx2d-min.js");
             HttpWebResponse frameworkFileResponse = (HttpWebResponse)frameworkFile.GetResponse();
 
             DateTime localFileModifiedTime = File.GetLastWriteTime("projects/" + Project.Name() + "/data/lynx2d.js");

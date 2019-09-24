@@ -1056,8 +1056,8 @@ namespace Lynx2DEngine
                 go = empty[1];
             }
 
-            string spriteCode = "var Sprite" + sprite + " = new lx.Sprite('res/lynx2d/sprite.png');";
-            string goCode = "var GameObject" + go + " = new lx.GameObject(Sprite" + sprite + ", 0, 0, 64, 64);";
+            string spriteCode = "let Sprite" + sprite + " = new lx.Sprite('res/lynx2d/sprite.png');";
+            string goCode = "let GameObject" + go + " = new lx.GameObject(Sprite" + sprite + ", 0, 0, 64, 64);";
 
             int spriteR = Engine.AddEngineObject(EngineObjectType.Sprite, spriteCode, -1, go);
             int goR = Engine.AddEngineObject(EngineObjectType.GameObject, goCode, sprite, -1);
@@ -1085,7 +1085,7 @@ namespace Lynx2DEngine
 
             if (empty.Length > 0) sprite = empty[0];
 
-            string code = "var Sprite" + sprite + " = new lx.Sprite('res/lynx2d/sprite.png');";
+            string code = "let Sprite" + sprite + " = new lx.Sprite('res/lynx2d/sprite.png');";
 
             int spriteR = Engine.AddEngineObject(EngineObjectType.Sprite, code, -1, -1);
 
@@ -1104,7 +1104,7 @@ namespace Lynx2DEngine
 
             if (empty.Length > 0) sound = empty[0];
 
-            string code = "var Sound" + sound + " = new lx.Sound('');";
+            string code = "let Sound" + sound + " = new lx.Sound('');";
 
             int soundR = Engine.AddEngineObject(EngineObjectType.Sound, code, -1, -1);
 
@@ -1129,7 +1129,7 @@ namespace Lynx2DEngine
             }
 
             string scriptCode = "";
-            string collCode = "var Collider" + coll + " = new lx.Collider(0, 0, 64, 64, false, function(data) { " + scriptCode + " });";
+            string collCode = "let Collider" + coll + " = new lx.Collider(0, 0, 64, 64, false, function(data) { " + scriptCode + " });";
 
             int scriptR = Engine.AddEngineObject(EngineObjectType.Script, scriptCode, -1, coll);
             int collR = Engine.AddEngineObject(EngineObjectType.Collider, collCode, script, -1);
@@ -1162,12 +1162,12 @@ namespace Lynx2DEngine
                 em = empty[1];
             }
 
-            string spriteCode = "var Sprite" + sprite + " = new lx.Sprite('res/lynx2d/particle.png');";
+            string spriteCode = "let Sprite" + sprite + " = new lx.Sprite('res/lynx2d/particle.png');";
             int spriteR = Engine.AddEngineObject(EngineObjectType.Sprite, spriteCode, -1, em);
 
             EngineObject spriteEO = Engine.GetEngineObject(spriteR);
             string emCode =
-                "var Emitter" + em + " = new lx.Emitter(Sprite" + sprite + ", 0, 0, " + spriteEO.amount + ", " + spriteEO.duration + ")" +
+                "let Emitter" + em + " = new lx.Emitter(Sprite" + sprite + ", 0, 0, " + spriteEO.amount + ", " + spriteEO.duration + ")" +
                 ".Speed(" + spriteEO.speed + ")" +
                 ".Setup(" + spriteEO.minvx + ", " + spriteEO.maxvx + ", " + spriteEO.minvy + ", " + spriteEO.maxvy + ", " + spriteEO.minSize + ", " + spriteEO.maxSize + ");";
             int emR = Engine.AddEngineObject(EngineObjectType.Emitter, emCode, sprite, -1);

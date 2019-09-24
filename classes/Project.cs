@@ -209,7 +209,7 @@ namespace Lynx2DEngine
 
         public static string WorkDirectory()
         {
-            return String.Format("file:///{0}/projects/{1}/", Directory.GetCurrentDirectory(), Name());
+            return string.Format("file:///{0}/projects/{1}/", Directory.GetCurrentDirectory(), Name());
         }
 
         public static string Name()
@@ -260,27 +260,23 @@ namespace Lynx2DEngine
 
         private static void ExportHTML()
         {
-            string html = "";
+            string html = "<!DOCTYPE HTML>\n" +
+                          "<html>\n" +
+                          "<head>\n  " +
+                          "  <link id='icon' type='image / ico' rel='shortcut icon'/>\n" +
+                          "  <title>" + cur + "</title>\n" +
+                          "  <meta charset='utf-8'/>\n" +
+                          "</head>\n" +
+                          "<body bgcolor='black'>\n";
 
-            if (Engine.bSettings.mergeFramework) html = "<html>\n" +
-                                                            "<head>\n  " +
-                                                            "  <link id='icon' type='image / ico' rel='shortcut icon'/>\n" +
-                                                            "  <meta charset='utf-8'/>\n" +
-                                                            "</head>\n" +
-                                                            "<body bgcolor='black'>\n" +
-                                                            "  <script type='text/javascript' src='data/game.js'></script>\n" +
-                                                            "</body>\n" +
-                                                        "</html>";
-            else html = "<html>\n" +
-                            "<head>\n" +
-                            "  <link id='icon' type='image / ico' rel='shortcut icon'/>\n" +
-                            "  <meta charset='utf-8'/>\n" +
-                            "</head>\n" +
-                            "<body bgcolor='black'>\n" +
-                            "  <script type='text/javascript' src='data/lynx2d.js'></script>\n" +
-                            "  <script type='text/javascript' src='data/game.js'></script>\n" +
-                            "</body>\n" +
-                         "</html>";
+            if (Engine.bSettings.mergeFramework)
+                html += "  <script type='text/javascript' src='data/game.js'></script>\n";
+            else
+                html += "  <script type='text/javascript' src='data/lynx2d.js'></script>\n" +
+                        "  <script type='text/javascript' src='data/game.js'></script>\n";
+
+            html += "</body>\n" +
+                    "</html>";
 
             File.WriteAllText("projects/" + cur + "/index.html", html);
         }
@@ -309,7 +305,7 @@ namespace Lynx2DEngine
                         client.Dispose();
                     };
 
-                    client.DownloadFile(new Uri("http://www.lynx2d.com/res/lynx2d.js"), "projects/" + cur + "/data/lynx2d.js");
+                    client.DownloadFile(new Uri("http://www.lynx2d.com/res/lynx2d-min.js"), "projects/" + cur + "/data/lynx2d.js");
                 }
             }
             catch (Exception exc)
