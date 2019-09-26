@@ -9,9 +9,9 @@
             if (injected)
                 Remove();
 
-            Engine.ExecuteScript("let enginePointer = new lx.GameObject(new lx.Sprite('res/lynx2d/pointer.png'), 0, 0, 12, 12).Show(lx.GAME.BUFFER.length+1);" +
-                                 "let enginePointerText = new lx.UIText('', 0, -4, 11).Follows(enginePointer).Show();" +
-                                 "let enginePointerLoopID = lx.Loops(function() { " +
+            Engine.ExecuteScript("var enginePointer = new lx.GameObject(new lx.Sprite('res/lynx2d/pointer.png'), 0, 0, 12, 12).Show(lx.GAME.BUFFER.length+1);" +
+                                 "var enginePointerText = new lx.UIText('', 0, -4, 11).Follows(enginePointer).Show();" +
+                                 "var enginePointerLoopID = lx.Loops(function() { " +
                                     "if (" + target + " == undefined) return; " +
                                     "let tX = " + target + ".Position().X; " +
                                     "let tY = " + target + ".Position().Y; " +
@@ -35,7 +35,7 @@
         {
             if (!injected) return;
 
-            Engine.ExecuteScript("enginePointer.Hide(); enginePointerText.Hide(); lx.GAME.LOOPS[enginePointerLoopID] = undefined; enginePointer = undefined; enginePointerText = undefined; enginePointerLoopID = undefined;");
+            Engine.ExecuteScript("enginePointer.Hide(); enginePointerText.Hide(); delete lx.GAME.LOOPS[enginePointerLoopID]; enginePointer = undefined; enginePointerText = undefined; enginePointerLoopID = undefined;");
 
             injected = false;
         }
