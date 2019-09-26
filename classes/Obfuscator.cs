@@ -23,10 +23,10 @@ namespace Lynx2DEngine
             if (injected)
                 return;
 
-            Engine.ExecuteScript("let script = document.createElement('script');" +
-                                 "script.src = 'https://cdn.jsdelivr.net/npm/javascript-obfuscator/dist/index.browser.js';" +
-                                 "script.id = 'obfuscationScript';" +
-                                 "document.body.appendChild(script);");
+            Engine.ExecuteScript("let OBFUSCATE_SCRIPT = document.createElement('script');" +
+                                 "OBFUSCATE_SCRIPT.src = 'https://cdn.jsdelivr.net/npm/javascript-obfuscator/dist/index.browser.js';" +
+                                 "OBFUSCATE_SCRIPT.id = 'obfuscationScript';" +
+                                 "document.body.appendChild(OBFUSCATE_SCRIPT);");
 
             injected = true;
         }
@@ -36,9 +36,9 @@ namespace Lynx2DEngine
             if (!injected)
                 return;
 
-            Engine.ExecuteScript("let el = document.getElementById('obfuscationScript');" +
-                                 "if (typeof(el) != 'undefined' && el != undefined)" +
-                                     "document.body.removeChild(el);");
+            Engine.ExecuteScript("let OBFUSCATE_EL = document.getElementById('obfuscationScript');" +
+                                 "if (typeof(OBFUSCATE_EL) != 'undefined' && el != undefined)" +
+                                     "document.body.removeChild(OBFUSCATE_EL);");
 
             injected = false;
         }

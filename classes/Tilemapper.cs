@@ -135,7 +135,7 @@ namespace Lynx2DEngine
 
             maps[map].colliders = new bool[maps[map].map.GetLength(0), maps[map].map.GetLength(1)];
             Engine.ExecuteScript("if (lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] == undefined) lx.GAME.LAYER_DRAW_EVENTS[" + maps[map].layer + "] = [];" +
-                                 "let engineTileMap" + map + "RenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + maps[map].layer + ", function(gfx) {});");
+                                 "var engineTileMap" + map + "RenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + maps[map].layer + ", function(gfx) {});");
             injected[map] = true;
 
             ConvertAndSetMap(maps[map]);
@@ -188,7 +188,7 @@ namespace Lynx2DEngine
                             string tileColl = "engineTileMap" + tm.id + "TileCollider" + (j * tm.map.GetLength(1) + i);
                             existingColliders[tm.id].Add(tileColl);
 
-                            c += "let " + tileColl + " = " + GenerateCollider(tm, i, j);
+                            c += "var " + tileColl + " = " + GenerateCollider(tm, i, j);
                         }
                     }
                 }
@@ -237,27 +237,27 @@ namespace Lynx2DEngine
 
             selectedLayer = maps[map].layer + 1;
 
-            Engine.ExecuteScript("let engineTileMapperRenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + selectedLayer + ", function(gfx) {});" +
-                                 "let engineTileMapperTileSize = " + maps[map].tilesize*maps[map].scale + ";" +
-                                 "let engineTileSelectionRotation = 0; " +
-                                 "let engineTileSelectionRotationEvent = lx.GAME.ADD_EVENT('mousebutton', 1, function(data) { " +
+            Engine.ExecuteScript("var engineTileMapperRenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + selectedLayer + ", function(gfx) {});" +
+                                 "var engineTileMapperTileSize = " + maps[map].tilesize*maps[map].scale + ";" +
+                                 "var engineTileSelectionRotation = 0; " +
+                                 "var engineTileSelectionRotationEvent = lx.GAME.ADD_EVENT('mousebutton', 1, function(data) { " +
                                     "if (data.state == 0) return;" +
                                     "engineTileSelectionRotation += 90; " +
                                     "if (engineTileSelectionRotation >= 360) " +
                                         "engineTileSelectionRotation = 0; " +
                                     "lx.StopMouse(1); " +
                                  "});" +
-                                 "let engineTileMapperPostMouse = function(key) { " +
-                                    "let center = { X: lx.GetDimensions().width/2, Y: lx.GetDimensions().height/2 };" +
-                                    "let rotation = '';" +
+                                 "var engineTileMapperPostMouse = function(key) { " +
+                                    "var center = { X: lx.GetDimensions().width/2, Y: lx.GetDimensions().height/2 };" +
+                                    "var rotation = '';" +
                                     "if (lx.GAME.FOCUS != undefined) center = lx.GAME.FOCUS.POS;" +
                                     "if (key == 'PLACE_TILE') rotation = 'R' + (engineTileSelectionRotation*Math.PI/180);" +
                                     "console.log('ENGINE_INTERACTION_' + key + '(X' + (Math.floor((center.X-lx.GetDimensions().width/2-engineTileMapperTileSize/2)/engineTileMapperTileSize) + Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.X/engineTileMapperTileSize)) + 'Y' + (Math.floor((center.Y-lx.GetDimensions().height/2-engineTileMapperTileSize/2)/engineTileMapperTileSize)+Math.ceil(lx.CONTEXT.CONTROLLER.MOUSE.POS.Y/engineTileMapperTileSize)) + rotation +')');" +
                                  "};" +
-                                 "let engineTileMapperEventIDL = lx.GAME.ADD_EVENT('mousebutton', 0, function() {" +
+                                 "var engineTileMapperEventIDL = lx.GAME.ADD_EVENT('mousebutton', 0, function() {" +
                                     "engineTileMapperPostMouse('PLACE_TILE');" +
                                  "});" +
-                                 "let engineTileMapperEventIDR = lx.GAME.ADD_EVENT('mousebutton', 2, function() {" +
+                                 "var engineTileMapperEventIDR = lx.GAME.ADD_EVENT('mousebutton', 2, function() {" +
                                     "engineTileMapperPostMouse('REMOVE_TILE');" +
                                  "});");
 
