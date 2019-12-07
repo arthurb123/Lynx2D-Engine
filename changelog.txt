@@ -1,3 +1,3 @@
-+ Usage of the new icon
-+ Slight changes to code generation
-+ Slight build speed increase
++ Now (only) supports the newer framework versions
++ Colliders have been renamed to BoxColliders
++ Small extension of syntax highlighting vocabulary

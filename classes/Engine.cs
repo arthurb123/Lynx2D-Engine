@@ -674,12 +674,12 @@ namespace Lynx2DEngine
                 if (scenes[scene].objects[id].clipped)
                     scenes[scene].objects[id].buildCode += variable + ".Clip(" + scenes[scene].objects[id].cx + ", " + scenes[scene].objects[id].cy + ", " + scenes[scene].objects[id].cw + ", " + scenes[scene].objects[id].ch + "); ";
             }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Collider)
+            else if (scenes[scene].objects[id].type == EngineObjectType.BoxCollider)
             {
                 string callback = "";
                 if (scenes[scene].objects[id].child != -1) callback = ", function(data) {" + scenes[scene].objects[scenes[scene].objects[id].child].code + "}";
 
-                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Collider(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + ", " + scenes[scene].objects[id].isStatic.ToString().ToLower() + callback + ");";
+                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.BoxCollider(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + ", " + scenes[scene].objects[id].isStatic.ToString().ToLower() + callback + ");";
                 scenes[scene].objects[id].buildCode += variable + ".Solid(" + scenes[scene].objects[id].isSolid.ToString().ToLower() + "); ";
 
                 if (scenes[scene].objects[id].visible)
@@ -794,7 +794,7 @@ namespace Lynx2DEngine
                         if (eo.parent == -1)
                             scripts += eo.buildCode;
                         break;
-                    case EngineObjectType.Collider:
+                    case EngineObjectType.BoxCollider:
                         colliders += eo.buildCode;
                         break;
                     case EngineObjectType.Emitter:
@@ -972,7 +972,7 @@ namespace Lynx2DEngine
 
             if (collider == string.Empty)
             {
-                EngineObject[] filler = GetEngineObjectsWithType(EngineObjectType.Collider);
+                EngineObject[] filler = GetEngineObjectsWithType(EngineObjectType.BoxCollider);
 
                 if (filler.Length == 0)
                 {
@@ -1060,7 +1060,7 @@ namespace Lynx2DEngine
                 Tilemapper.RenameSpriteInTiles(scenes[eSettings.currentScene].objects[id].Variable(), name);
             }
 
-            if (scenes[eSettings.currentScene].objects[id].type == EngineObjectType.Collider)
+            if (scenes[eSettings.currentScene].objects[id].type == EngineObjectType.BoxCollider)
             {
                 //Rename collider usage in engine objects
                 for (int i = 0; i < scenes[eSettings.currentScene].objects.Length; i++)
@@ -1139,8 +1139,8 @@ namespace Lynx2DEngine
                     this.code = code;
 
                     break;
-                case EngineObjectType.Collider:
-                    name = "Collider";
+                case EngineObjectType.BoxCollider:
+                    name = "BoxCollider";
                     visible = false;
                     Engine.ExecuteScript(Variable() + ".Disable();");
 
@@ -1364,7 +1364,7 @@ namespace Lynx2DEngine
         GameObject = 0,
         Sprite,
         Script,
-        Collider,
+        BoxCollider,
         Emitter,
         Tilemap,
         Sound

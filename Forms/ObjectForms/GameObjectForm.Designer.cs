@@ -222,7 +222,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 13);
             this.label6.TabIndex = 38;
-            this.label6.Text = "Collider";
+            this.label6.Text = "BoxCollider";
             // 
             // refresh
             // 

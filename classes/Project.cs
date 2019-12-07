@@ -296,11 +296,9 @@ namespace Lynx2DEngine
                     client.DownloadFileCompleted += (object s, AsyncCompletedEventArgs e) =>
                     {
                         if (setsStatus)
-                        {
                             form.SetStatus("The Lynx2D framework has been reloaded.", Main.StatusType.Message);
 
-                            form.RefreshBrowser();
-                        }
+                        form.RefreshBrowser();
 
                         client.Dispose();
                     };

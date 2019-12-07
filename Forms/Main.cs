@@ -447,7 +447,7 @@ namespace Lynx2DEngine
                     node.ImageIndex = 2;
                 if (obj.type == EngineObjectType.Sprite)
                     node.ImageIndex = 3;
-                if (obj.type == EngineObjectType.Collider)
+                if (obj.type == EngineObjectType.BoxCollider)
                     node.ImageIndex = 4;
                 if (obj.type == EngineObjectType.Emitter)
                     node.ImageIndex = 5;
@@ -581,7 +581,7 @@ namespace Lynx2DEngine
                         script.Initialize(id);
 
                         break;
-                    case EngineObjectType.Collider:
+                    case EngineObjectType.BoxCollider:
                         ColliderForm coll = new ColliderForm();
 
                         coll.FormClosed += new FormClosedEventHandler(checkCameraInjection);
@@ -735,7 +735,7 @@ namespace Lynx2DEngine
                     case EngineObjectType.Script:
                         result = AddScript();
                         break;
-                    case EngineObjectType.Collider:
+                    case EngineObjectType.BoxCollider:
                         r = AddCollider();
                         result = r[0];
                         child = r[1];
@@ -1012,7 +1012,7 @@ namespace Lynx2DEngine
             }
             catch (Exception exc)
             {
-                Feed.GiveException("Collider Creation", exc);
+                Feed.GiveException("BoxCollider Creation", exc);
             }
         }
 
@@ -1129,15 +1129,15 @@ namespace Lynx2DEngine
             }
 
             string scriptCode = "";
-            string collCode = "let Collider" + coll + " = new lx.Collider(0, 0, 64, 64, false, function(data) { " + scriptCode + " });";
+            string collCode = "let BoxCollider" + coll + " = new lx.BoxCollider(0, 0, 64, 64, false, function(data) { " + scriptCode + " });";
 
             int scriptR = Engine.AddEngineObject(EngineObjectType.Script, scriptCode, -1, coll);
-            int collR = Engine.AddEngineObject(EngineObjectType.Collider, collCode, script, -1);
+            int collR = Engine.AddEngineObject(EngineObjectType.BoxCollider, collCode, script, -1);
 
             if (scriptR != script)
                 MessageBox.Show("Invalid id used while creating a Script.", "Lynx2D Engine - Warning");
             if (collR != coll)
-                MessageBox.Show("Invalid id used while creating a Collider.", "Lynx2D Engine - Warning");
+                MessageBox.Show("Invalid id used while creating a BoxCollider.", "Lynx2D Engine - Warning");
 
             UpdateHierarchy();
 

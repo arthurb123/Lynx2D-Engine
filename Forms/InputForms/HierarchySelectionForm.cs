@@ -118,7 +118,7 @@ namespace Lynx2DEngine.InputForms
                                 eo.ImageIndex = 2;
                             if (obj.type == EngineObjectType.Sprite)
                                 eo.ImageIndex = 3;
-                            if (obj.type == EngineObjectType.Collider)
+                            if (obj.type == EngineObjectType.BoxCollider)
                                 eo.ImageIndex = 4;
                             if (obj.type == EngineObjectType.Emitter)
                                 eo.ImageIndex = 5;
@@ -179,7 +179,7 @@ namespace Lynx2DEngine.InputForms
                             eo.ImageIndex = 2;
                         if (obj.type == EngineObjectType.Sprite)
                             eo.ImageIndex = 3;
-                        if (obj.type == EngineObjectType.Collider)
+                        if (obj.type == EngineObjectType.BoxCollider)
                             eo.ImageIndex = 4;
                         if (obj.type == EngineObjectType.Emitter)
                             eo.ImageIndex = 5;

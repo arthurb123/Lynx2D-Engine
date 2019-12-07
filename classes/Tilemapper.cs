@@ -440,7 +440,7 @@ namespace Lynx2DEngine
                 }
             }
 
-            return "new lx.Collider(" + (y + tm.x) * tm.tilesize * tm.scale + ", " + (x + tm.y) * tm.tilesize * tm.scale + ", " + w * tm.tilesize * tm.scale + ", " + fh * tm.tilesize * tm.scale + ", true);";
+            return "new lx.BoxCollider(" + (y + tm.x) * tm.tilesize * tm.scale + ", " + (x + tm.y) * tm.tilesize * tm.scale + ", " + w * tm.tilesize * tm.scale + ", " + fh * tm.tilesize * tm.scale + ", true);";
         }
     }
 }

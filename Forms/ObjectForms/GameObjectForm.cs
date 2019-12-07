@@ -65,7 +65,7 @@ namespace Lynx2DEngine
             {
                 collider.Items.Add("<None>");
 
-                foreach (EngineObject o in Engine.GetEngineObjectsWithType(EngineObjectType.Collider))
+                foreach (EngineObject o in Engine.GetEngineObjectsWithType(EngineObjectType.BoxCollider))
                 {
                     if (o == null)
                         continue;
