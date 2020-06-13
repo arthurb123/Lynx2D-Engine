@@ -1,3 +1,4 @@
-+ Now (only) supports the newer framework versions
-+ Colliders have been renamed to BoxColliders
-+ Small extension of syntax highlighting vocabulary
++ Building of projects is now more efficient.
++ The building order of scripts is now customizable.
++ Made object marker more efficient.
++ Fixed some bugs.

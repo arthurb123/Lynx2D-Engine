@@ -36,7 +36,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.openExternallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchPanel = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.search = new System.Windows.Forms.TextBox();
@@ -106,7 +106,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openExternallyToolStripMenuItem,
             this.saveToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.buildOrderToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(484, 24);
@@ -128,12 +128,12 @@
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
-            // settingsToolStripMenuItem
+            // buildOrderToolStripMenuItem
             // 
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            this.settingsToolStripMenuItem.Visible = false;
+            this.buildOrderToolStripMenuItem.Name = "buildOrderToolStripMenuItem";
+            this.buildOrderToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.buildOrderToolStripMenuItem.Text = "Build Order";
+            this.buildOrderToolStripMenuItem.Click += new System.EventHandler(this.buildOrderToolStripMenuItem_Click);
             // 
             // searchPanel
             // 
@@ -202,7 +202,7 @@
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buildOrderToolStripMenuItem;
         private System.Windows.Forms.Panel searchPanel;
         private System.Windows.Forms.TextBox search;
         private System.Windows.Forms.PictureBox pictureBox1;

@@ -8,10 +8,11 @@ using System.Windows.Forms;
 
 namespace Lynx2DEngine
 {
-    class Project
+    public static class Project
     {
         public static string cur = string.Empty;
         public static Main form;
+
         private static string gameCode;
 
         public static void Load(bool needsName)
@@ -36,7 +37,8 @@ namespace Lynx2DEngine
             for (int i = 0; i < projects.Length; i++)
                 projects[i] = projects[i].Substring(9, projects[i].Length-9);
 
-            if (needsName) cur = Input.Selection("Choose an existing project", "Load Project", projects);
+            if (needsName) 
+                cur = Input.Selection("Choose an existing project", "Load Project", projects);
 
             if (cur == "HAS_BEEN_CLOSED")
             {
@@ -296,7 +298,7 @@ namespace Lynx2DEngine
                     client.DownloadFileCompleted += (object s, AsyncCompletedEventArgs e) =>
                     {
                         if (setsStatus)
-                            form.SetStatus("The Lynx2D framework has been reloaded.", Main.StatusType.Message);
+                            form.SetStatus("Downloaded Lynx2D framework.", Main.StatusType.Message);
 
                         form.RefreshBrowser();
 

@@ -12,6 +12,11 @@ namespace Lynx2DEngine
             textBox1.TextChanged += textBox1_TextChanged;
         }
 
+        public void SetValue(string value)
+        {
+            textBox1.Text = value;
+        }
+
         public void SetTitle(string text)
         {
             label1.Text = text;

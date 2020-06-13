@@ -142,7 +142,7 @@
     <Compile Include="Classes\Grid.cs" />
     <Compile Include="Classes\Hierarchy.cs" />
     <Compile Include="Classes\Obfuscator.cs" />
-    <Compile Include="Classes\Pointer.cs" />
+    <Compile Include="Classes\Marker.cs" />
     <Compile Include="Classes\Syntax.cs" />
     <Compile Include="Classes\Themes.cs" />
     <Compile Include="Classes\Tilemap.cs" />
@@ -210,7 +210,7 @@
     </Compile>
     <Compile Include="Classes\Input.cs" />
     <Compile Include="Classes\Manager.cs" />
-    <Compile Include="Classes\Program.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Forms\InputForms\PromptForm.cs">
       <SubType>Form</SubType>

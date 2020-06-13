@@ -1,6 +1,6 @@
 ﻿namespace Lynx2DEngine
 {
-    class Camera
+    public static class Camera
     {
         private static bool injected;
 

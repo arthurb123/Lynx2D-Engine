@@ -395,7 +395,28 @@ namespace Lynx2DEngine.forms
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                Feed.GiveException("Open Script Externally", exc);
+            }
+        }
+
+        private void buildOrderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PromptForm pf = new PromptForm();
+
+            pf.SetValue(obj.buildOrder.ToString());
+            pf.SetCaption("Build Order for " + obj.Variable());
+            pf.SetTitle("Enter the build order number");
+
+            if (pf.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    obj.buildOrder = int.Parse(pf.Value());
+                }
+                catch (Exception exc) 
+                {
+                    MessageBox.Show(exc.Message, "Lynx2D Engine - Exception");
+                }
             }
         }
     }

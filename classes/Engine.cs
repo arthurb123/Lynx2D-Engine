@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Compression;
 using System.Text;
+using System.Linq;
 
 namespace Lynx2DEngine
 {
-    class Engine
+    public static class Engine
     {
         public static Main form;
 
@@ -654,64 +655,70 @@ namespace Lynx2DEngine
 
             form.SetStatus("Building '" + scenes[scene].objects[id].Variable() + "'", Main.StatusType.Message);
 
-            if (scenes[scene].objects[id].type == EngineObjectType.GameObject)
+            switch (scenes[scene].objects[id].type)
             {
-                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.GameObject(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + "); ";
+                case EngineObjectType.GameObject:
+                    scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.GameObject(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + "); ";
 
-                if (scenes[scene].objects[id].collider != string.Empty)
-                    scenes[scene].objects[id].buildCode += variable + ".ApplyCollider(" + scenes[scene].objects[id].collider + "); ";
+                    if (scenes[scene].objects[id].collider != string.Empty)
+                        scenes[scene].objects[id].buildCode += variable + ".ApplyCollider(" + scenes[scene].objects[id].collider + "); ";
 
-                if (scenes[scene].objects[id].visible)
-                    scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
+                    if (scenes[scene].objects[id].visible)
+                        scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
+                    break;
+
+                case EngineObjectType.Sprite:
+                    scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "'" + (!globalScope ? ", ON_SPRITE_LOAD" : "") + "); ";
+
+                    if (scenes[scene].objects[id].rotation > 0 && scenes[scene].objects[id].rotation < 360)
+                        scenes[scene].objects[id].buildCode += variable + ".Rotation(" + (scenes[scene].objects[id].rotation * Math.PI / 180) + "); ";
+
+                    if (scenes[scene].objects[id].clipped)
+                        scenes[scene].objects[id].buildCode += variable + ".Clip(" + scenes[scene].objects[id].cx + ", " + scenes[scene].objects[id].cy + ", " + scenes[scene].objects[id].cw + ", " + scenes[scene].objects[id].ch + "); ";
+                    break;
+
+                case EngineObjectType.BoxCollider:
+                    string callback = "";
+                    if (scenes[scene].objects[id].child != -1) callback = ", function(data) {" + scenes[scene].objects[scenes[scene].objects[id].child].code + "}";
+
+                    scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.BoxCollider(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + ", " + scenes[scene].objects[id].isStatic.ToString().ToLower() + callback + ");";
+                    scenes[scene].objects[id].buildCode += variable + ".Solid(" + scenes[scene].objects[id].isSolid.ToString().ToLower() + "); ";
+
+                    if (scenes[scene].objects[id].visible)
+                        scenes[scene].objects[id].buildCode += variable + ".Enable(); ";
+                    else
+                        scenes[scene].objects[id].buildCode += variable + ".Disable(); ";
+                    break;
+
+                case EngineObjectType.Emitter:
+                    scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Emitter(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].amount + ", " + scenes[scene].objects[id].duration + "); ";
+                    scenes[scene].objects[id].buildCode += variable + ".Setup(" + scenes[scene].objects[id].minvx + ", " + scenes[scene].objects[id].maxvx + ", " + scenes[scene].objects[id].minvy + ", " + scenes[scene].objects[id].maxvy + ", " + scenes[scene].objects[id].minSize + ", " + scenes[scene].objects[id].maxSize + "); ";
+                    scenes[scene].objects[id].buildCode += variable + ".Speed(" + scenes[scene].objects[id].speed + "); ";
+
+                    if (scenes[scene].objects[id].visible)
+                        scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
+                    else
+                        scenes[scene].objects[id].buildCode += variable + ".Hide(); ";
+                    break;
+
+                case EngineObjectType.Tilemap:
+                    if (scene != eSettings.currentScene)
+                        scenes[scene].objects[id].buildCode = 
+                            lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), scenes[scene].tilemaps[scenes[scene].objects[id].tileMap]);
+                    else
+                        scenes[scene].objects[id].buildCode = 
+                            lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), Tilemapper.maps[scenes[scene].objects[id].tileMap]);
+                    break;
+
+                case EngineObjectType.Sound:
+                    scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Sound('" + scenes[scene].objects[id].source + "', " + scenes[scene].objects[id].layer + "); ";
+                    scenes[scene].objects[id].buildCode += variable + ".Position(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ");";
+                    break;
+
+                case EngineObjectType.Script:
+                    scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code + "\n";
+                    break;
             }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Sprite)
-            {
-                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Sprite('" + scenes[scene].objects[id].source + "'" + (!globalScope ? ", ON_SPRITE_LOAD" : "") + "); ";
-
-                if (scenes[scene].objects[id].rotation > 0 && scenes[scene].objects[id].rotation < 360)
-                    scenes[scene].objects[id].buildCode += variable + ".Rotation(" + (scenes[scene].objects[id].rotation * Math.PI / 180) + "); ";
-
-                if (scenes[scene].objects[id].clipped)
-                    scenes[scene].objects[id].buildCode += variable + ".Clip(" + scenes[scene].objects[id].cx + ", " + scenes[scene].objects[id].cy + ", " + scenes[scene].objects[id].cw + ", " + scenes[scene].objects[id].ch + "); ";
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.BoxCollider)
-            {
-                string callback = "";
-                if (scenes[scene].objects[id].child != -1) callback = ", function(data) {" + scenes[scene].objects[scenes[scene].objects[id].child].code + "}";
-
-                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.BoxCollider(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].w + ", " + scenes[scene].objects[id].h + ", " + scenes[scene].objects[id].isStatic.ToString().ToLower() + callback + ");";
-                scenes[scene].objects[id].buildCode += variable + ".Solid(" + scenes[scene].objects[id].isSolid.ToString().ToLower() + "); ";
-
-                if (scenes[scene].objects[id].visible)
-                    scenes[scene].objects[id].buildCode += variable + ".Enable(); ";
-                else
-                    scenes[scene].objects[id].buildCode += variable + ".Disable(); ";
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Emitter)
-            {
-                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Emitter(" + scenes[scene].objects[id].sprite + ", " + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ", " + scenes[scene].objects[id].amount + ", " + scenes[scene].objects[id].duration + "); ";
-                scenes[scene].objects[id].buildCode += variable + ".Setup(" + scenes[scene].objects[id].minvx + ", " + scenes[scene].objects[id].maxvx + ", " + scenes[scene].objects[id].minvy + ", " + scenes[scene].objects[id].maxvy + ", " + scenes[scene].objects[id].minSize + ", " + scenes[scene].objects[id].maxSize + "); ";
-                scenes[scene].objects[id].buildCode += variable + ".Speed(" + scenes[scene].objects[id].speed + "); ";
-
-                if (scenes[scene].objects[id].visible)
-                    scenes[scene].objects[id].buildCode += variable + ".Show(" + scenes[scene].objects[id].layer + "); ";
-                else
-                    scenes[scene].objects[id].buildCode += variable + ".Hide(); ";
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Tilemap)
-            {
-                if (scene != eSettings.currentScene)
-                    scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), scenes[scene].tilemaps[scenes[scene].objects[id].tileMap]);
-                else
-                    scenes[scene].objects[id].buildCode = lineBreaks + Tilemapper.ToBuildCode(scenes[scene].objects[id].Variable(), Tilemapper.maps[scenes[scene].objects[id].tileMap]);
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Sound)
-            {
-                scenes[scene].objects[id].buildCode = lineBreaks + "let " + scenes[scene].objects[id].Variable() + " = new lx.Sound('" + scenes[scene].objects[id].source + "', " + scenes[scene].objects[id].layer + "); ";
-                scenes[scene].objects[id].buildCode += variable + ".Position(" + scenes[scene].objects[id].x + ", " + scenes[scene].objects[id].y + ");";
-            }
-            else if (scenes[scene].objects[id].type == EngineObjectType.Script)
-                scenes[scene].objects[id].buildCode = lineBreaks + scenes[scene].objects[id].code + "\n";
         }
 
         public static string BuildEngineCode(bool stacks)
@@ -725,6 +732,7 @@ namespace Lynx2DEngine
                 string currentScene = "";
 
                 //Build engine scenes
+
                 for (int i = 0; i < scenes.Length; i++)
                     if (scenes[i] != null) {
                         if (!stacks && i == eSettings.currentScene)
@@ -737,10 +745,12 @@ namespace Lynx2DEngine
                     }
 
                 //Check if build or export
+
                 if (!stacks)
                     return buildScenes + currentScene;
 
                 //Load build settings
+
                 if (bSettings.hasIcon)
                     buildSettings += "document.getElementById('icon').href='" + bSettings.iconLocation + "';";
                 
@@ -772,14 +782,32 @@ namespace Lynx2DEngine
             string sounds = "";
 
             int amountOfSprites = 0;
-            
+
+            //Handle all scene objects without scripts
+
+            List<EngineObject> scriptList = new List<EngineObject>();
+
             for (int i = 0; i < scenes[id].objects.Length; i++)
             {
-                if (scenes[id].objects[i] == null) continue;
+                if (scenes[id].objects[i] == null) 
+                    continue;
+
+                EngineObject eo = scenes[id].objects[i];
+
+                //Check if script, if so
+                //add to list and skip
+
+                if (eo.type == EngineObjectType.Script)
+                {
+                    scriptList.Add(eo);
+                    continue;
+                }
+
+                //Generate the engine object code
 
                 GenerateEngineObjectCode(id, i, globalScope);
 
-                EngineObject eo = scenes[id].objects[i];
+                //Add to correct type of string chunk
 
                 switch (eo.type)
                 {
@@ -789,10 +817,6 @@ namespace Lynx2DEngine
                         break;
                     case EngineObjectType.GameObject:
                         gameobjects += eo.buildCode;
-                        break;
-                    case EngineObjectType.Script:
-                        if (eo.parent == -1)
-                            scripts += eo.buildCode;
                         break;
                     case EngineObjectType.BoxCollider:
                         colliders += eo.buildCode;
@@ -812,13 +836,38 @@ namespace Lynx2DEngine
                 scenes[id].objects[i].buildCode = "";
             }
 
-            string spritesInit = "AMOUNT_OF_SPRITES = " + amountOfSprites + "; CUR_SPRITES = 0;\n",
+            //Handle all scripts based on the
+            //specified build order
+
+            EngineObject[] sorted = scriptList.OrderBy(s => s.buildOrder).ToArray();
+            for (int i = 0; i < sorted.Length; i++)
+            {
+                int eoId = sorted[i].id;
+
+                GenerateEngineObjectCode(id, eoId, globalScope);
+
+                if (scriptList[i].parent == -1)
+                    scripts += sorted[i].buildCode;
+
+                scenes[id].objects[eoId].buildCode = "";
+            }
+
+            //Add sprite initializition check
+
+            string spritesInit = "let AMOUNT_OF_SPRITES = " + amountOfSprites + "; let CUR_SPRITES = 0;\n",
                    spritesInv = "function ON_SPRITE_LOAD() { " +
                                     "CUR_SPRITES++;" +
                                     "if (CUR_SPRITES === AMOUNT_OF_SPRITES) {";
 
+            //If there are no sprite objects available,
+            //remove the initialization check as it is
+            //unnecessary
+
             if (amountOfSprites == 0)
                 spritesInit = spritesInv = string.Empty;
+
+            //Compile code based on if in global scope,
+            //or not
 
             if (!globalScope)
                 return "const " + scenes[id].Variable() + " = new lx.Scene(function() {\n" +
@@ -847,7 +896,7 @@ namespace Lynx2DEngine
 
         public static async void ExecuteScript(string script)
         {
-            JavascriptResponse response = await form.browser.EvaluateScriptAsync(script);
+            await form.browser.EvaluateScriptAsync(script);
         }
 
         public static async Task<string> ExecuteScriptWithResult(string script)
@@ -1082,19 +1131,20 @@ namespace Lynx2DEngine
             scenes = new Scene[0];
             bSettings = new BuildSettings();
             eSettings = new EngineSettings();
+
             Tilemapper.Clear();
         }
     }
 
     [Serializable]
-    class EnginePreferences
+    public class EnginePreferences
     {
         public Theme theme = Theme.Light;
         public bool suppressExceptions = false;
     }
 
     [Serializable]
-    class EngineState
+    public class EngineState
     {
         public EngineState(Scene[] scenes, BuildSettings bSettings, EngineSettings eSettings)
         {
@@ -1228,6 +1278,8 @@ namespace Lynx2DEngine
                 rotation = rotation,
 
                 code = code,
+                buildOrder = buildOrder,
+
                 tileMap = tileMap,
 
                 unique = unique
@@ -1243,6 +1295,8 @@ namespace Lynx2DEngine
         public string unique = string.Empty;
         public string code;
         public string buildCode;
+        public int buildOrder = 0;
+
         public int child = -1;
         public int parent = -1;
 

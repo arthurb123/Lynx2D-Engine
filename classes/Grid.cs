@@ -10,7 +10,7 @@
                 Remove();
 
             Engine.ExecuteScript(
-                "var engineGridRenderID = lx.GAME.ADD_LAYER_DRAW_EVENT(" + Engine.eSettings.gridLayer + ", function(gfx) { " +
+                "window['engineGridRenderID'] = lx.GAME.ADD_LAYER_DRAW_EVENT(" + Engine.eSettings.gridLayer + ", function(gfx) { " +
                     "gfx.save();" +
                     "gfx.lineWidth = " + Engine.eSettings.gridStrokeSize + ";" +
                     "gfx.strokeStyle = '" + Engine.eSettings.gridColor + "';" +
@@ -36,7 +36,14 @@
         {
             if (!injected) return;
 
-            Engine.ExecuteScript("lx.GAME.LAYER_DRAW_EVENTS[" + Engine.eSettings.gridLayer + "][engineGridRenderID] = undefined; engineGridRenderID = undefined;");
+            Engine.ExecuteScript(
+                "(function() {" +
+                "if (window['engineGridRenderID'] == undefined || lx.GAME.LAYER_DRAW_EVENTS[" + Engine.eSettings.gridLayer + "] == undefined)" +
+                    "return;" +
+                "lx.GAME.LAYER_DRAW_EVENTS[" + Engine.eSettings.gridLayer + "][engineGridRenderID] = undefined;" +
+                "engineGridRenderID = undefined;" +
+                "})();"
+            );
 
             injected = false;
         }

@@ -8,23 +8,25 @@ using System.Windows.Forms;
 
 namespace Lynx2DEngine
 {
-    class Feed
+    public static class Feed
     {
         public static Main form;
-
-        private static readonly string version = "1.0.2";
-        private static readonly string stage = "official";
-
-        private static bool extract = true;
         public static bool wantsToExtract = false;
 
+        private static readonly string version = "1.0.3";
+        private static readonly string stage = "official";
+        private static bool extract = true;
+
+        /// <summary>
+        /// Check if there is an internet connection available.
+        /// </summary>
+        /// <returns>Boolean indicating if online.</returns>
         public static bool CheckOnline()
         {
             try
             {
-                WebRequest webRequest = WebRequest.Create(@"http://www.google.com/");
-
-                WebResponse response = webRequest.GetResponse();
+                WebRequest  webRequest = WebRequest.Create(@"http://www.google.com/");
+                WebResponse response   = webRequest.GetResponse();
 
                 response.Close();
 
@@ -38,6 +40,13 @@ namespace Lynx2DEngine
             return false;
         }
 
+        /// <summary>
+        /// Check this version against the latest version available online.
+        /// </summary>
+        /// <param name="setsStatus">
+        /// Bool indicating if the status should reflect
+        /// this process.
+        /// </param>
         public static void CheckVersion(bool setsStatus)
         {
             string onlineVersion = string.Empty;
@@ -67,6 +76,10 @@ namespace Lynx2DEngine
             else if (setsStatus) form.SetStatus("Running latest version (" + Version() + ").", Main.StatusType.Message);
         }
 
+        /// <summary>
+        /// Compares the date of the latest online available framework
+        /// with the current framework in the project.
+        /// </summary>
         public static void CheckFrameworkDate()
         {
             if (!CheckOnline())
@@ -85,6 +98,9 @@ namespace Lynx2DEngine
             }
         }
 
+        /// <summary>
+        /// Evaluate the startup.
+        /// </summary>
         public static void EvaluateStartup()
         {
             if (!Directory.Exists("blob_storage"))
@@ -99,6 +115,10 @@ namespace Lynx2DEngine
             }
         }
 
+        /// <summary>
+        /// Show the changelog.
+        /// </summary>
+        /// <param name="welcomes"></param>
         public static void ShowChangelog(bool welcomes)
         {
             ChangelogForm changelog = new ChangelogForm();
@@ -108,6 +128,10 @@ namespace Lynx2DEngine
             changelog.ShowDialog();
         }
 
+        /// <summary>
+        /// Update to the specified engine version.
+        /// </summary>
+        /// <param name="version">The requested version.</param>
         public static void UpdateVersion(string version)
         {
             Manager.CheckDirectory("downloads", true);
@@ -131,6 +155,79 @@ namespace Lynx2DEngine
                 form.SetStatus("Could not download update.", Main.StatusType.Message);
             }
         }
+
+        /// <summary>
+        /// Get the current version.
+        /// </summary>
+        /// <returns>The current version.</returns>
+        public static string Version()
+        {
+            return version + "-" + stage;
+        }
+
+        #region "Exception Handling"
+
+        private delegate void GiveExceptionCallback(string type, string msg, string stack);
+
+        /// <summary>
+        /// Give an exception, allowing for possible exception submission.
+        /// </summary>
+        /// <param name="type">The type of exception.</param>
+        /// <param name="msg">The exception message.</param>
+        /// <param name="stack">The exception stack.</param>
+        public static void GiveException(string type, string msg, string stack)
+        {
+            if (form.InvokeRequired)
+                form.Invoke(new GiveExceptionCallback(GiveException), new object[] { type, msg, stack });
+            else
+            {
+                form.SetStatus(type + " Exception occured.", Main.StatusType.Warning);
+
+                if (Engine.ePreferences != null && Engine.ePreferences.suppressExceptions)
+                    return;
+
+                bool r = false;
+
+                if (type != "Submit")
+                    r = Input.YesNo(msg + "\n\nDo you want to submit this exception?", type + " Exception");
+                else
+                    Input.No(msg + "\n\nDo you want to submit this exception?", type + " Exception");
+
+                if (r)
+                {
+                    try
+                    {
+                        using (WebClient client = new WebClient())
+                        {
+                            string s = client.DownloadString("http://www.lynx2d.com:5318/?title=[Lynx2D Engine Feedback] " + type + " Exception&body=" + (msg + " \n(stack:" + stack + ")"));
+
+                            if (s == string.Empty || s == "wrong usage")
+                                form.SetStatus("Could not submit the exception online.", Main.StatusType.Message);
+                            else if (s == "success")
+                                form.SetStatus("The exception has been submitted.", Main.StatusType.Message);
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        GiveException("Submit", exc);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Give an exception, allowing for possible submission.
+        /// </summary>
+        /// <param name="type">The exception type.</param>
+        /// <param name="exc">The exception object.</param>
+        public static void GiveException(string type, Exception exc)
+        {
+            GiveException(type, exc.Message, exc.StackTrace);
+        }
+
+        #endregion
+
+        #region "Private Methods"
 
         private static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
@@ -214,56 +311,6 @@ namespace Lynx2DEngine
             }
         }
 
-        public static string Version()
-        {
-            return version + "-" + stage;
-        }
-
-        private delegate void GiveExceptionCallback(string type, string msg, string stack);
-
-        public static void GiveException(string type, string msg, string stack)
-        {
-            if (form.InvokeRequired)
-                form.Invoke(new GiveExceptionCallback(GiveException), new object[] { type, msg, stack });
-            else
-            {
-                form.SetStatus(type + " Exception occured.", Main.StatusType.Warning);
-
-                if (Engine.ePreferences != null && Engine.ePreferences.suppressExceptions)
-                    return;
-
-                bool r = false;
-
-                if (type != "Submit")
-                    r = Input.YesNo(msg + "\n\nDo you want to submit this exception?", type + " Exception");
-                else
-                    Input.No(msg + "\n\nDo you want to submit this exception?", type + " Exception");
-
-                if (r)
-                {
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
-                            string s = client.DownloadString("http://www.lynx2d.com:5318/?title=[Lynx2D Engine Feedback] " + type + " Exception&body=" + (msg + " \n(stack:" + stack + ")"));
-
-                            if (s == string.Empty || s == "wrong usage")
-                                form.SetStatus("Could not submit the exception online.", Main.StatusType.Message);
-                            else if (s == "success")
-                                form.SetStatus("The exception has been submitted.", Main.StatusType.Message);
-                        }
-                    }
-                    catch (Exception exc)
-                    {
-                        GiveException("Submit", exc);
-                    }
-                }
-            }
-        }
-
-        public static void GiveException(string type, Exception exc)
-        {
-            GiveException(type, exc.Message, exc.StackTrace);
-        }
+        #endregion
     }
 }

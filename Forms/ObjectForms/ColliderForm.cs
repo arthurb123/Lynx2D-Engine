@@ -195,13 +195,13 @@ namespace Lynx2DEngine.forms
             {
                 pointer.BackgroundImage = Properties.Resources.location;
 
-                Pointer.Inject(obj.Variable());
+                Marker.Inject(obj.Variable());
             }
             else
             {
                 pointer.BackgroundImage = null;
 
-                Pointer.Remove();
+                Marker.Remove();
             }
         }
     }

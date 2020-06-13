@@ -549,13 +549,13 @@ namespace Lynx2DEngine
                         GameObjectForm go = new GameObjectForm();
 
                         go.FormClosed += new FormClosedEventHandler(checkCameraInjection);
-                        go.FormClosed += new FormClosedEventHandler(removePointerInjection);
+                        go.FormClosed += new FormClosedEventHandler(removeMarkerInjection);
 
                         go.Show();
                         go.Initialize(id);
 
                         Engine.ExecuteScript(obj.Variable() + ".Focus();");
-                        Pointer.Inject(obj.Variable());
+                        Marker.Inject(obj.Variable());
 
                         break;
                     case EngineObjectType.Sprite:
@@ -585,7 +585,7 @@ namespace Lynx2DEngine
                         ColliderForm coll = new ColliderForm();
 
                         coll.FormClosed += new FormClosedEventHandler(checkCameraInjection);
-                        coll.FormClosed += new FormClosedEventHandler(removePointerInjection);
+                        coll.FormClosed += new FormClosedEventHandler(removeMarkerInjection);
 
                         Engine.ExecuteScript("lx.GAME.DRAW_COLLIDERS=true;");
                         coll.FormClosed += new FormClosedEventHandler(drawCollidersToolStripMenuItem_Click);
@@ -594,20 +594,20 @@ namespace Lynx2DEngine
                         coll.Initialize(id);
 
                         Engine.ExecuteScript("lx.GAME.FOCUS = " + obj.Variable());
-                        Pointer.Inject(obj.Variable());
+                        Marker.Inject(obj.Variable());
 
                         break;
                     case EngineObjectType.Emitter:
                         EmitterForm emit = new EmitterForm();
 
                         emit.FormClosed += new FormClosedEventHandler(checkCameraInjection);
-                        emit.FormClosed += new FormClosedEventHandler(removePointerInjection);
+                        emit.FormClosed += new FormClosedEventHandler(removeMarkerInjection);
 
                         emit.Show();
                         emit.Initialize(obj.id);
 
                         Engine.ExecuteScript("lx.GAME.FOCUS = " + obj.Variable());
-                        Pointer.Inject(obj.Variable());
+                        Marker.Inject(obj.Variable());
 
                         break;
                     case EngineObjectType.Tilemap:
@@ -621,13 +621,13 @@ namespace Lynx2DEngine
                         SoundForm sound = new SoundForm();
 
                         sound.FormClosed += new FormClosedEventHandler(checkCameraInjection);
-                        sound.FormClosed += new FormClosedEventHandler(removePointerInjection);
+                        sound.FormClosed += new FormClosedEventHandler(removeMarkerInjection);
 
                         sound.Show();
                         sound.Initialize(id);
 
                         Engine.ExecuteScript("lx.GAME.FOCUS = " + obj.Variable());
-                        Pointer.Inject(obj.Variable());
+                        Marker.Inject(obj.Variable());
 
                         break;
                 }
@@ -1285,6 +1285,12 @@ namespace Lynx2DEngine
 
             Engine.ExecuteScript("lx.GAME.DRAW_COLLIDERS=" + drawCollidersToolStripMenuItem.Checked.ToString().ToLower() + ";");
         }
+
+        private void scriptBuildOrderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
         #region "Help Toolstrip Stuff"
@@ -1389,7 +1395,7 @@ namespace Lynx2DEngine
             try
             {
                 Camera.Remove();
-                Pointer.Remove();
+                Marker.Remove();
                 Grid.Remove();
                 Obfuscator.Remove();
                 Tilemapper.StopEditing();
@@ -1510,9 +1516,9 @@ namespace Lynx2DEngine
         #endregion
 
         #region "Misc Stuff"
-        private void removePointerInjection(object sender, FormClosedEventArgs e)
+        private void removeMarkerInjection(object sender, FormClosedEventArgs e)
         {
-            Pointer.Remove();
+            Marker.Remove();
         }
 
         public void killChildren()
